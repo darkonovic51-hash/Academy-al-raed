@@ -268,7 +268,7 @@
             cursor: pointer;
         }
 
-        /* ===== HERO ===== */
+        /* ===== HERO (بخلفية جديدة وتأثيرات ديناميكية) ===== */
         .hero {
             min-height: 100vh;
             position: relative;
@@ -285,7 +285,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/f77a929671ec52ee0f4d5f05fcf3894179e32bdc/1781868916948.jpg') no-repeat center center/cover;
+            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/ee1b17a54382b2507cbaa58a772b49b427a97bb2/1781876621648.jpg') no-repeat center center/cover;
             z-index: -2;
             transform: scale(1.05);
             animation: heroZoom 20s infinite alternate ease-in-out;
@@ -300,7 +300,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(13, 26, 13, 0.75) 0%, rgba(0, 0, 0, 0.4) 100%);
+            background: linear-gradient(135deg, rgba(13, 26, 13, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
             z-index: -1;
         }
         .hero-overlay::after {
@@ -312,22 +312,21 @@
             height: 40%;
             background: linear-gradient(0deg, rgba(13, 26, 13, 0.9) 0%, transparent 100%);
         }
+
         .hero-content {
             max-width: 900px;
             position: relative;
             z-index: 2;
-            animation: fadeUp 1.2s ease forwards;
         }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+
+        /* تأثير الكتابة الديناميكي للعناوين */
         .hero h1 {
             font-size: 4.2rem;
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 20px;
             text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+            min-height: 5rem;
         }
         .hero h1 .highlight {
             background: linear-gradient(135deg, var(--gold), #FFD700);
@@ -335,6 +334,18 @@
             background-clip: text;
             color: transparent;
         }
+        .hero h1 .dynamic-text {
+            display: inline-block;
+            min-width: 120px;
+            border-left: 3px solid var(--gold);
+            padding-left: 8px;
+            animation: blinkCursor 0.8s step-end infinite;
+        }
+        @keyframes blinkCursor {
+            0%, 100% { border-color: var(--gold); }
+            50% { border-color: transparent; }
+        }
+
         .hero p {
             font-size: 1.3rem;
             color: rgba(255, 255, 255, 0.85);
@@ -342,12 +353,21 @@
             max-width: 650px;
             margin-left: auto;
             margin-right: auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.5s;
         }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hero-buttons {
             display: flex;
             gap: 18px;
             justify-content: center;
             flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 2s;
         }
 
         .hero-stats {
@@ -356,6 +376,8 @@
             justify-content: center;
             margin-top: 50px;
             flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 2.5s;
         }
         .hero-stat {
             background: var(--glass);
@@ -365,13 +387,12 @@
             padding: 16px 28px;
             text-align: center;
             min-width: 120px;
-            animation: fadeUp 1.6s ease forwards;
-            opacity: 0;
+            transition: var(--transition);
         }
-        .hero-stat:nth-child(1) { animation-delay: 0.2s; }
-        .hero-stat:nth-child(2) { animation-delay: 0.4s; }
-        .hero-stat:nth-child(3) { animation-delay: 0.6s; }
-        .hero-stat:nth-child(4) { animation-delay: 0.8s; }
+        .hero-stat:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
         .hero-stat .number {
             font-size: 2.2rem;
             font-weight: 800;
@@ -454,6 +475,13 @@
             text-align: center;
             border: 1px solid rgba(0, 115, 63, 0.2);
             transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .about-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .about-card:hover {
             transform: translateY(-8px);
@@ -485,6 +513,13 @@
             border: 1px solid rgba(0, 115, 63, 0.2);
             transition: var(--transition);
             text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .coach-single.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .coach-single:hover {
             transform: translateY(-8px);
@@ -544,6 +579,13 @@
             text-align: center;
             perspective: 800px;
             transform-style: preserve-3d;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .player-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .player-card:hover {
             transform: translateY(-8px) rotateY(2deg) rotateX(2deg);
@@ -613,6 +655,13 @@
             background: var(--dark-card);
             border-radius: var(--radius);
             border: 2px dashed rgba(0, 115, 63, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .matches-empty.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .matches-empty i {
             font-size: 4rem;
@@ -643,20 +692,20 @@
             cursor: pointer;
             opacity: 0;
             transform: translateY(30px);
-            animation: galleryFade 0.8s ease forwards;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .gallery-masonry .item:nth-child(1) { animation-delay: 0.1s; }
-        .gallery-masonry .item:nth-child(2) { animation-delay: 0.2s; }
-        .gallery-masonry .item:nth-child(3) { animation-delay: 0.3s; }
-        .gallery-masonry .item:nth-child(4) { animation-delay: 0.4s; }
-        .gallery-masonry .item:nth-child(5) { animation-delay: 0.5s; }
-        .gallery-masonry .item:nth-child(6) { animation-delay: 0.6s; }
-        .gallery-masonry .item:nth-child(7) { animation-delay: 0.7s; }
-        .gallery-masonry .item:nth-child(8) { animation-delay: 0.8s; }
-        @keyframes galleryFade {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .gallery-masonry .item.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
+        .gallery-masonry .item:nth-child(1) { transition-delay: 0.1s; }
+        .gallery-masonry .item:nth-child(2) { transition-delay: 0.2s; }
+        .gallery-masonry .item:nth-child(3) { transition-delay: 0.3s; }
+        .gallery-masonry .item:nth-child(4) { transition-delay: 0.4s; }
+        .gallery-masonry .item:nth-child(5) { transition-delay: 0.5s; }
+        .gallery-masonry .item:nth-child(6) { transition-delay: 0.6s; }
+        .gallery-masonry .item:nth-child(7) { transition-delay: 0.7s; }
+        .gallery-masonry .item:nth-child(8) { transition-delay: 0.8s; }
         .gallery-masonry .item img {
             width: 100%;
             height: 100%;
@@ -721,6 +770,13 @@
             overflow: hidden;
             border: 1px solid rgba(0, 115, 63, 0.15);
             transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .news-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .news-card:hover {
             transform: translateY(-6px);
@@ -757,6 +813,13 @@
             border-radius: var(--radius);
             padding: 40px;
             border: 1px solid rgba(0, 115, 63, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .registration-wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
         .registration-wrapper .form-group {
             margin-bottom: 20px;
@@ -993,13 +1056,16 @@
     </ul>
 </header>
 
-<!-- ===== HERO ===== -->
+<!-- ===== HERO (بخلفية جديدة وتأثير ديناميكي للكلمات) ===== -->
 <section id="home" class="hero">
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1>بناء <span class="highlight">مستقبل</span> كرة القدم</h1>
-        <p>أكاديمية الرائد – حيث تُصنع النجوم وتُكتب الأساطير. نعدّ الجيل القادم من أبطال كرة القدم.</p>
+        <h1>
+            <span class="highlight">أكاديمية</span>
+            <span class="dynamic-text" id="dynamicText"></span>
+        </h1>
+        <p>حيث تُصنع النجوم وتُكتب الأساطير. نعدّ الجيل القادم من أبطال كرة القدم.</p>
         <div class="hero-buttons">
             <a href="#registration" class="btn-primary">سجل الآن</a>
             <a href="#programs" class="btn-outline">اكتشف البرامج</a>
@@ -1022,22 +1088,10 @@
     <div class="container">
         <h2 class="section-title">عن <span>الأكاديمية</span></h2>
         <p class="section-subtitle">قصة أكاديمية الرائد – رؤية، رسالة، وقيم نبني عليها مستقبل كرة القدم في الجزائر.</p>
-        <div class="about-grid">
-            <div class="about-card">
-                <i class="fas fa-eye"></i>
-                <h3>رؤيتنا</h3>
-                <p>تخريج جيل من اللاعبين المحترفين القادرين على تمثيل النادي والوطن في أكبر المحافل الدولية.</p>
-            </div>
-            <div class="about-card">
-                <i class="fas fa-bullhorn"></i>
-                <h3>رسالتنا</h3>
-                <p>توفير بيئة تدريبية عالمية المستوى، وتطوير المهارات الفنية والبدنية والنفسية للاعبين من الفئات العمرية الصغيرة.</p>
-            </div>
-            <div class="about-card">
-                <i class="fas fa-trophy"></i>
-                <h3>قيمنا</h3>
-                <p>الانضباط، العمل الجماعي، الاحترام، التميز، والشغف – هذه هي القيم التي نبني عليها كل لاعب.</p>
-            </div>
+        <div class="about-grid" id="aboutGrid">
+            <div class="about-card"><i class="fas fa-eye"></i><h3>رؤيتنا</h3><p>تخريج جيل من اللاعبين المحترفين القادرين على تمثيل النادي والوطن في أكبر المحافل الدولية.</p></div>
+            <div class="about-card"><i class="fas fa-bullhorn"></i><h3>رسالتنا</h3><p>توفير بيئة تدريبية عالمية المستوى، وتطوير المهارات الفنية والبدنية والنفسية للاعبين من الفئات العمرية الصغيرة.</p></div>
+            <div class="about-card"><i class="fas fa-trophy"></i><h3>قيمنا</h3><p>الانضباط، العمل الجماعي، الاحترام، التميز، والشغف – هذه هي القيم التي نبني عليها كل لاعب.</p></div>
         </div>
     </div>
 </section>
@@ -1105,7 +1159,7 @@
     <div class="container">
         <h2 class="section-title">المدير <span>الفني</span></h2>
         <p class="section-subtitle">قيادة فنية وخبرة عالية لبناء جيل من الأبطال.</p>
-        <div class="coach-single">
+        <div class="coach-single" id="coachSingle">
             <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1df27a516344950ef0e2827829f4c77d7e759cac/file_000000007fd871f4b2e095dad086c8e3.png" alt="المدير الفني">
             <div class="info">
                 <h4>المدير الفني</h4>
@@ -1126,27 +1180,12 @@
     <div class="container">
         <h2 class="section-title">لاعبونا <span>الموهوبون</span></h2>
         <p class="section-subtitle">نماذج من لاعبي أكاديمية الرائد الذين يبشرون بمستقبل كبير.</p>
-        <div class="players-grid">
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg" alt="لاعب">
-                <div class="info"><h4>ياسين بن عمار</h4><div class="role">جناح أيسر – U16</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg" alt="لاعب">
-                <div class="info"><h4>أحمد زروقي</h4><div class="role">وسط ميدان – U16</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg" alt="لاعب">
-                <div class="info"><h4>سفيان بن سالم</h4><div class="role">مهاجم – U15</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg" alt="لاعب">
-                <div class="info"><h4>مهدي شريف</h4><div class="role">ظهير أيمن – U14</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg" alt="لاعب">
-                <div class="info"><h4>محمد لعروسي</h4><div class="role">قلب دفاع – U13</div></div>
-            </div>
+        <div class="players-grid" id="playersGrid">
+            <div class="player-card"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg" alt="لاعب"><div class="info"><h4>ياسين بن عمار</h4><div class="role">جناح أيسر – U16</div></div></div>
+            <div class="player-card"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg" alt="لاعب"><div class="info"><h4>أحمد زروقي</h4><div class="role">وسط ميدان – U16</div></div></div>
+            <div class="player-card"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg" alt="لاعب"><div class="info"><h4>سفيان بن سالم</h4><div class="role">مهاجم – U15</div></div></div>
+            <div class="player-card"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg" alt="لاعب"><div class="info"><h4>مهدي شريف</h4><div class="role">ظهير أيمن – U14</div></div></div>
+            <div class="player-card"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg" alt="لاعب"><div class="info"><h4>محمد لعروسي</h4><div class="role">قلب دفاع – U13</div></div></div>
         </div>
     </div>
 </section>
@@ -1194,12 +1233,12 @@
     </div>
 </section>
 
-<!-- ===== GALLERY (مع تأثيرات حركية) ===== -->
+<!-- ===== GALLERY ===== -->
 <section id="gallery" class="green-bg-animated">
     <div class="container">
         <h2 class="section-title">معرض <span>الصور</span></h2>
         <p class="section-subtitle">لقطات من التدريبات، المباريات، والمناسبات التي تعكس روح الأكاديمية.</p>
-        <div class="gallery-masonry">
+        <div class="gallery-masonry" id="galleryGrid">
             <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg" alt="تدريب"><div class="overlay"><span>تدريبات الفريق الأول</span></div></div>
             <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg" alt="تدريب"><div class="overlay"><span>تمارين تكتيكية</span></div></div>
             <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg" alt="تدريب"><div class="overlay"><span>إعداد بدني</span></div></div>
@@ -1227,7 +1266,7 @@
     </div>
 </section>
 
-<!-- ===== SCHEDULE (جدول التدريبات المنظم) ===== -->
+<!-- ===== SCHEDULE ===== -->
 <section id="schedule" class="section-light">
     <div class="container">
         <h2 class="section-title">جدول <span>التدريبات</span></h2>
@@ -1235,13 +1274,7 @@
         <div class="schedule-wrapper">
             <table class="schedule-table">
                 <thead>
-                    <tr>
-                        <th>الفئة العمرية</th>
-                        <th>السبت</th>
-                        <th>الأحد</th>
-                        <th>الثلاثاء</th>
-                        <th>الخميس</th>
-                    </tr>
+                    <tr><th>الفئة العمرية</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr>
                 </thead>
                 <tbody>
                     <tr><td>تحت 16 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
@@ -1262,7 +1295,7 @@
     <div class="container">
         <h2 class="section-title">المباريات <span>الودية</span></h2>
         <p class="section-subtitle">جميع المباريات الودية للفرق – سيتم الإعلان عنها قريباً.</p>
-        <div class="matches-empty">
+        <div class="matches-empty" id="matchesEmpty">
             <i class="fas fa-calendar-alt"></i>
             <h3>لا يوجد مباريات ودية حالياً</h3>
             <p>سيتم الإعلان عن المباريات القادمة فور اعتماد الجدول الزمني.</p>
@@ -1275,7 +1308,7 @@
     <div class="container">
         <h2 class="section-title">سجل <span>الآن</span></h2>
         <p class="section-subtitle">انضم إلى أكاديمية الرائد وكن جزءاً من مستقبل كرة القدم الجزائرية.</p>
-        <div class="registration-wrapper">
+        <div class="registration-wrapper" id="registrationWrapper">
             <form id="registrationForm">
                 <div class="form-group"><label>الاسم الكامل للاعب</label><input type="text" placeholder="مثال: أحمد بن سليمان" required></div>
                 <div class="form-group"><label>تاريخ الميلاد</label><input type="date" required></div>
@@ -1359,6 +1392,69 @@
 
 <!-- ===== SCRIPTS ===== -->
 <script>
+    // ===== تأثير الكتابة الديناميكي (Dynamic Text) =====
+    const words = ['الرائد', 'النخبة', 'الأبطال', 'المستقبل'];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const dynamicText = document.getElementById('dynamicText');
+
+    function typeEffect() {
+        const currentWord = words[wordIndex];
+        if (isDeleting) {
+            dynamicText.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+        } else {
+            dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+        }
+
+        if (!isDeleting && charIndex === currentWord.length) {
+            isDeleting = true;
+            setTimeout(typeEffect, 2000);
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            setTimeout(typeEffect, 300);
+        } else {
+            setTimeout(typeEffect, isDeleting ? 50 : 120);
+        }
+    }
+    typeEffect();
+
+    // ===== تأثير ظهور البطاقات عند التمرير (Scroll Reveal) =====
+    const revealElements = [
+        { selector: '.about-card', container: '#aboutGrid' },
+        { selector: '.player-card', container: '#playersGrid' },
+        { selector: '.gallery-masonry .item', container: '#galleryGrid' },
+        { selector: '.coach-single', container: '#coachSingle' },
+        { selector: '.matches-empty', container: '#matchesEmpty' },
+        { selector: '.registration-wrapper', container: '#registrationWrapper' },
+        { selector: '.news-card', container: '#newsGrid' }
+    ];
+
+    // إضافة lazy loading للصور لتحسين الأداء
+    document.querySelectorAll('.gallery-masonry .item img, .player-card img, .news-card img').forEach(img => {
+        img.loading = 'lazy';
+        img.decoding = 'async';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // مراقبة جميع العناصر القابلة للظهور
+    document.querySelectorAll('.about-card, .player-card, .gallery-masonry .item, .coach-single, .matches-empty, .registration-wrapper, .news-card').forEach(el => {
+        observer.observe(el);
+    });
+
     // ===== Navbar scroll effect =====
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
