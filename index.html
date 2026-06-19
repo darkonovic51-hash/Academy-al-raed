@@ -3,47 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>أكاديمية الرائد | RAED Academy</title>
+    <title>أكاديمية الرائد | RAED Academy – مستقبل كرة القدم</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* ===== CSS Variables & Reset ===== */
+        :root {
+            --primary: #00733F;
+            --primary-dark: #005A2E;
+            --primary-light: #E8F5E9;
+            --primary-glow: rgba(0, 115, 63, 0.3);
+            --gold: #D4A017;
+            --gold-light: #F5E6A3;
+            --gold-glow: rgba(212, 160, 23, 0.4);
+            --white: #FFFFFF;
+            --dark: #0D1A0D;
+            --dark-card: rgba(20, 40, 25, 0.85);
+            --gray: #6A7A6A;
+            --gray-light: #E8F0E8;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --radius: 24px;
+            --transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', 'Cairo', sans-serif;
-            background-color: #F5F8F5;
-            color: #1A2C1E;
+            background: var(--dark);
+            color: #E8F0E8;
             overflow-x: hidden;
+            line-height: 1.6;
         }
-        /* ===== الألوان ===== */
-        :root {
-            --primary: #00733F;
-            --primary-dark: #005A2E;
-            --primary-light: #E8F5E9;
-            --gold: #D4A017;
-            --gold-light: #F5E6A3;
-            --white: #FFFFFF;
-            --dark: #1A2C1E;
-            --gray: #6A7A6A;
+
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        /* ===== شريط التنقل ===== */
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== GLASSMORPHISM ===== */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-decoration: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: 0.4s;
+        }
+        .btn-primary:hover::after {
+            opacity: 1;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--primary-glow);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #F5A623);
+            border: none;
+            padding: 14px 36px;
+            border-radius: 60px;
+            font-weight: 700;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px var(--gold-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #FFFFFF;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .section-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #FFFFFF;
+        }
+        .section-title span {
+            background: linear-gradient(135deg, var(--gold), #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--primary));
+            margin: 15px auto 0;
+            border-radius: 5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-light);
+            max-width: 700px;
+            margin: -30px auto 50px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* ===== HEADER / NAVBAR ===== */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 12px 40px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
+            padding: 14px 40px;
+            background: transparent;
+            transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--primary);
-            transition: 0.3s;
+        }
+        .navbar.scrolled {
+            background: rgba(13, 26, 13, 0.95);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(0, 115, 63, 0.3);
+            padding: 10px 40px;
         }
         .logo {
             display: flex;
@@ -51,666 +202,1374 @@
             gap: 12px;
         }
         .logo img {
-            height: 50px;
+            height: 48px;
             width: auto;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
         }
         .logo span {
             font-size: 1.4rem;
             font-weight: 800;
-            color: var(--primary);
+            color: #FFFFFF;
             letter-spacing: -0.5px;
         }
+        .logo span .accent {
+            color: var(--gold);
+        }
+
         .nav-links {
             display: flex;
-            gap: 28px;
+            gap: 22px;
             list-style: none;
+            align-items: center;
         }
         .nav-links a {
-            color: var(--dark);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 0.9rem;
             transition: 0.2s;
-            padding: 5px 0;
+            padding: 4px 0;
             border-bottom: 2px solid transparent;
         }
         .nav-links a:hover {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
+            color: #FFFFFF;
+            border-bottom-color: var(--gold);
         }
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 30px;
+            padding: 4px 8px;
+        }
+        .lang-switch button {
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .lang-switch button.active {
+            background: var(--primary);
+            color: #FFFFFF;
+        }
+        .lang-switch button:hover {
+            color: #FFFFFF;
+        }
+
         .menu-btn {
             display: none;
             font-size: 1.8rem;
-            color: var(--primary);
+            color: #FFFFFF;
             cursor: pointer;
         }
-        /* ===== الهيرو ===== */
+
+        /* ===== HERO ===== */
         .hero {
-            min-height: 90vh;
-            background: linear-gradient(135deg, rgba(0, 50, 25, 0.7), rgba(0, 0, 0, 0.3)), url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/f77a929671ec52ee0f4d5f05fcf3894179e32bdc/1781868916948.jpg');
-            background-size: cover;
-            background-position: center;
+            min-height: 100vh;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 120px 20px 80px;
+            padding: 100px 20px 60px;
+            overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/f77a929671ec52ee0f4d5f05fcf3894179e32bdc/1781868916948.jpg') no-repeat center center/cover;
+            z-index: -2;
+            transform: scale(1.05);
+            animation: heroZoom 20s infinite alternate ease-in-out;
+        }
+        @keyframes heroZoom {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.15); }
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(13, 26, 13, 0.75) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: -1;
+        }
+        .hero-overlay::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(0deg, rgba(13, 26, 13, 0.9) 0%, transparent 100%);
         }
         .hero-content {
             max-width: 900px;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 1.2s ease forwards;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4.2rem;
             font-weight: 900;
-            color: #FFFFFF;
-            text-shadow: 2px 4px 12px rgba(0,0,0,0.4);
-            margin-bottom: 15px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.4);
         }
-        .hero h1 span {
-            color: #FFD700;
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--gold), #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         .hero p {
-            font-size: 1.2rem;
-            color: #E8F5E9;
-            margin-bottom: 30px;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 35px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .btn-primary {
-            background: var(--primary);
-            border: none;
-            padding: 14px 40px;
-            border-radius: 50px;
-            font-weight: 700;
-            color: #FFFFFF;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-block;
-            text-decoration: none;
+        .hero-buttons {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 115, 63, 0.3);
+
+        /* Floating Stats Cards */
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
         }
-        .btn-gold {
-            background: linear-gradient(95deg, #D4A017, #FFC107);
-            border: none;
-            padding: 14px 40px;
-            border-radius: 50px;
-            font-weight: 700;
-            color: #1A2C1E;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-block;
-            text-decoration: none;
+        .hero-stat {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 16px 28px;
+            text-align: center;
+            min-width: 120px;
+            animation: fadeUp 1.6s ease forwards;
+            opacity: 0;
         }
-        .btn-gold:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.05);
-        }
-        /* ===== الأقسام ===== */
-        section {
-            padding: 70px 40px;
-        }
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-        .section-title {
+        .hero-stat:nth-child(1) { animation-delay: 0.2s; }
+        .hero-stat:nth-child(2) { animation-delay: 0.4s; }
+        .hero-stat:nth-child(3) { animation-delay: 0.6s; }
+        .hero-stat:nth-child(4) { animation-delay: 0.8s; }
+        .hero-stat .number {
             font-size: 2.2rem;
             font-weight: 800;
-            text-align: center;
-            margin-bottom: 50px;
-            color: var(--dark);
+            color: var(--gold);
         }
-        .section-title span {
-            color: var(--primary);
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
         }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 70px;
-            height: 3px;
-            background: var(--gold);
-            margin: 12px auto 0;
-            border-radius: 5px;
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            animation: bounceDown 2s infinite;
         }
-        .section-bg {
-            background: var(--primary-light);
+        .scroll-indicator i {
+            font-size: 1.2rem;
         }
-        /* ===== بطاقات الأكاديمية ===== */
+        @keyframes bounceDown {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== SECTION BASE ===== */
+        section {
+            padding: 80px 0;
+        }
+        .section-dark {
+            background: var(--dark);
+        }
+        .section-light {
+            background: #0F1F0F;
+        }
+
+        /* ===== ABOUT ===== */
         .about-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         .about-card {
-            background: #FFFFFF;
-            border-radius: 24px;
-            padding: 30px 25px;
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 32px 24px;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0, 115, 63, 0.1);
-            transition: 0.3s;
+            border: 1px solid rgba(0, 115, 63, 0.2);
+            transition: var(--transition);
         }
         .about-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+            transform: translateY(-8px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         .about-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 16px;
         }
         .about-card h3 {
             font-size: 1.3rem;
             margin-bottom: 10px;
-            color: var(--dark);
+            color: #FFFFFF;
         }
         .about-card p {
-            color: var(--gray);
+            color: var(--gray-light);
+            opacity: 0.8;
         }
-        /* ===== الفئات العمرية ===== */
-        .teams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 800px;
+            margin: 40px auto 0;
+            position: relative;
         }
-        .team-card {
-            background: #FFFFFF;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            transition: 0.3s;
-            border: 1px solid rgba(0, 115, 63, 0.08);
+        .timeline::before {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--gold), var(--primary));
         }
-        .team-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding-right: 50px;
+            position: relative;
         }
-        .team-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
+        .timeline-item .year {
+            min-width: 70px;
+            font-weight: 800;
+            color: var(--gold);
+            font-size: 1.1rem;
         }
-        .team-card .info {
-            padding: 18px;
-            text-align: center;
+        .timeline-item .content {
+            background: var(--dark-card);
+            padding: 16px 22px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            flex: 1;
         }
-        .team-card .info h4 {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 5px;
+        .timeline-item .content h4 {
+            color: #FFFFFF;
+            margin-bottom: 4px;
         }
-        .team-card .info p {
-            color: var(--gray);
+        .timeline-item .content p {
+            color: var(--gray-light);
+            opacity: 0.7;
             font-size: 0.9rem;
         }
-        /* ===== المدربون ===== */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 3px solid var(--dark);
+        }
+
+        /* Stats Counters */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .stat-item {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+        }
+        .stat-item .number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+        .stat-item .label {
+            color: var(--gray-light);
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* ===== PROGRAMS ===== */
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        .program-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            transition: var(--transition);
+        }
+        .program-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+        }
+        .program-card .age {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+        .program-card .age-label {
+            font-size: 0.8rem;
+            color: var(--gray-light);
+            opacity: 0.6;
+        }
+        .program-card h4 {
+            margin: 12px 0 8px;
+            color: #FFFFFF;
+        }
+        .program-card p {
+            font-size: 0.85rem;
+            color: var(--gray-light);
+            opacity: 0.7;
+        }
+
+        /* ===== COACHES ===== */
         .coaches-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         .coach-card {
-            background: #FFFFFF;
-            border-radius: 24px;
-            padding: 25px;
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            transition: var(--transition);
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0, 115, 63, 0.08);
-            transition: 0.3s;
         }
         .coach-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+            transform: translateY(-8px);
+            border-color: var(--gold);
+            box-shadow: var(--shadow);
         }
         .coach-card img {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
+            width: 100%;
+            height: 280px;
             object-fit: cover;
-            margin-bottom: 15px;
-            border: 3px solid var(--primary);
         }
-        .coach-card h4 {
+        .coach-card .info {
+            padding: 20px;
+        }
+        .coach-card .info h4 {
             font-size: 1.2rem;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-        .coach-card p {
-            color: var(--gray);
-        }
-        /* ===== جدول التدريبات ===== */
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #FFFFFF;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        }
-        .schedule-table th {
-            background: var(--primary);
             color: #FFFFFF;
-            padding: 15px;
-            text-align: center;
+            margin-bottom: 4px;
         }
-        .schedule-table td {
-            padding: 12px 15px;
-            text-align: center;
-            border-bottom: 1px solid #E8F0E8;
+        .coach-card .info .role {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
         }
-        .schedule-table tr:last-child td {
-            border-bottom: none;
+        .coach-card .info .details {
+            color: var(--gray-light);
+            opacity: 0.7;
+            font-size: 0.85rem;
+            margin-top: 8px;
         }
-        .schedule-table tr:hover {
-            background: var(--primary-light);
+        .coach-card .social {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 12px;
         }
-        /* ===== التسجيلات ===== */
-        .registration-form {
-            max-width: 700px;
-            margin: 0 auto;
-            background: #FFFFFF;
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        }
-        .registration-form input,
-        .registration-form select,
-        .registration-form textarea {
-            width: 100%;
-            padding: 14px 20px;
-            margin-bottom: 15px;
-            border-radius: 60px;
-            border: 1.5px solid #DDE8DD;
-            font-size: 1rem;
+        .coach-card .social a {
+            color: var(--gray-light);
             transition: 0.2s;
         }
-        .registration-form input:focus,
-        .registration-form select:focus,
-        .registration-form textarea:focus {
-            border-color: var(--primary);
-            outline: none;
+        .coach-card .social a:hover {
+            color: var(--gold);
         }
-        .registration-form textarea {
-            border-radius: 30px;
-            min-height: 100px;
+
+        /* ===== FACILITIES ===== */
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
         }
-        /* ===== المباريات الودية ===== */
-        .match-grid {
+        .facility-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            transition: var(--transition);
+        }
+        .facility-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+        }
+        .facility-card i {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+        .facility-card h4 {
+            color: #FFFFFF;
+            margin-bottom: 4px;
+        }
+        .facility-card p {
+            color: var(--gray-light);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+
+        /* ===== GALLERY (Masonry) ===== */
+        .gallery-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .gallery-masonry .item {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-masonry .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        .gallery-masonry .item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-masonry .item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .gallery-masonry .item:hover .overlay {
+            opacity: 1;
+        }
+        .gallery-masonry .item .overlay span {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        /* ===== MATCHES ===== */
+        .matches-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
         .match-card {
-            background: #FFFFFF;
-            border-radius: 24px;
-            padding: 25px;
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(0, 115, 63, 0.15);
             text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            border: 1px dashed var(--primary);
-            min-height: 150px;
+        }
+        .match-card .teams {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 20px;
+            margin: 15px 0;
         }
-        .match-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
+        .match-card .teams .team {
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        .match-card .teams .vs {
+            color: var(--gold);
+            font-weight: 800;
+        }
+        .match-card .date {
+            color: var(--gray-light);
+            opacity: 0.7;
+            font-size: 0.85rem;
+        }
+        .match-card .result {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin: 8px 0;
+        }
+
+        /* ===== NEWS ===== */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .news-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            transition: var(--transition);
+        }
+        .news-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+        }
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .news-card .info {
+            padding: 20px;
+        }
+        .news-card .info .date {
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .news-card .info h4 {
+            color: #FFFFFF;
+            margin: 8px 0;
+        }
+        .news-card .info p {
+            color: var(--gray-light);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-slider {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .testimonial-card {
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            border: 1px solid rgba(0, 115, 63, 0.15);
+            text-align: center;
+        }
+        .testimonial-card .stars {
+            color: var(--gold);
             margin-bottom: 10px;
         }
-        .match-card p {
-            color: var(--gray);
+        .testimonial-card p {
+            color: var(--gray-light);
+            opacity: 0.8;
+            font-style: italic;
         }
-        /* ===== معرض الصور ===== */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .testimonial-card .author {
+            margin-top: 12px;
+            font-weight: 600;
+            color: #FFFFFF;
         }
-        .gallery-item {
-            border-radius: 20px;
-            overflow: hidden;
-            height: 200px;
-            transition: 0.3s;
-            border: 1px solid rgba(0, 115, 63, 0.1);
+        .testimonial-card .author span {
+            color: var(--gray-light);
+            opacity: 0.6;
+            font-weight: 400;
+            font-size: 0.85rem;
         }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.3s;
+
+        /* ===== PARTNERS ===== */
+        .partners-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px 50px;
+            align-items: center;
         }
-        .gallery-item:hover img {
-            transform: scale(1.05);
+        .partners-grid .partner {
+            opacity: 0.5;
+            transition: var(--transition);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--gray-light);
+            letter-spacing: 1px;
         }
-        /* ===== الفيديو ===== */
-        .video-wrapper {
-            max-width: 800px;
+        .partners-grid .partner:hover {
+            opacity: 1;
+        }
+
+        /* ===== REGISTRATION ===== */
+        .registration-wrapper {
+            max-width: 750px;
             margin: 0 auto;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+            background: var(--dark-card);
+            border-radius: var(--radius);
+            padding: 40px;
+            border: 1px solid rgba(0, 115, 63, 0.2);
         }
-        .video-wrapper video {
-            width: 100%;
+        .registration-wrapper .form-group {
+            margin-bottom: 20px;
+        }
+        .registration-wrapper label {
             display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #FFFFFF;
         }
-        /* ===== اتصل بنا ===== */
+        .registration-wrapper input,
+        .registration-wrapper select,
+        .registration-wrapper textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            color: #FFFFFF;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .registration-wrapper input:focus,
+        .registration-wrapper select:focus,
+        .registration-wrapper textarea:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        .registration-wrapper input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ===== CONTACT ===== */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
         }
+        .contact-info p {
+            margin: 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--gray-light);
+        }
+        .contact-info i {
+            color: var(--gold);
+            width: 24px;
+        }
         .contact-form input,
         .contact-form textarea {
             width: 100%;
-            padding: 14px 20px;
-            margin-bottom: 15px;
-            border-radius: 60px;
-            border: 1.5px solid #DDE8DD;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            color: #FFFFFF;
             font-size: 1rem;
-        }
-        .contact-form textarea {
-            border-radius: 30px;
-            min-height: 120px;
-        }
-        .contact-info p {
-            margin: 15px 0;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--gray);
-        }
-        .contact-info i {
-            color: var(--primary);
-            width: 25px;
-        }
-        /* ===== الفوتير ===== */
-        .footer {
-            background: var(--dark);
-            padding: 40px 20px;
-            text-align: center;
-            color: #C8E6C9;
-            border-top: 3px solid var(--primary);
-        }
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .social-links a {
-            color: #C8E6C9;
-            font-size: 1.5rem;
+            margin-bottom: 16px;
             transition: 0.2s;
         }
-        .social-links a:hover {
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--gold);
+            outline: none;
+        }
+        .contact-form textarea {
+            min-height: 120px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0A1A0A;
+            padding: 60px 20px 30px;
+            border-top: 1px solid rgba(0, 115, 63, 0.2);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .footer-col h4 {
+            color: #FFFFFF;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        .footer-col p,
+        .footer-col a {
+            color: var(--gray-light);
+            opacity: 0.7;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .footer-col a:hover {
+            color: var(--gold);
+            opacity: 1;
+        }
+        .footer-social {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .footer-social a {
+            color: var(--gray-light);
+            font-size: 1.4rem;
+            transition: 0.2s;
+        }
+        .footer-social a:hover {
             color: var(--gold);
         }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--gray-light);
+            opacity: 0.5;
+            font-size: 0.85rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
         @media (max-width: 850px) {
-            .navbar { padding: 12px 20px; }
+            .navbar {
+                padding: 12px 20px;
+                background: rgba(13, 26, 13, 0.95);
+                backdrop-filter: blur(18px);
+            }
             .nav-links {
                 display: none;
                 flex-direction: column;
                 width: 100%;
                 text-align: center;
                 padding: 20px 0;
+                gap: 14px;
+                background: rgba(13, 26, 13, 0.98);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                border-bottom: 1px solid rgba(0, 115, 63, 0.2);
             }
-            .nav-links.show { display: flex; }
-            .menu-btn { display: block; }
-            .hero h1 { font-size: 2.2rem; }
-            .contact-grid { grid-template-columns: 1fr; }
-            section { padding: 50px 20px; }
+            .nav-links.show {
+                display: flex;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .registration-wrapper {
+                padding: 24px;
+            }
+            section {
+                padding: 50px 0;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .hero-stats {
+                gap: 12px;
+            }
+            .hero-stat {
+                padding: 12px 18px;
+                min-width: 80px;
+            }
+            .hero-stat .number {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .btn-primary,
+            .btn-gold,
+            .btn-outline {
+                padding: 10px 24px;
+                font-size: 0.85rem;
+            }
+            .hero-buttons {
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- ===== شريط التنقل ===== -->
-<nav class="navbar">
+<!-- ===== HEADER ===== -->
+<header class="navbar" id="navbar">
     <div class="logo">
         <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/b015e2b2e5d128ec6e4b1f14525ca59296dd5a69/1000012096-removebg-preview.png" alt="شعار الأكاديمية">
-        <span>الرائد</span>
+        <span>الرائد <span class="accent">Academy</span></span>
     </div>
     <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
     <ul class="nav-links" id="navLinks">
         <li><a href="#home">الرئيسية</a></li>
-        <li><a href="#about">الأكاديمية</a></li>
-        <li><a href="#teams">الفرق</a></li>
+        <li><a href="#about">عن الأكاديمية</a></li>
+        <li><a href="#programs">البرامج</a></li>
         <li><a href="#coaches">المدربون</a></li>
-        <li><a href="#schedule">جدول التدريبات</a></li>
-        <li><a href="#registration">التسجيلات</a></li>
-        <li><a href="#matches">المباريات الودية</a></li>
+        <li><a href="#players">اللاعبون</a></li>
+        <li><a href="#facilities">المرافق</a></li>
         <li><a href="#gallery">المعرض</a></li>
+        <li><a href="#news">الأخبار</a></li>
+        <li><a href="#registration">التسجيل</a></li>
         <li><a href="#contact">اتصل بنا</a></li>
+        <li>
+            <div class="lang-switch">
+                <button class="active">عربي</button>
+                <button>EN</button>
+            </div>
+        </li>
+        <li><a href="#registration" class="btn-primary" style="padding:8px 24px; font-size:0.85rem;">سجل الآن</a></li>
     </ul>
-</nav>
+</header>
 
-<!-- ===== الهيرو ===== -->
+<!-- ===== HERO ===== -->
 <section id="home" class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1>أكاديمية <span>الرائد</span> لكرة القدم</h1>
-        <p>حيث تُصنع النجوم ويُبنى المستقبل</p>
-        <a href="#registration" class="btn-primary">سجل الآن</a>
-        <a href="#about" class="btn-gold" style="margin-right:15px;">اكتشف الأكاديمية</a>
+        <h1>بناء <span class="highlight">مستقبل</span> كرة القدم</h1>
+        <p>أكاديمية الرائد – حيث تُصنع النجوم وتُكتب الأساطير. نعدّ الجيل القادم من أبطال كرة القدم.</p>
+        <div class="hero-buttons">
+            <a href="#registration" class="btn-primary">سجل الآن</a>
+            <a href="#programs" class="btn-outline">اكتشف البرامج</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="number">+250</div><div class="label">لاعب متدرب</div></div>
+            <div class="hero-stat"><div class="number">+120</div><div class="label">مباراة</div></div>
+            <div class="hero-stat"><div class="number">12</div><div class="label">مدرب محترف</div></div>
+            <div class="hero-stat"><div class="number">8</div><div class="label">بطولة</div></div>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        <span>مرر للأسفل</span>
+        <i class="fas fa-chevron-down"></i>
     </div>
 </section>
 
-<!-- ===== عن الأكاديمية ===== -->
-<section id="about">
+<!-- ===== ABOUT ===== -->
+<section id="about" class="section-dark">
     <div class="container">
         <h2 class="section-title">عن <span>الأكاديمية</span></h2>
+        <p class="section-subtitle">قصة أكاديمية الرائد – رؤية، رسالة، وقيم نبني عليها مستقبل كرة القدم في الجزائر.</p>
         <div class="about-grid">
             <div class="about-card">
                 <i class="fas fa-eye"></i>
                 <h3>رؤيتنا</h3>
-                <p>تخريج جيل من اللاعبين المحترفين القادرين على تمثيل النادي في المحافل الدولية.</p>
+                <p>تخريج جيل من اللاعبين المحترفين القادرين على تمثيل النادي والوطن في أكبر المحافل الدولية.</p>
             </div>
             <div class="about-card">
                 <i class="fas fa-bullhorn"></i>
                 <h3>رسالتنا</h3>
-                <p>توفير بيئة تدريبية عالمية المستوى وتطوير المهارات الفنية والبدنية للاعبين.</p>
+                <p>توفير بيئة تدريبية عالمية المستوى، وتطوير المهارات الفنية والبدنية والنفسية للاعبين من الفئات العمرية الصغيرة.</p>
             </div>
             <div class="about-card">
                 <i class="fas fa-trophy"></i>
-                <h3>أهدافنا</h3>
-                <p>اكتشاف المواهب، تنميتها، وإعدادهم للمنافسة في البطولات الوطنية والدولية.</p>
+                <h3>قيمنا</h3>
+                <p>الانضباط، العمل الجماعي، الاحترام، التميز، والشغف – هذه هي القيم التي نبني عليها كل لاعب.</p>
             </div>
+        </div>
+
+        <!-- Timeline -->
+        <div style="margin-top:60px;">
+            <h3 style="text-align:center; color:var(--gold); font-size:1.8rem; margin-bottom:30px;">رحلتنا</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content"><h4>تأسيس الأكاديمية</h4><p>انطلاقة أكاديمية الرائد بطموح كبير لتكون منارة لكرة القدم الجزائرية.</p></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2020</div>
+                    <div class="content"><h4>أول بطولة وطنية</h4><p>حققنا أول لقب وطني لفئة تحت 13 سنة، وبدأنا نصنع اسمنا.</p></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2022</div>
+                    <div class="content"><h4>توسع المنشآت</h4><p>افتتاح المركب الرياضي الجديد بملاعب معيارية وقاعات تدريب متطورة.</p></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2024</div>
+                    <div class="content"><h4>شراكات دولية</h4><p>إبرام اتفاقيات مع أندية أوروبية لتبادل الخبرات وتطوير اللاعبين.</p></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2025</div>
+                    <div class="content"><h4>الدورة الوطنية الثالثة</h4><p>تنظيم الطبعة الثالثة من الدورة الوطنية لمدارس وأكاديميات كرة القدم.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-item"><div class="number" data-count="350">0</div><div class="label">لاعب تدرب</div></div>
+            <div class="stat-item"><div class="number" data-count="150">0</div><div class="label">مباراة خاضها</div></div>
+            <div class="stat-item"><div class="number" data-count="12">0</div><div class="label">مدرب معتمد</div></div>
+            <div class="stat-item"><div class="number" data-count="8">0</div><div class="label">بطولة فزنا بها</div></div>
         </div>
     </div>
 </section>
 
-<!-- ===== الفئات العمرية ===== -->
-<section id="teams" class="section-bg">
+<!-- ===== PROGRAMS ===== -->
+<section id="programs" class="section-light">
     <div class="container">
-        <h2 class="section-title">فئاتنا <span>العمرية</span></h2>
-        <div class="teams-grid">
-            <!-- فريق تحت 16 -->
-            <div class="team-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/f1cc62258d86575c1485195537f9a67e69e09868/1781876420019.jpg" alt="تحت 16 سنة">
-                <div class="info"><h4>تحت 16 سنة</h4><p>مواليد 2009</p></div>
-            </div>
-            <!-- فريق تحت 13 (الصورة الأولى) -->
-            <div class="team-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/e06a9457975cfd42c616a9ac86776fde9e05dc6c/1781869894374.jpg" alt="تحت 13 سنة">
-                <div class="info"><h4>تحت 13 سنة</h4><p>مواليد 2012</p></div>
-            </div>
-            <!-- فريق تحت 13 (الصورة الثانية) -->
-            <div class="team-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/c952d1e675e8642675795281b572bf3ab933f61f/1781876491766.jpg" alt="تحت 13 سنة">
-                <div class="info"><h4>تحت 13 سنة</h4><p>مواليد 2012</p></div>
-            </div>
-            <!-- فريق تحت 11 -->
-            <div class="team-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/d6545022df84c4e0f9385c1bb028c4c4164a335a/1781876621648.jpg" alt="تحت 11 سنة">
-                <div class="info"><h4>تحت 11 سنة</h4><p>مواليد 2014</p></div>
-            </div>
+        <h2 class="section-title">برامجنا <span>التدريبية</span></h2>
+        <p class="section-subtitle">نقدم برامج تدريبية متكاملة لجميع الفئات العمرية، من المبتدئين إلى النخبة.</p>
+        <div class="programs-grid">
+            <div class="program-card"><div class="age">U6</div><div class="age-label">6-7 سنوات</div><h4>البداية</h4><p>تعلم أساسيات كرة القدم عبر الألعاب والتمارين التفاعلية.</p></div>
+            <div class="program-card"><div class="age">U8</div><div class="age-label">8-9 سنوات</div><h4>التطوير الأساسي</h4><p>تحسين المهارات الفردية والتحكم بالكرة واللعب الجماعي.</p></div>
+            <div class="program-card"><div class="age">U10</div><div class="age-label">10-11 سنوات</div><h4>التقنية المتقدمة</h4><p>تعلم المهارات المتقدمة والتمرير والاستلام والتسديد.</p></div>
+            <div class="program-card"><div class="age">U12</div><div class="age-label">12-13 سنوات</div><h4>التكتيك</h4><p>فهم الخطط التكتيكية، الحركة داخل الملعب، والوعي المكاني.</p></div>
+            <div class="program-card"><div class="age">U14</div><div class="age-label">14-15 سنوات</div><h4>الإعداد البدني</h4><p>تطوير اللياقة البدنية، القوة، السرعة، والتحمل.</p></div>
+            <div class="program-card"><div class="age">U16</div><div class="age-label">16-17 سنوات</div><h4>النخبة</h4><p>تدريب مكثف للمنافسة، تطوير ذهني وتكتيكي عالي المستوى.</p></div>
+            <div class="program-card"><div class="age">U18</div><div class="age-label">18-19 سنوات</div><h4>الاحتراف</h4><p>تحضير اللاعبين للاحتراف، مباريات ودية، واكتشاف المواهب.</p></div>
+            <div class="program-card"><div class="age">🎯</div><div class="age-label">تطوير فردي</div><h4>خطة تطوير شخصية</h4><p>خطط تدريب فردية حسب إمكانيات كل لاعب وموقعه.</p></div>
         </div>
     </div>
 </section>
 
-<!-- ===== الجهاز الفني ===== -->
-<section id="coaches">
+<!-- ===== COACHES ===== -->
+<section id="coaches" class="section-dark">
     <div class="container">
         <h2 class="section-title">الجهاز <span>الفني</span></h2>
+        <p class="section-subtitle">نخبة من المدربين المعتمدين ذوي الخبرة العالية في تدريب الفئات العمرية.</p>
         <div class="coaches-grid">
             <div class="coach-card">
                 <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1df27a516344950ef0e2827829f4c77d7e759cac/file_000000007fd871f4b2e095dad086c8e3.png" alt="المدير الفني">
-                <h4>المدير الفني</h4>
-                <p>خبرة 15 سنة في التدريب</p>
+                <div class="info">
+                    <h4>المدير الفني</h4>
+                    <div class="role">مدرب وطني معتمد – UEFA B</div>
+                    <div class="details">خبرة 15 سنة في تدريب الفئات العمرية، درب أكثر من 200 لاعب.</div>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
             </div>
             <div class="coach-card">
-                <img src="https://i.pravatar.cc/150?img=12" alt="مدرب">
-                <h4>مدرب اللياقة</h4>
-                <p>متخصص في الإعداد البدني</p>
+                <img src="https://i.pravatar.cc/400?img=12" alt="مدرب اللياقة">
+                <div class="info">
+                    <h4>مدرب اللياقة البدنية</h4>
+                    <div class="role">متخصص في الإعداد البدني</div>
+                    <div class="details">خبرة 10 سنوات في مجال الإعداد البدني لكرة القدم.</div>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
             <div class="coach-card">
-                <img src="https://i.pravatar.cc/150?img=13" alt="مدرب">
-                <h4>مدرب الحراس</h4>
-                <p>مدرب معتمد</p>
+                <img src="https://i.pravatar.cc/400?img=13" alt="مدرب الحراس">
+                <div class="info">
+                    <h4>مدرب حراس المرمى</h4>
+                    <div class="role">مدرب حراس معتمد</div>
+                    <div class="details">خبرة 8 سنوات في تدريب حراس المرمى في أندية محترفة.</div>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== جدول التدريبات الأسبوعي (فارغ) ===== -->
-<section id="schedule" class="section-bg">
+<!-- ===== PLAYERS ===== -->
+<section id="players" class="section-light">
     <div class="container">
-        <h2 class="section-title">جدول <span>التدريبات</span></h2>
-        <p style="text-align:center; color:var(--gray); margin-bottom:30px;">جميع الفئات العمرية</p>
-        <table class="schedule-table">
-            <thead>
-                <tr>
-                    <th>الفئة العمرية</th>
-                    <th>السبت</th>
-                    <th>الأحد</th>
-                    <th>الثلاثاء</th>
-                    <th>الخميس</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>تحت 16 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>تحت 15 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>تحت 14 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>تحت 13 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>تحت 12 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-                <tr><td>تحت 11 سنة</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-            </tbody>
-        </table>
-        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 سيتم تحديد التوقيتات فور بداية الموسم التدريبي</p>
-    </div>
-</section>
-
-<!-- ===== التسجيلات ===== -->
-<section id="registration">
-    <div class="container">
-        <h2 class="section-title">التسجيلات <span>المفتوحة</span></h2>
-        <div class="registration-form">
-            <h3 style="text-align:center; margin-bottom:20px; color:var(--primary);">سجل ابنك الآن</h3>
-            <input type="text" placeholder="الاسم الكامل للاعب">
-            <input type="date" placeholder="تاريخ الميلاد">
-            <select>
-                <option value="">الفئة العمرية</option>
-                <option>تحت 11 سنة</option>
-                <option>تحت 12 سنة</option>
-                <option>تحت 13 سنة</option>
-                <option>تحت 14 سنة</option>
-                <option>تحت 15 سنة</option>
-                <option>تحت 16 سنة</option>
-            </select>
-            <input type="text" placeholder="رقم الهاتف">
-            <input type="email" placeholder="البريد الإلكتروني">
-            <textarea placeholder="ملاحظات إضافية (إن وجدت)"></textarea>
-            <button class="btn-primary" style="width:100%;">إرسال طلب التسجيل</button>
-        </div>
-    </div>
-</section>
-
-<!-- ===== المباريات الودية (فارغة) ===== -->
-<section id="matches" class="section-bg">
-    <div class="container">
-        <h2 class="section-title">المباريات <span>الودية</span></h2>
-        <div class="match-grid">
-            <div class="match-card">
-                <i class="fas fa-calendar-alt"></i>
-                <p>سيتم الإعلان عن المباريات الودية قريباً</p>
+        <h2 class="section-title">لاعبونا <span>الموهوبون</span></h2>
+        <p class="section-subtitle">نماذج من لاعبي أكاديمية الرائد الذين يبشرون بمستقبل كبير.</p>
+        <div class="coaches-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="coach-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg" alt="لاعب">
+                <div class="info"><h4>ياسين بن عمار</h4><div class="role">جناح أيسر – U16</div></div>
             </div>
-            <div class="match-card">
-                <i class="fas fa-futbol"></i>
-                <p>ترقبوا مواعيد المباريات القادمة</p>
+            <div class="coach-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg" alt="لاعب">
+                <div class="info"><h4>أحمد زروقي</h4><div class="role">وسط ميدان – U16</div></div>
             </div>
-            <div class="match-card">
-                <i class="fas fa-trophy"></i>
-                <p>استعداداً للموسم الجديد</p>
+            <div class="coach-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg" alt="لاعب">
+                <div class="info"><h4>سفيان بن سالم</h4><div class="role">مهاجم – U15</div></div>
+            </div>
+            <div class="coach-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg" alt="لاعب">
+                <div class="info"><h4>مهدي شريف</h4><div class="role">ظهير أيمن – U14</div></div>
+            </div>
+            <div class="coach-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg" alt="لاعب">
+                <div class="info"><h4>محمد لعروسي</h4><div class="role">قلب دفاع – U13</div></div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== معرض الصور ===== -->
-<section id="gallery">
+<!-- ===== FACILITIES ===== -->
+<section id="facilities" class="section-dark">
+    <div class="container">
+        <h2 class="section-title">مرافق <span>الأكاديمية</span></h2>
+        <p class="section-subtitle">منشآت رياضية متطورة على أعلى مستوى لتوفير بيئة تدريبية مثالية.</p>
+        <div class="facilities-grid">
+            <div class="facility-card"><i class="fas fa-futbol"></i><h4>ملاعب كرة القدم</h4><p>3 ملاعب معيارية عشب طبيعي وصناعي.</p></div>
+            <div class="facility-card"><i class="fas fa-dumbbell"></i><h4>صالة لياقة بدنية</h4><p>مجهزة بأحدث أجهزة التمارين والتقوية العضلية.</p></div>
+            <div class="facility-card"><i class="fas fa-bed"></i><h4>غرف الاستشفاء</h4><p>مرافق استشفاء متكاملة للاعبين بعد التدريبات.</p></div>
+            <div class="facility-card"><i class="fas fa-heartbeat"></i><h4>غرفة طبية</h4><p>طاقم طبي متخصص للإسعافات الأولية والعلاج الطبيعي.</p></div>
+            <div class="facility-card"><i class="fas fa-video"></i><h4>غرفة تحليل الفيديو</h4><p>تحليل أداء اللاعبين والمباريات بتقنيات حديثة.</p></div>
+            <div class="facility-card"><i class="fas fa-tshirt"></i><h4>غرف تبديل الملابس</h4><p>غرف مجهزة على أعلى مستوى للاعبين والطاقم الفني.</p></div>
+        </div>
+        <div style="text-align:center; margin-top:40px;">
+            <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/3329dc263b5679c36a11417e7720fd58b1bd4120/1781875639267.jpg" alt="الملعب" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow);">
+        </div>
+    </div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section id="gallery" class="section-light">
     <div class="container">
         <h2 class="section-title">معرض <span>الصور</span></h2>
-        <div class="gallery-grid">
-            <div class="gallery-item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg" alt="تدريبات"></div>
-            <div class="gallery-item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg" alt="تدريبات"></div>
-            <div class="gallery-item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg" alt="تدريبات"></div>
-            <div class="gallery-item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/3329dc263b5679c36a11417e7720fd58b1bd4120/1781875639267.jpg" alt="الملعب"></div>
+        <p class="section-subtitle">لقطات من التدريبات، المباريات، والمناسبات التي تعكس روح الأكاديمية.</p>
+        <div class="gallery-masonry">
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg" alt="تدريب"><div class="overlay"><span>تدريبات الفريق الأول</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg" alt="تدريب"><div class="overlay"><span>تمارين تكتيكية</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg" alt="تدريب"><div class="overlay"><span>إعداد بدني</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/e06a9457975cfd42c616a9ac86776fde9e05dc6c/1781869894374.jpg" alt="فريق"><div class="overlay"><span>فريق تحت 13 سنة</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/f1cc62258d86575c1485195537f9a67e69e09868/1781876420019.jpg" alt="فريق"><div class="overlay"><span>فريق تحت 16 سنة</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/c952d1e675e8642675795281b572bf3ab933f61f/1781876491766.jpg" alt="فريق"><div class="overlay"><span>فريق تحت 13 سنة</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/d6545022df84c4e0f9385c1bb028c4c4164a335a/1781876621648.jpg" alt="فريق"><div class="overlay"><span>فريق تحت 11 سنة</span></div></div>
+            <div class="item"><img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/3329dc263b5679c36a11417e7720fd58b1bd4120/1781875639267.jpg" alt="ملعب"><div class="overlay"><span>ملعب الأكاديمية</span></div></div>
         </div>
     </div>
 </section>
 
-<!-- ===== الفيديو التعريفي ===== -->
-<section id="video" class="section-bg">
+<!-- ===== MATCHES ===== -->
+<section id="matches" class="section-dark">
     <div class="container">
-        <h2 class="section-title">فيديو <span>تعريفي</span></h2>
-        <div class="video-wrapper">
-            <video controls poster="https://github.com/darkonovic51-hash/Academy-al-raed/raw/f77a929671ec52ee0f4d5f05fcf3894179e32bdc/1781868916948.jpg">
-                <source src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1809a2d05a587701fd20307a2da2b3dabdf0d528/_%D8%B1%D8%B3%D9%85%D9%8A%D8%A7%20...%D8%A7%D9%84%D8%B7%D8%A8%D8%B9%D8%A9%20%D8%A7%D9%84%D8%AB%D8%A7%D9%84%D8%AB%D9%87%20%D9%84%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%88%D8%B7%D9%86%D9%8A%D8%A9%20%D9%84%D9%85%D8%AF%D8%A7%D8%B1%D8%B3%20%D9%88%D8%A3%D9%83%D8%A7%D8%AF%D9%8A%D9%85%D9%8A%D8%A7%D8%AA%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85...%20%F0%9F%93%A2%20%D8%A5%D8%B9%D9%84%D8%A7%D9%86%20%D8%B1%D8%B3%D9%85%D9%8A_(720P_.mp4" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو.
-            </video>
+        <h2 class="section-title">المباريات <span>القادمة</span></h2>
+        <p class="section-subtitle">تابع جدول مباريات فرق الأكاديمية ونتائجها.</p>
+        <div class="matches-grid">
+            <div class="match-card">
+                <div class="date">📅 25 يونيو 2026 – 16:00</div>
+                <div class="teams"><span class="team">الرائد U16</span><span class="vs">VS</span><span class="team">اتحاد العاصمة U16</span></div>
+                <div class="result">— : —</div>
+                <span style="color:var(--gray-light); opacity:0.6; font-size:0.8rem;">مباراة ودية</span>
+            </div>
+            <div class="match-card">
+                <div class="date">📅 28 يونيو 2026 – 14:30</div>
+                <div class="teams"><span class="team">الرائد U14</span><span class="vs">VS</span><span class="team">شباب قسنطينة U14</span></div>
+                <div class="result">— : —</div>
+                <span style="color:var(--gray-light); opacity:0.6; font-size:0.8rem;">دورة زرالدة</span>
+            </div>
+            <div class="match-card">
+                <div class="date">📅 2 يوليو 2026 – 10:00</div>
+                <div class="teams"><span class="team">الرائد U13</span><span class="vs">VS</span><span class="team">مولودية الجزائر U13</span></div>
+                <div class="result">— : —</div>
+                <span style="color:var(--gray-light); opacity:0.6; font-size:0.8rem;">مباراة ودية</span>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- ===== اتصل بنا ===== -->
-<section id="contact">
+<!-- ===== NEWS ===== -->
+<section id="news" class="section-light">
+    <div class="container">
+        <h2 class="section-title">آخر <span>الأخبار</span></h2>
+        <p class="section-subtitle">كل ما هو جديد عن أكاديمية الرائد من إنجازات وفعاليات.</p>
+        <div class="news-grid">
+            <div class="news-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1809a2d05a587701fd20307a2da2b3dabdf0d528/_%D8%B1%D8%B3%D9%85%D9%8A%D8%A7%20...%D8%A7%D9%84%D8%B7%D8%A8%D8%B9%D8%A9%20%D8%A7%D9%84%D8%AB%D8%A7%D9%84%D8%AB%D9%87%20%D9%84%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20%D8%A7%D9%84%D9%88%D8%B7%D9%86%D9%8A%D8%A9%20%D9%84%D9%85%D8%AF%D8%A7%D8%B1%D8%B3%20%D9%88%D8%A3%D9%83%D8%A7%D8%AF%D9%8A%D9%85%D9%8A%D8%A7%D8%AA%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85...%20%F0%9F%93%A2%20%D8%A5%D8%B9%D9%84%D8%A7%D9%86%20%D8%B1%D8%B3%D9%85%D9%8A_(720P_.mp4" alt="خبر" style="height:200px; object-fit:cover; width:100%;">
+                <div class="info">
+                    <div class="date">19 يونيو 2026</div>
+                    <h4>الطبعة الثالثة للدورة الوطنية</h4>
+                    <p>إعلان رسمي عن انطلاق الدورة الوطنية الثالثة لمدارس وأكاديميات كرة القدم.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg" alt="خبر" style="height:200px; object-fit:cover; width:100%;">
+                <div class="info">
+                    <div class="date">15 يونيو 2026</div>
+                    <h4>تأهل فريق تحت 16 إلى النهائي</h4>
+                    <p>فريق تحت 16 سنة يتأهل إلى نهائي البطولة الوطنية بعد أداء مميز.</p>
+                </div>
+            </div>
+            <div class="news-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/f77a929671ec52ee0f4d5f05fcf3894179e32bdc/1781868916948.jpg" alt="خبر" style="height:200px; object-fit:cover; width:100%;">
+                <div class="info">
+                    <div class="date">10 يونيو 2026</div>
+                    <h4>افتتاح التسجيلات للموسم الجديد</h4>
+                    <p>تم فتح باب التسجيل للفئات العمرية من U6 إلى U18 للموسم التدريبي 2026/2027.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section id="testimonials" class="section-dark">
+    <div class="container">
+        <h2 class="section-title">آراء <span>الأولياء</span></h2>
+        <p class="section-subtitle">ما يقوله أولياء أمور اللاعبين عن تجربتهم مع أكاديمية الرائد.</p>
+        <div class="testimonials-slider">
+            <div class="testimonial-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"أكاديمية الرائد غيرت شخصية ابني تماماً. أصبح أكثر انضباطاً وثقة، وأداؤه في المدرسة تحسن أيضاً."</p>
+                <div class="author">محمد بن عمار <span>ولي أمر لاعب تحت 14</span></div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"المدربون محترفون جدا، والبيئة آمنة ومشجعة. ابني ينتظر كل تدريب بشغف."</p>
+                <div class="author">فاطمة زروقي <span>ولي أمر لاعب تحت 12</span></div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"رأيت تطوراً ملحوظاً في مهارات ابني التقنية والبدنية. الأكاديمية تقدم برنامجاً متكاملاً حقاً."</p>
+                <div class="author">علي بن سالم <span>ولي أمر لاعب تحت 16</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PARTNERS ===== -->
+<section id="partners" class="section-light">
+    <div class="container">
+        <h2 class="section-title">شركاؤنا</h2>
+        <div class="partners-grid">
+            <div class="partner">⚽ الاتحاد الجزائري</div>
+            <div class="partner">🏆 نادي الرائد</div>
+            <div class="partner">🌍 FIFA</div>
+            <div class="partner">🏅 وزارة الرياضة</div>
+            <div class="partner">📺 قناة الرياضية</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== REGISTRATION ===== -->
+<section id="registration" class="section-dark">
+    <div class="container">
+        <h2 class="section-title">سجل <span>الآن</span></h2>
+        <p class="section-subtitle">انضم إلى أكاديمية الرائد وكن جزءاً من مستقبل كرة القدم الجزائرية.</p>
+        <div class="registration-wrapper">
+            <form id="registrationForm">
+                <div class="form-group"><label>الاسم الكامل للاعب</label><input type="text" placeholder="مثال: أحمد بن سليمان" required></div>
+                <div class="form-group"><label>تاريخ الميلاد</label><input type="date" required></div>
+                <div class="form-group"><label>الفئة العمرية</label>
+                    <select><option>اختر الفئة</option><option>U6 (6-7 سنوات)</option><option>U8 (8-9 سنوات)</option><option>U10 (10-11 سنوات)</option><option>U12 (12-13 سنوات)</option><option>U14 (14-15 سنوات)</option><option>U16 (16-17 سنوات)</option><option>U18 (18-19 سنوات)</option></select>
+                </div>
+                <div class="form-group"><label>رقم الهاتف</label><input type="tel" placeholder="05XXXXXXXX"></div>
+                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" placeholder="example@email.com"></div>
+                <div class="form-group"><label>ملاحظات إضافية</label><textarea placeholder="أي معلومات إضافية تود إخبارنا بها..."></textarea></div>
+                <button type="submit" class="btn-primary" style="width:100%; padding:16px;">إرسال طلب التسجيل</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="section-light">
     <div class="container">
         <h2 class="section-title">تواصل <span>معنا</span></h2>
+        <p class="section-subtitle">نحن هنا للإجابة على استفساراتكم. تواصلوا معنا عبر أي من القنوات التالية.</p>
         <div class="contact-grid">
+            <div class="contact-info">
+                <h3 style="color:#FFFFFF; margin-bottom:20px;">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> المركب الرياضي، زرالدة، الجزائر</p>
+                <p><i class="fas fa-phone-alt"></i> 07.71.88.47.45</p>
+                <p><i class="fas fa-envelope"></i> info@raedacademy.dz</p>
+                <p><i class="fab fa-whatsapp"></i> 07.71.88.47.45</p>
+                <p><i class="fas fa-clock"></i> السبت – الخميس: 14:00 – 19:00</p>
+                <div style="display:flex; gap:16px; margin-top:20px;">
+                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
+                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-youtube"></i></a>
+                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
             <div class="contact-form">
                 <input type="text" placeholder="الاسم الكامل">
                 <input type="email" placeholder="البريد الإلكتروني">
                 <input type="tel" placeholder="رقم الهاتف">
-                <textarea placeholder="رسالتك"></textarea>
-                <button class="btn-primary">إرسال</button>
-            </div>
-            <div class="contact-info">
-                <p><i class="fas fa-map-marker-alt"></i> المركب الرياضي، زرالدة، الجزائر</p>
-                <p><i class="fas fa-phone-alt"></i> 07.71.88.47.45</p>
-                <p><i class="fas fa-envelope"></i> info@raedacademy.dz</p>
-                <p><i class="fas fa-clock"></i> السبت - الخميس: 14:00 - 19:00</p>
+                <textarea placeholder="رسالتك..."></textarea>
+                <button class="btn-primary">إرسال الرسالة</button>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== الفوتير ===== -->
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
-    <div class="social-links">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/b015e2b2e5d128ec6e4b1f14525ca59296dd5a69/1000012096-removebg-preview.png" alt="شعار" style="height:45px; width:auto;">
+                <span style="font-size:1.4rem; font-weight:800; color:#FFFFFF;">الرائد <span style="color:var(--gold);">Academy</span></span>
+            </div>
+            <p style="opacity:0.6;">أكاديمية كرة القدم الرائدة في الجزائر، نصنع النجوم ونبني المستقبل.</p>
+        </div>
+        <div class="footer-col">
+            <h4>روابط سريعة</h4>
+            <a href="#home">الرئيسية</a>
+            <a href="#about">عن الأكاديمية</a>
+            <a href="#programs">البرامج</a>
+            <a href="#coaches">المدربون</a>
+            <a href="#registration">التسجيل</a>
+        </div>
+        <div class="footer-col">
+            <h4>تواصل معنا</h4>
+            <p>📞 07.71.88.47.45</p>
+            <p>📧 info@raedacademy.dz</p>
+            <p>📍 زرالدة، الجزائر</p>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
     </div>
-    <p>© 2026 أكاديمية الرائد R.F.A | جميع الحقوق محفوظة</p>
+    <div class="footer-bottom">
+        &copy; 2026 أكاديمية الرائد R.F.A – جميع الحقوق محفوظة
+    </div>
 </footer>
 
+<!-- ===== SCRIPTS ===== -->
 <script>
+    // ===== Navbar scroll effect =====
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // ===== Mobile menu toggle =====
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
-    menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+    });
+
+    // ===== Animated Counters =====
+    const counters = document.querySelectorAll('.stat-item .number');
+    let countersAnimated = false;
+
+    function animateCounters() {
+        if (countersAnimated) return;
+        countersAnimated = true;
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-count'));
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    counter.innerText = target;
+                    clearInterval(timer);
+                } else {
+                    counter.innerText = Math.floor(current);
+                }
+            }, 25);
+        });
+    }
+
+    // ===== Intersection Observer for counters =====
+    const statsSection = document.querySelector('.stats-grid');
+    if (statsSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                }
+            });
+        }, { threshold: 0.3 });
+        observer.observe(statsSection);
+    }
+
+    // ===== Smooth scroll for anchor links =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (navLinks.classList.contains('show')) {
+                    navLinks.classList.remove('show');
+                }
+            }
+        });
+    });
+
+    // ===== Registration form submission =====
+    document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('✅ تم استلام طلب التسجيل بنجاح! سيتم التواصل معكم قريباً.');
+        this.reset();
+    });
+
+    // ===== Language switcher (placeholder) =====
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // Placeholder for actual language switching
+        });
+    });
 </script>
 </body>
 </html>
