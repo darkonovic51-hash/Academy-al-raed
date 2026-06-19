@@ -285,7 +285,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/ee1b17a54382b2507cbaa58a772b49b427a97bb2/1781876621648.jpg') no-repeat center center/cover;
+            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/d1c8e862b48a4591f25ca1b4710dd78548e8f6cf/1781869815626.jpg') no-repeat center center/cover;
             z-index: -2;
             transform: scale(1.05);
             animation: heroZoom 20s infinite alternate ease-in-out;
@@ -614,38 +614,50 @@
             font-weight: 600;
         }
 
-        /* ===== SCHEDULE ===== */
+        /* ===== SCHEDULE (تصميم مميز وفارغ) ===== */
         .schedule-wrapper {
             background: var(--dark-card);
             border-radius: var(--radius);
             padding: 30px;
             border: 1px solid rgba(0, 115, 63, 0.15);
             overflow-x: auto;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
+        .schedule-empty {
+            text-align: center;
+            padding: 40px 20px;
         }
-        .schedule-table th {
-            background: var(--primary);
+        .schedule-empty i {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            opacity: 0.4;
+        }
+        .schedule-empty h3 {
+            font-size: 1.8rem;
             color: #FFFFFF;
-            padding: 14px;
-            text-align: center;
-            font-weight: 700;
+            margin-bottom: 10px;
         }
-        .schedule-table td {
-            padding: 12px 14px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .schedule-table tr:hover td {
-            background: rgba(0, 115, 63, 0.1);
-        }
-        .schedule-table .empty {
-            color: var(--gray);
+        .schedule-empty p {
+            color: var(--gray-light);
             opacity: 0.6;
-            font-style: italic;
+            font-size: 1rem;
+        }
+        /* تزيين الجدول الفارغ بخطوط زخرفية */
+        .schedule-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px dashed rgba(212, 160, 23, 0.2);
+            border-radius: 16px;
+            pointer-events: none;
         }
 
         /* ===== MATCHES (فارغة) ===== */
@@ -679,7 +691,7 @@
             opacity: 0.6;
         }
 
-        /* ===== GALLERY (مع تأثيرات حركية) ===== */
+        /* ===== GALLERY ===== */
         .gallery-masonry {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1266,27 +1278,19 @@
     </div>
 </section>
 
-<!-- ===== SCHEDULE ===== -->
+<!-- ===== SCHEDULE (جدول تدريبات فارغ بتصميم مميز) ===== -->
 <section id="schedule" class="section-light">
     <div class="container">
         <h2 class="section-title">جدول <span>التدريبات</span></h2>
-        <p class="section-subtitle">جدول أسبوعي منظم لجميع الفئات العمرية – سيتم تحديثه قريباً.</p>
+        <p class="section-subtitle">جدول أسبوعي منظم لجميع الفئات العمرية.</p>
         <div class="schedule-wrapper">
-            <table class="schedule-table">
-                <thead>
-                    <tr><th>الفئة العمرية</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>تحت 16 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                    <tr><td>تحت 15 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                    <tr><td>تحت 14 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                    <tr><td>تحت 13 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                    <tr><td>تحت 12 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                    <tr><td>تحت 11 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
-                </tbody>
-            </table>
+            <div class="schedule-empty">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>لا توجد تدريبات مجدولة حالياً</h3>
+                <p>سيتم الإعلان عن الجدول الزمني للتدريبات فور بداية الموسم.</p>
+            </div>
         </div>
-        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 سيتم تحديد التوقيتات فور بداية الموسم التدريبي.</p>
+        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 تابعونا لتحديثات الجدول.</p>
     </div>
 </section>
 
@@ -1433,7 +1437,6 @@
         { selector: '.news-card', container: '#newsGrid' }
     ];
 
-    // إضافة lazy loading للصور لتحسين الأداء
     document.querySelectorAll('.gallery-masonry .item img, .player-card img, .news-card img').forEach(img => {
         img.loading = 'lazy';
         img.decoding = 'async';
@@ -1450,7 +1453,6 @@
         rootMargin: '0px 0px -50px 0px'
     });
 
-    // مراقبة جميع العناصر القابلة للظهور
     document.querySelectorAll('.about-card, .player-card, .gallery-masonry .item, .coach-single, .matches-empty, .registration-wrapper, .news-card').forEach(el => {
         observer.observe(el);
     });
