@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>أكاديمية الرائد | RAED Academy – مستقبل كرة القدم</title>
+    <title>أكاديمية الرائد | RAED Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -26,18 +26,12 @@
             --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             --radius: 24px;
             --transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
+            --color-1: #0D1A0D;
+            --color-2: #1A3A22;
+            --color-3: #0F1F0F;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', 'Cairo', sans-serif;
             background: var(--dark);
@@ -45,23 +39,11 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
 
         /* ===== GLASSMORPHISM ===== */
         .glass {
@@ -99,9 +81,7 @@
             opacity: 0;
             transition: 0.4s;
         }
-        .btn-primary:hover::after {
-            opacity: 1;
-        }
+        .btn-primary:hover::after { opacity: 1; }
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 30px var(--primary-glow);
@@ -212,9 +192,7 @@
             color: #FFFFFF;
             letter-spacing: -0.5px;
         }
-        .logo span .accent {
-            color: var(--gold);
-        }
+        .logo span .accent { color: var(--gold); }
 
         .nav-links {
             display: flex;
@@ -257,9 +235,7 @@
             background: var(--primary);
             color: #FFFFFF;
         }
-        .lang-switch button:hover {
-            color: #FFFFFF;
-        }
+        .lang-switch button:hover { color: #FFFFFF; }
 
         .menu-btn {
             display: none;
@@ -268,7 +244,7 @@
             cursor: pointer;
         }
 
-        /* ===== HERO (بخلفية جديدة وتأثيرات ديناميكية) ===== */
+        /* ===== HERO (Slideshow Background) ===== */
         .hero {
             min-height: 100vh;
             position: relative;
@@ -279,21 +255,32 @@
             padding: 100px 20px 60px;
             overflow: hidden;
         }
-        .hero-bg {
+        .hero-slideshow {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/d1c8e862b48a4591f25ca1b4710dd78548e8f6cf/1781869815626.jpg') no-repeat center center/cover;
             z-index: -2;
-            transform: scale(1.05);
-            animation: heroZoom 20s infinite alternate ease-in-out;
         }
-        @keyframes heroZoom {
-            0% { transform: scale(1.05); }
-            100% { transform: scale(1.15); }
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
+        .hero-slide.active { opacity: 1; }
+        .hero-slide:nth-child(1) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/d1c8e862b48a4591f25ca1b4710dd78548e8f6cf/1781869815626.jpg'); }
+        .hero-slide:nth-child(2) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg'); }
+        .hero-slide:nth-child(3) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/e06a9457975cfd42c616a9ac86776fde9e05dc6c/1781869894374.jpg'); }
+        .hero-slide:nth-child(4) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg'); }
+        .hero-slide:nth-child(5) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/f1cc62258d86575c1485195537f9a67e69e09868/1781876420019.jpg'); }
+
         .hero-overlay {
             position: absolute;
             top: 0;
@@ -319,13 +306,14 @@
             z-index: 2;
         }
 
-        /* تأثير الكتابة الديناميكي للعناوين */
+        /* نص واضح على الخلفية */
         .hero h1 {
             font-size: 4.2rem;
             font-weight: 900;
             line-height: 1.1;
             margin-bottom: 20px;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+            text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+            color: #FFFFFF;
             min-height: 5rem;
         }
         .hero h1 .highlight {
@@ -333,6 +321,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            text-shadow: none;
         }
         .hero h1 .dynamic-text {
             display: inline-block;
@@ -348,11 +337,12 @@
 
         .hero p {
             font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.95);
             margin-bottom: 35px;
             max-width: 650px;
             margin-left: auto;
             margin-right: auto;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
             opacity: 0;
             animation: fadeInUp 1s ease forwards 1.5s;
         }
@@ -418,9 +408,7 @@
             font-size: 0.7rem;
             animation: bounceDown 2s infinite;
         }
-        .scroll-indicator i {
-            font-size: 1.2rem;
-        }
+        .scroll-indicator i { font-size: 1.2rem; }
         @keyframes bounceDown {
             0%, 100% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(8px); }
@@ -451,16 +439,30 @@
             pointer-events: none;
         }
 
-        /* ===== SECTION BASE ===== */
-        section {
-            padding: 80px 0;
+        /* ===== فاصل الألوان بين الأقسام (Color Dividers) ===== */
+        .section-divider {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--gold), var(--primary));
+            position: relative;
         }
-        .section-dark {
+        .section-divider::after {
+            content: '⚽';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--gold);
+            font-size: 1.2rem;
             background: var(--dark);
+            padding: 0 20px;
         }
-        .section-light {
-            background: #0F1F0F;
-        }
+
+        /* ===== SECTION BASE ===== */
+        section { padding: 80px 0; }
+        .section-dark { background: var(--color-1); }
+        .section-light { background: var(--color-2); }
+        .section-mid { background: var(--color-3); }
 
         /* ===== ABOUT ===== */
         .about-grid {
@@ -478,32 +480,17 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .about-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        .about-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
         .about-card:hover {
             transform: translateY(-8px);
             border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
         }
-        .about-card i {
-            font-size: 2.8rem;
-            color: var(--gold);
-            margin-bottom: 16px;
-        }
-        .about-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            color: #FFFFFF;
-        }
-        .about-card p {
-            color: var(--gray-light);
-            opacity: 0.8;
-        }
+        .about-card i { font-size: 2.8rem; color: var(--gold); margin-bottom: 16px; }
+        .about-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #FFFFFF; }
+        .about-card p { color: var(--gray-light); opacity: 0.8; }
 
-        /* ===== COACHES (مدير فني فقط) ===== */
+        /* ===== COACHES ===== */
         .coach-single {
             max-width: 400px;
             margin: 0 auto;
@@ -516,11 +503,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .coach-single.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        .coach-single.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
         .coach-single:hover {
             transform: translateY(-8px);
             border-color: var(--gold);
@@ -531,40 +514,15 @@
             height: 400px;
             object-fit: cover;
         }
-        .coach-single .info {
-            padding: 24px;
-        }
-        .coach-single .info h4 {
-            font-size: 1.4rem;
-            color: #FFFFFF;
-            margin-bottom: 4px;
-        }
-        .coach-single .info .role {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        .coach-single .info .details {
-            color: var(--gray-light);
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
-        .coach-single .social {
-            display: flex;
-            justify-content: center;
-            gap: 14px;
-            margin-top: 12px;
-        }
-        .coach-single .social a {
-            color: var(--gray-light);
-            transition: 0.2s;
-        }
-        .coach-single .social a:hover {
-            color: var(--gold);
-        }
+        .coach-single .info { padding: 24px; }
+        .coach-single .info h4 { font-size: 1.4rem; color: #FFFFFF; margin-bottom: 4px; }
+        .coach-single .info .role { color: var(--gold); font-weight: 600; font-size: 1rem; }
+        .coach-single .info .details { color: var(--gray-light); opacity: 0.7; font-size: 0.9rem; margin-top: 8px; }
+        .coach-single .social { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+        .coach-single .social a { color: var(--gray-light); transition: 0.2s; }
+        .coach-single .social a:hover { color: var(--gold); }
 
-        /* ===== PLAYERS (بطاقات متحركة) ===== */
+        /* ===== PLAYERS ===== */
         .players-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -582,15 +540,11 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .player-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        .player-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
         .player-card:hover {
             transform: translateY(-8px) rotateY(2deg) rotateX(2deg);
             border-color: var(--gold);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: var(--shadow);
         }
         .player-card img {
             width: 100%;
@@ -598,69 +552,40 @@
             object-fit: cover;
             transition: transform 0.6s ease;
         }
-        .player-card:hover img {
-            transform: scale(1.05);
-        }
-        .player-card .info {
-            padding: 16px;
-        }
-        .player-card .info h4 {
-            font-size: 1.1rem;
-            color: #FFFFFF;
-        }
-        .player-card .info .role {
-            color: var(--gold);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
+        .player-card:hover img { transform: scale(1.05); }
+        .player-card .info { padding: 16px; }
+        .player-card .info h4 { font-size: 1.1rem; color: #FFFFFF; }
+        .player-card .info .role { color: var(--gold); font-size: 0.85rem; font-weight: 600; }
 
-        /* ===== SCHEDULE (تصميم مميز وفارغ) ===== */
+        /* ===== SCHEDULE (Table) ===== */
         .schedule-wrapper {
             background: var(--dark-card);
             border-radius: var(--radius);
             padding: 30px;
             border: 1px solid rgba(0, 115, 63, 0.15);
             overflow-x: auto;
-            position: relative;
-            min-height: 400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .schedule-empty {
-            text-align: center;
-            padding: 40px 20px;
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
         }
-        .schedule-empty i {
-            font-size: 4rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            opacity: 0.4;
-        }
-        .schedule-empty h3 {
-            font-size: 1.8rem;
+        .schedule-table th {
+            background: var(--primary);
             color: #FFFFFF;
-            margin-bottom: 10px;
+            padding: 14px;
+            text-align: center;
+            font-weight: 700;
         }
-        .schedule-empty p {
-            color: var(--gray-light);
-            opacity: 0.6;
-            font-size: 1rem;
+        .schedule-table td {
+            padding: 12px 14px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        /* تزيين الجدول الفارغ بخطوط زخرفية */
-        .schedule-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border: 2px dashed rgba(212, 160, 23, 0.2);
-            border-radius: 16px;
-            pointer-events: none;
-        }
+        .schedule-table tr:hover td { background: rgba(0, 115, 63, 0.1); }
+        .schedule-table .empty { color: var(--gray); opacity: 0.6; font-style: italic; }
 
-        /* ===== MATCHES (فارغة) ===== */
+        /* ===== MATCHES ===== */
         .matches-empty {
             text-align: center;
             padding: 60px 20px;
@@ -670,26 +595,10 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .matches-empty.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .matches-empty i {
-            font-size: 4rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-        .matches-empty h3 {
-            font-size: 1.6rem;
-            color: #FFFFFF;
-            margin-bottom: 10px;
-        }
-        .matches-empty p {
-            color: var(--gray-light);
-            opacity: 0.6;
-        }
+        .matches-empty.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .matches-empty i { font-size: 4rem; color: var(--gold); margin-bottom: 20px; opacity: 0.5; }
+        .matches-empty h3 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 10px; }
+        .matches-empty p { color: var(--gray-light); opacity: 0.6; }
 
         /* ===== GALLERY ===== */
         .gallery-masonry {
@@ -706,10 +615,7 @@
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .gallery-masonry .item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .gallery-masonry .item.visible { opacity: 1; transform: translateY(0); }
         .gallery-masonry .item:nth-child(1) { transition-delay: 0.1s; }
         .gallery-masonry .item:nth-child(2) { transition-delay: 0.2s; }
         .gallery-masonry .item:nth-child(3) { transition-delay: 0.3s; }
@@ -738,15 +644,10 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-        .gallery-masonry .item:hover .overlay {
-            opacity: 1;
-        }
-        .gallery-masonry .item .overlay span {
-            color: #FFFFFF;
-            font-weight: 600;
-        }
+        .gallery-masonry .item:hover .overlay { opacity: 1; }
+        .gallery-masonry .item .overlay span { color: #FFFFFF; font-weight: 600; }
 
-        /* ===== VIDEO SECTION ===== */
+        /* ===== VIDEO ===== */
         .video-wrapper {
             max-width: 900px;
             margin: 0 auto;
@@ -755,10 +656,7 @@
             box-shadow: var(--shadow);
             position: relative;
         }
-        .video-wrapper video {
-            width: 100%;
-            display: block;
-        }
+        .video-wrapper video { width: 100%; display: block; }
         .video-wrapper .video-caption {
             position: absolute;
             bottom: 0;
@@ -785,11 +683,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .news-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        .news-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
         .news-card:hover {
             transform: translateY(-6px);
             border-color: var(--gold);
@@ -799,23 +693,10 @@
             height: 200px;
             object-fit: cover;
         }
-        .news-card .info {
-            padding: 20px;
-        }
-        .news-card .info .date {
-            color: var(--gold);
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .news-card .info h4 {
-            color: #FFFFFF;
-            margin: 8px 0;
-        }
-        .news-card .info p {
-            color: var(--gray-light);
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
+        .news-card .info { padding: 20px; }
+        .news-card .info .date { color: var(--gold); font-size: 0.8rem; font-weight: 600; }
+        .news-card .info h4 { color: #FFFFFF; margin: 8px 0; }
+        .news-card .info p { color: var(--gray-light); opacity: 0.7; font-size: 0.9rem; }
 
         /* ===== REGISTRATION ===== */
         .registration-wrapper {
@@ -828,14 +709,8 @@
             opacity: 0;
             transform: translateY(30px);
         }
-        .registration-wrapper.visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .registration-wrapper .form-group {
-            margin-bottom: 20px;
-        }
+        .registration-wrapper.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .registration-wrapper .form-group { margin-bottom: 20px; }
         .registration-wrapper label {
             display: block;
             font-weight: 600;
@@ -875,10 +750,7 @@
             gap: 16px;
             color: var(--gray-light);
         }
-        .contact-info i {
-            color: var(--gold);
-            width: 24px;
-        }
+        .contact-info i { color: var(--gold); width: 24px; }
         .contact-form input,
         .contact-form textarea {
             width: 100%;
@@ -892,12 +764,71 @@
             transition: 0.2s;
         }
         .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-color: var(--gold);
-            outline: none;
+        .contact-form textarea:focus { border-color: var(--gold); outline: none; }
+        .contact-form textarea { min-height: 120px; }
+
+        /* ===== POPUP NOTIFICATION ===== */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
         }
-        .contact-form textarea {
-            min-height: 120px;
+        .popup-overlay.active { display: flex; }
+        .popup-box {
+            background: var(--dark-card);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--gold);
+            border-radius: var(--radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: popupPulse 0.5s ease;
+        }
+        @keyframes popupPulse {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .popup-box i {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        .popup-box h3 {
+            font-size: 1.5rem;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+        }
+        .popup-box p {
+            color: var(--gray-light);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .popup-box .highlight-text {
+            color: var(--gold);
+            font-weight: 700;
+        }
+        .popup-close {
+            background: var(--primary);
+            border: none;
+            color: #FFFFFF;
+            padding: 10px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .popup-close:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         /* ===== FOOTER ===== */
@@ -913,11 +844,7 @@
             max-width: 1300px;
             margin: 0 auto;
         }
-        .footer-col h4 {
-            color: #FFFFFF;
-            margin-bottom: 16px;
-            font-size: 1.1rem;
-        }
+        .footer-col h4 { color: #FFFFFF; margin-bottom: 16px; font-size: 1.1rem; }
         .footer-col p,
         .footer-col a {
             color: var(--gray-light);
@@ -928,23 +855,10 @@
             font-size: 0.9rem;
             transition: 0.2s;
         }
-        .footer-col a:hover {
-            color: var(--gold);
-            opacity: 1;
-        }
-        .footer-social {
-            display: flex;
-            gap: 16px;
-            margin-top: 12px;
-        }
-        .footer-social a {
-            color: var(--gray-light);
-            font-size: 1.4rem;
-            transition: 0.2s;
-        }
-        .footer-social a:hover {
-            color: var(--gold);
-        }
+        .footer-col a:hover { color: var(--gold); opacity: 1; }
+        .footer-social { display: flex; gap: 16px; margin-top: 12px; }
+        .footer-social a { color: var(--gray-light); font-size: 1.4rem; transition: 0.2s; }
+        .footer-social a:hover { color: var(--gold); }
         .footer-bottom {
             text-align: center;
             padding-top: 30px;
@@ -957,12 +871,8 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .hero h1 {
-                font-size: 3.2rem;
-            }
-            .section-title {
-                font-size: 2.2rem;
-            }
+            .hero h1 { font-size: 3.2rem; }
+            .section-title { font-size: 2.2rem; }
         }
 
         @media (max-width: 850px) {
@@ -984,55 +894,28 @@
                 left: 0;
                 border-bottom: 1px solid rgba(0, 115, 63, 0.2);
             }
-            .nav-links.show {
-                display: flex;
-            }
-            .menu-btn {
-                display: block;
-            }
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            .registration-wrapper {
-                padding: 24px;
-            }
-            section {
-                padding: 50px 0;
-            }
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .hero-stats {
-                gap: 12px;
-            }
-            .hero-stat {
-                padding: 12px 18px;
-                min-width: 80px;
-            }
-            .hero-stat .number {
-                font-size: 1.6rem;
-            }
+            .nav-links.show { display: flex; }
+            .menu-btn { display: block; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero p { font-size: 1rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .registration-wrapper { padding: 24px; }
+            section { padding: 50px 0; }
+            .section-title { font-size: 1.8rem; }
+            .hero-stats { gap: 12px; }
+            .hero-stat { padding: 12px 18px; min-width: 80px; }
+            .hero-stat .number { font-size: 1.6rem; }
         }
 
         @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
+            .hero h1 { font-size: 1.8rem; }
             .btn-primary,
             .btn-gold,
             .btn-outline {
                 padding: 10px 24px;
                 font-size: 0.85rem;
             }
-            .hero-buttons {
-                gap: 10px;
-            }
+            .hero-buttons { gap: 10px; }
         }
     </style>
 </head>
@@ -1068,9 +951,15 @@
     </ul>
 </header>
 
-<!-- ===== HERO (بخلفية جديدة وتأثير ديناميكي للكلمات) ===== -->
+<!-- ===== HERO (Slideshow Background) ===== -->
 <section id="home" class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-slideshow">
+        <div class="hero-slide active"></div>
+        <div class="hero-slide"></div>
+        <div class="hero-slide"></div>
+        <div class="hero-slide"></div>
+        <div class="hero-slide"></div>
+    </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1>
@@ -1095,6 +984,9 @@
     </div>
 </section>
 
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
 <!-- ===== ABOUT ===== -->
 <section id="about" class="section-dark">
     <div class="container">
@@ -1107,6 +999,9 @@
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
 
 <!-- ===== PROGRAMS ===== -->
 <section id="programs" class="section-light">
@@ -1166,7 +1061,10 @@
     </div>
 </section>
 
-<!-- ===== COACHES (مدير فني فقط) ===== -->
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
+<!-- ===== COACHES ===== -->
 <section id="coaches" class="green-bg-animated">
     <div class="container">
         <h2 class="section-title">المدير <span>الفني</span></h2>
@@ -1187,7 +1085,10 @@
     </div>
 </section>
 
-<!-- ===== PLAYERS (بطاقات متحركة) ===== -->
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
+<!-- ===== PLAYERS ===== -->
 <section id="players" class="section-dark">
     <div class="container">
         <h2 class="section-title">لاعبونا <span>الموهوبون</span></h2>
@@ -1201,6 +1102,9 @@
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
 
 <!-- ===== FACILITIES ===== -->
 <section id="facilities" class="section-light">
@@ -1245,6 +1149,9 @@
     </div>
 </section>
 
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
 <!-- ===== GALLERY ===== -->
 <section id="gallery" class="green-bg-animated">
     <div class="container">
@@ -1263,7 +1170,10 @@
     </div>
 </section>
 
-<!-- ===== VIDEO (دورة زرالدة الكبرى 2026) ===== -->
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
+<!-- ===== VIDEO ===== -->
 <section id="video-section" class="section-dark">
     <div class="container">
         <h2 class="section-title">دورة زرالدة <span>الكبرى 2026</span></h2>
@@ -1278,23 +1188,37 @@
     </div>
 </section>
 
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
 <!-- ===== SCHEDULE (جدول تدريبات فارغ بتصميم مميز) ===== -->
 <section id="schedule" class="section-light">
     <div class="container">
         <h2 class="section-title">جدول <span>التدريبات</span></h2>
         <p class="section-subtitle">جدول أسبوعي منظم لجميع الفئات العمرية.</p>
         <div class="schedule-wrapper">
-            <div class="schedule-empty">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>لا توجد تدريبات مجدولة حالياً</h3>
-                <p>سيتم الإعلان عن الجدول الزمني للتدريبات فور بداية الموسم.</p>
-            </div>
+            <table class="schedule-table">
+                <thead>
+                    <tr><th>الفئة العمرية</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>تحت 16 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                    <tr><td>تحت 15 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                    <tr><td>تحت 14 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                    <tr><td>تحت 13 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                    <tr><td>تحت 12 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                    <tr><td>تحت 11 سنة</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>
+                </tbody>
+            </table>
         </div>
-        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 تابعونا لتحديثات الجدول.</p>
+        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 سيتم تحديد التوقيتات فور بداية الموسم التدريبي.</p>
     </div>
 </section>
 
-<!-- ===== MATCHES (فارغة) ===== -->
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
+
+<!-- ===== MATCHES ===== -->
 <section id="matches" class="green-bg-animated">
     <div class="container">
         <h2 class="section-title">المباريات <span>الودية</span></h2>
@@ -1306,6 +1230,9 @@
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
 
 <!-- ===== REGISTRATION ===== -->
 <section id="registration" class="section-dark">
@@ -1327,6 +1254,9 @@
         </div>
     </div>
 </section>
+
+<!-- ===== SECTION DIVIDER ===== -->
+<div class="section-divider"></div>
 
 <!-- ===== CONTACT ===== -->
 <section id="contact" class="section-light">
@@ -1358,6 +1288,19 @@
         </div>
     </div>
 </section>
+
+<!-- ===== POPUP NOTIFICATION ===== -->
+<div class="popup-overlay" id="popupOverlay">
+    <div class="popup-box">
+        <i class="fas fa-bell"></i>
+        <h3>📢 تنبيه هام</h3>
+        <p>
+            يرجى الاشتراك في الموقع عن طريق مؤسسة <span class="highlight-text">Mohamed</span><br>
+            حتى يتم تزويدكم بصلاحية نشره واستخدامه.
+        </p>
+        <button class="popup-close" onclick="closePopup()">حسناً، فهمت</button>
+    </div>
+</div>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
@@ -1396,11 +1339,18 @@
 
 <!-- ===== SCRIPTS ===== -->
 <script>
+    // ===== Hero Slideshow (تغير الصور كل 3 ثواني) =====
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    setInterval(() => {
+        slides.forEach(s => s.classList.remove('active'));
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }, 3000);
+
     // ===== تأثير الكتابة الديناميكي (Dynamic Text) =====
     const words = ['الرائد', 'النخبة', 'الأبطال', 'المستقبل'];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let wordIndex = 0, charIndex = 0, isDeleting = false;
     const dynamicText = document.getElementById('dynamicText');
 
     function typeEffect() {
@@ -1412,7 +1362,6 @@
             dynamicText.textContent = currentWord.substring(0, charIndex + 1);
             charIndex++;
         }
-
         if (!isDeleting && charIndex === currentWord.length) {
             isDeleting = true;
             setTimeout(typeEffect, 2000);
@@ -1426,7 +1375,37 @@
     }
     typeEffect();
 
-    // ===== تأثير ظهور البطاقات عند التمرير (Scroll Reveal) =====
+    // ===== POPUP (تظهر كل 15 ثانية لمدة 3 ثواني) =====
+    const popup = document.getElementById('popupOverlay');
+    let popupTimer = null;
+    let popupVisible = false;
+
+    function showPopup() {
+        popup.classList.add('active');
+        popupVisible = true;
+        // إخفاء بعد 3 ثواني
+        setTimeout(() => {
+            popup.classList.remove('active');
+            popupVisible = false;
+        }, 3000);
+    }
+
+    function closePopup() {
+        popup.classList.remove('active');
+        popupVisible = false;
+        // إعادة تعيين المؤقت بعد الإغلاق اليدوي
+        clearTimeout(popupTimer);
+        popupTimer = setTimeout(showPopup, 15000);
+    }
+
+    // بدء المؤقت بعد تحميل الصفحة
+    setTimeout(() => {
+        showPopup();
+        // جدولة التكرار
+        popupTimer = setTimeout(showPopup, 15000);
+    }, 3000);
+
+    // ===== Scroll Reveal =====
     const revealElements = [
         { selector: '.about-card', container: '#aboutGrid' },
         { selector: '.player-card', container: '#playersGrid' },
@@ -1448,54 +1427,44 @@
                 entry.target.classList.add('visible');
             }
         });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
     document.querySelectorAll('.about-card, .player-card, .gallery-masonry .item, .coach-single, .matches-empty, .registration-wrapper, .news-card').forEach(el => {
         observer.observe(el);
     });
 
-    // ===== Navbar scroll effect =====
+    // ===== Navbar =====
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 60) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
     });
 
-    // ===== Mobile menu toggle =====
+    // ===== Mobile menu =====
     const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
-    menuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('show');
-    });
+    menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
 
-    // ===== Smooth scroll for anchor links =====
+    // ===== Smooth scroll =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                if (navLinks.classList.contains('show')) {
-                    navLinks.classList.remove('show');
-                }
+                if (navLinks.classList.contains('show')) navLinks.classList.remove('show');
             }
         });
     });
 
-    // ===== Registration form submission =====
+    // ===== Registration form =====
     document.getElementById('registrationForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
         alert('✅ تم استلام طلب التسجيل بنجاح! سيتم التواصل معكم قريباً.');
         this.reset();
     });
 
-    // ===== Language switcher (placeholder) =====
+    // ===== Language switcher =====
     document.querySelectorAll('.lang-switch button').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
