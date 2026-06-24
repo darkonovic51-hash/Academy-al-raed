@@ -585,7 +585,7 @@
         .coach-single .info .role { color: var(--gold); font-weight: 600; font-size: 1rem; }
         .coach-single .info .details { color: var(--gray-light); opacity: 0.7; font-size: 0.9rem; margin-top: 8px; }
 
-        /* ===== PLAYERS (لاعبي الأكاديمية) ===== */
+        /* ===== PLAYERS (لاعبي الأكاديمية - ديكور ثابت) ===== */
         .players-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1084,7 +1084,6 @@
         .admin-panel .admin-form button:hover { transform: scale(1.03); }
 
         .admin-panel .table-gallery th { background: #8e44ad; }
-        .admin-panel .table-players th { background: #2980b9; }
         .admin-panel .table-matches th { background: #e67e22; }
         .admin-panel .table-schedule th { background: #27ae60; }
         .admin-panel .table-registrations th { background: #c0392b; }
@@ -1293,12 +1292,34 @@
 <!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
-<!-- ===== PLAYERS (لاعبي الأكاديمية) ===== -->
+<!-- ===== PLAYERS (لاعبي الأكاديمية - ديكور ثابت) ===== -->
 <section id="players" class="section-dark">
     <div class="container">
         <h2 class="section-title">لاعبي <span>الأكاديمية</span></h2>
-        <p class="section-subtitle">قائمة لاعبي أكاديمية الرائد الموهوبين.</p>
-        <div class="players-grid" id="playersGrid"></div>
+        <p class="section-subtitle">نخبة من لاعبي أكاديمية الرائد.</p>
+        <div class="players-grid" id="playersGrid">
+            <!-- صور ثابتة (ديكور) -->
+            <div class="player-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg" alt="ياسين بن عمار" loading="lazy">
+                <div class="info"><h4>ياسين بن عمار</h4><div class="role">جناح أيسر – U16</div></div>
+            </div>
+            <div class="player-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg" alt="أحمد زروقي" loading="lazy">
+                <div class="info"><h4>أحمد زروقي</h4><div class="role">وسط ميدان – U16</div></div>
+            </div>
+            <div class="player-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg" alt="سفيان بن سالم" loading="lazy">
+                <div class="info"><h4>سفيان بن سالم</h4><div class="role">مهاجم – U15</div></div>
+            </div>
+            <div class="player-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg" alt="مهدي شريف" loading="lazy">
+                <div class="info"><h4>مهدي شريف</h4><div class="role">ظهير أيمن – U14</div></div>
+            </div>
+            <div class="player-card">
+                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg" alt="محمد لعروسي" loading="lazy">
+                <div class="info"><h4>محمد لعروسي</h4><div class="role">قلب دفاع – U13</div></div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -1598,7 +1619,6 @@
     ];
 
     const defaultMatches = [];
-    const defaultPlayers = [];
 
     // ================================================================
     // 3. الحالة العامة
@@ -1606,8 +1626,8 @@
     let appData = {
         gallery: [],
         schedule: [],
-        matches: [],
-        players: []  // لاعبي الأكاديمية (الموهوبون سابقاً)
+        matches: []
+        // لا يوجد players هنا لأنهم ثابتون في HTML
     };
 
     // ================================================================
@@ -1629,59 +1649,33 @@
     }
 
     // ================================================================
-    // 5. تحميل جميع البيانات
+    // 5. تحميل البيانات من Firebase
     // ================================================================
     async function loadAllData() {
         try {
-            const [gallery, schedule, matches, players] = await Promise.all([
+            const [gallery, schedule, matches] = await Promise.all([
                 getFromFirebase('raedData/gallery'),
                 getFromFirebase('raedData/schedule'),
-                getFromFirebase('raedData/matches'),
-                getFromFirebase('raedData/players')
+                getFromFirebase('raedData/matches')
             ]);
 
             appData.gallery = gallery || defaultGallery;
             appData.schedule = schedule || defaultSchedule;
             appData.matches = matches || defaultMatches;
-            appData.players = players || defaultPlayers;
 
             if (!gallery) await saveToFirebase('raedData/gallery', appData.gallery);
             if (!schedule) await saveToFirebase('raedData/schedule', appData.schedule);
             if (!matches) await saveToFirebase('raedData/matches', appData.matches);
-            if (!players) await saveToFirebase('raedData/players', appData.players);
 
-            console.log('✅ تم تحميل جميع البيانات من Firebase');
+            console.log('✅ تم تحميل البيانات من Firebase');
         } catch (error) {
             console.error('❌ خطأ في تحميل البيانات:', error);
         }
     }
 
     // ================================================================
-    // 6. دوال عرض البيانات
+    // 6. دوال عرض البيانات (المعرض، الجدول، المباريات)
     // ================================================================
-    function renderPlayers() {
-        const container = document.getElementById('playersGrid');
-        if (!container) return;
-        container.innerHTML = '';
-        if (!appData.players || appData.players.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا يوجد لاعبون مسجلون حالياً.</p>';
-            return;
-        }
-        appData.players.forEach(p => {
-            const div = document.createElement('div');
-            div.className = 'player-card';
-            div.innerHTML = `
-                <img src="${p.image || 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Player'}" alt="${p.firstName} ${p.lastName}" loading="lazy">
-                <div class="info">
-                    <h4>${p.firstName} ${p.lastName}</h4>
-                    <div class="role">${p.category || 'لاعب'}</div>
-                </div>
-            `;
-            container.appendChild(div);
-        });
-        document.getElementById('statPlayers').textContent = '+' + appData.players.length;
-    }
-
     function renderGallery() {
         const container = document.getElementById('galleryGrid');
         if (!container) return;
@@ -1758,7 +1752,7 @@
     }
 
     // ================================================================
-    // 7. دوال لوحة التحكم
+    // 7. دوال لوحة التحكم (طلبات التسجيل، المعرض، الجدول، المباريات)
     // ================================================================
     const ADMIN_PASSWORD_KEY = 'raed_admin_pass';
     let adminPassword = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'raed92';
@@ -1785,7 +1779,6 @@
                 <div class="admin-stat"><div class="num">${registrations.length}</div><div class="label">إجمالي الطلبات</div></div>
                 <div class="admin-stat"><div class="num" style="color:#f39c12;">${pending}</div><div class="label">في الانتظار</div></div>
                 <div class="admin-stat"><div class="num" style="color:#2ecc71;">${approved}</div><div class="label">معتمدين</div></div>
-                <div class="admin-stat"><div class="num">${appData.players.length}</div><div class="label">لاعبو الأكاديمية</div></div>
                 <div class="admin-stat"><div class="num">${appData.gallery.length}</div><div class="label">الصور</div></div>
                 <div class="admin-stat"><div class="num">${appData.matches.length}</div><div class="label">المباريات</div></div>
             `;
@@ -1850,47 +1843,27 @@
     }
 
     window.approveRegistration = function(id) {
-        if (!confirm('هل تريد قبول هذا الطلب وإضافته إلى قائمة لاعبي الأكاديمية؟')) return;
-        database.ref('raedData/registrationsSummer/' + id).once('value')
-            .then(snapshot => {
-                const reg = snapshot.val();
-                if (reg) {
-                    database.ref('raedData/registrationsSummer/' + id).update({ status: 'approved' })
-                        .then(() => {
-                            const player = {
-                                id: Date.now(),
-                                firstName: reg.firstName,
-                                lastName: reg.lastName,
-                                phone: reg.phone,
-                                address: reg.address,
-                                birth: reg.birth,
-                                category: 'لاعب الأكاديمية',
-                                image: 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Player',
-                                approvedDate: new Date().toLocaleString('ar-EG')
-                            };
-                            appData.players.push(player);
-                            saveToFirebase('raedData/players', appData.players)
-                                .then(() => {
-                                    renderPlayers();
-                                    renderAdminDashboard();
-                                    alert('✅ تم قبول الطلب وإضافته إلى قائمة لاعبي الأكاديمية');
-                                });
-                        });
-                }
-            });
+        if (!confirm('هل تريد قبول هذا الطلب؟')) return;
+        database.ref('raedData/registrationsSummer/' + id).update({ status: 'approved' })
+            .then(() => {
+                renderAdminDashboard();
+                alert('✅ تم قبول الطلب');
+            })
+            .catch(err => alert('❌ حدث خطأ: ' + err.message));
     };
 
     window.rejectRegistration = function(id) {
         if (!confirm('هل تريد رفض هذا الطلب؟')) return;
         database.ref('raedData/registrationsSummer/' + id).update({ status: 'rejected' })
-            .then(() => renderAdminDashboard());
+            .then(() => renderAdminDashboard())
+            .catch(err => alert('❌ حدث خطأ: ' + err.message));
     };
 
     window.deleteRegistrationHandler = function(id) {
         if (!confirm('هل تريد حذف هذا الطلب؟')) return;
         database.ref('raedData/registrationsSummer/' + id).remove()
             .then(() => renderAdminDashboard())
-            .catch(err => console.error('❌ فشل الحذف:', err));
+            .catch(err => alert('❌ حدث خطأ: ' + err.message));
     };
 
     // --- إدارة المعرض ---
@@ -2175,7 +2148,6 @@
     // ================================================================
     async function init() {
         await loadAllData();
-        renderPlayers();
         renderGallery();
         renderSchedule();
         renderMatches();
