@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>أكاديمية الرائد | RAED Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- ===== Firebase SDK (compat) ===== -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -49,6 +50,53 @@
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
         .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+
+        /* ===== شريط عاجل ===== */
+        .breaking-news {
+            background: linear-gradient(90deg, #C0392B, #E74C3C);
+            color: #fff;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 15px rgba(231, 76, 60, 0.3);
+            animation: flashBg 2s infinite alternate;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+        @keyframes flashBg {
+            0% { background: #C0392B; }
+            100% { background: #E74C3C; }
+        }
+        .breaking-news i {
+            font-size: 1.2rem;
+            animation: pulseIcon 1s infinite;
+        }
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .breaking-news .btn-go {
+            background: var(--gold);
+            color: #000;
+            padding: 4px 16px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .breaking-news .btn-go:hover { transform: scale(1.05); }
 
         /* ===== GLASSMORPHISM ===== */
         .glass {
@@ -144,6 +192,8 @@
         .btn-sm-warning:hover { background: #e67e22; transform: scale(1.04); }
         .btn-sm-info { background: #3498db; color: #fff; }
         .btn-sm-info:hover { background: #2980b9; transform: scale(1.04); }
+        .btn-sm-print { background: #7f8c8d; color: #fff; }
+        .btn-sm-print:hover { background: #95a5a6; transform: scale(1.04); }
 
         /* ===== TYPOGRAPHY ===== */
         .section-title {
@@ -178,14 +228,18 @@
             opacity: 0.8;
         }
 
-        /* ===== HEADER / NAVBAR ===== */
+        .arabic-font {
+            font-family: 'Amiri', 'Cairo', serif;
+        }
+
+        /* ===== HEADER ===== */
         .navbar {
             position: fixed;
-            top: 0;
+            top: 56px; /* ارتفاع الشريط العاجل */
             left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 14px 40px;
+            padding: 10px 40px;
             background: transparent;
             transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
             display: flex;
@@ -197,7 +251,7 @@
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid rgba(0, 115, 63, 0.3);
-            padding: 10px 40px;
+            padding: 8px 40px;
         }
         .logo {
             display: flex;
@@ -205,12 +259,12 @@
             gap: 12px;
         }
         .logo img {
-            height: 48px;
+            height: 45px;
             width: auto;
             filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
         }
         .logo span {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #FFFFFF;
             letter-spacing: -0.5px;
@@ -219,7 +273,7 @@
 
         .nav-links {
             display: flex;
-            gap: 22px;
+            gap: 18px;
             list-style: none;
             align-items: center;
         }
@@ -227,7 +281,7 @@
             color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: 0.2s;
             padding: 4px 0;
             border-bottom: 2px solid transparent;
@@ -267,7 +321,7 @@
             cursor: pointer;
         }
 
-        /* ===== HERO (Slideshow Background) ===== */
+        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             position: relative;
@@ -277,6 +331,7 @@
             text-align: center;
             padding: 100px 20px 60px;
             overflow: hidden;
+            margin-top: 56px;
         }
         .hero-slideshow {
             position: absolute;
@@ -449,19 +504,8 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .green-bg-animated::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path fill="none" stroke="%23ffffff" stroke-width="0.5" d="M20 30 Q35 15 50 30 T80 30 M15 50 Q30 35 45 50 T75 50 M25 70 Q40 55 55 70 T85 70"/><circle cx="30" cy="25" r="1.5" fill="%23ffffff"/><circle cx="70" cy="65" r="1.5" fill="%23ffffff"/></svg>');
-            background-repeat: repeat;
-            pointer-events: none;
-        }
 
-        /* ===== فاصل الألوان بين الأقسام ===== */
+        /* ===== SECTION DIVIDER ===== */
         .section-divider {
             width: 100%;
             height: 8px;
@@ -534,11 +578,8 @@
         .coach-single .info h4 { font-size: 1.4rem; color: #FFFFFF; margin-bottom: 4px; }
         .coach-single .info .role { color: var(--gold); font-weight: 600; font-size: 1rem; }
         .coach-single .info .details { color: var(--gray-light); opacity: 0.7; font-size: 0.9rem; margin-top: 8px; }
-        .coach-single .social { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
-        .coach-single .social a { color: var(--gray-light); transition: 0.2s; }
-        .coach-single .social a:hover { color: var(--gold); }
 
-        /* ===== PLAYERS ===== */
+        /* ===== PLAYERS (الموهوبون) ===== */
         .players-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -551,6 +592,11 @@
             border: 1px solid rgba(0, 115, 63, 0.15);
             transition: var(--transition);
             text-align: center;
+            animation: wobble 3s infinite alternate;
+        }
+        @keyframes wobble {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(0.5deg) scale(1.02); }
         }
         .player-card:hover {
             transform: translateY(-8px);
@@ -568,7 +614,7 @@
         .player-card .info h4 { font-size: 1.1rem; color: #FFFFFF; }
         .player-card .info .role { color: var(--gold); font-size: 0.85rem; font-weight: 600; }
 
-        /* ===== SCHEDULE (Table) ===== */
+        /* ===== SCHEDULE ===== */
         .schedule-wrapper {
             background: var(--dark-card);
             border-radius: var(--radius);
@@ -596,16 +642,16 @@
         .schedule-table tr:hover td { background: rgba(0, 115, 63, 0.1); }
         .schedule-table .empty { color: var(--gray); opacity: 0.6; font-style: italic; }
 
-        /* ===== MATCHES ===== */
+        /* ===== MATCHES (قالب مميز) ===== */
         .matches-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
         .match-card {
-            background: var(--dark-card);
+            background: linear-gradient(145deg, #1a2a1a, #0D1A0D);
             border-radius: var(--radius);
-            padding: 24px;
+            padding: 25px 20px;
             border: 2px solid var(--gold);
             box-shadow: 0 10px 30px rgba(212, 160, 23, 0.15);
             text-align: center;
@@ -625,52 +671,37 @@
         }
         .match-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(212, 160, 23, 0.25); }
         .match-card .vs {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
             color: var(--gold);
             margin: 6px 0;
         }
         .match-card .opponent {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #FFFFFF;
         }
-        .match-card .match-date {
+        .match-card .match-detail {
             color: var(--gray-light);
-            font-size: 0.95rem;
-            margin: 6px 0;
+            font-size: 1rem;
+            margin: 4px 0;
         }
-        .match-card .match-location {
-            color: var(--gray-light);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
+        .match-card .match-detail i { color: var(--gold); margin-left: 6px; }
         .match-card .match-badge {
             display: inline-block;
             background: var(--gold);
             color: #000;
-            padding: 2px 16px;
+            padding: 2px 20px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             margin-top: 8px;
         }
         .match-card .academy-name {
             color: var(--gold);
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
-
-        .matches-empty {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--dark-card);
-            border-radius: var(--radius);
-            border: 2px dashed rgba(0, 115, 63, 0.3);
-        }
-        .matches-empty i { font-size: 4rem; color: var(--gold); margin-bottom: 20px; opacity: 0.5; }
-        .matches-empty h3 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 10px; }
-        .matches-empty p { color: var(--gray-light); opacity: 0.6; }
 
         /* ===== GALLERY ===== */
         .gallery-masonry {
@@ -683,6 +714,7 @@
             overflow: hidden;
             position: relative;
             cursor: pointer;
+            animation: wobble 3s infinite alternate;
         }
         .gallery-masonry .item img {
             width: 100%;
@@ -717,32 +749,57 @@
             position: relative;
         }
         .video-wrapper video { width: 100%; display: block; }
-        .video-wrapper .video-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 30px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
-            color: #FFFFFF;
-            font-weight: 600;
-        }
 
-        /* ===== REGISTRATION ===== */
+        /* ===== REGISTRATION (تسجيلات الصيفية) ===== */
         .registration-wrapper {
-            max-width: 750px;
+            max-width: 850px;
             margin: 0 auto;
-            background: var(--dark-card);
+            background: linear-gradient(145deg, rgba(20, 40, 25, 0.9), rgba(13, 26, 13, 0.95));
             border-radius: var(--radius);
-            padding: 40px;
-            border: 1px solid rgba(0, 115, 63, 0.2);
+            padding: 45px 40px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 40px rgba(212, 160, 23, 0.15);
+            position: relative;
+            overflow: hidden;
         }
-        .registration-wrapper .form-group { margin-bottom: 20px; }
+        .registration-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212,160,23,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .registration-wrapper .reg-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .registration-wrapper .reg-header img {
+            max-width: 120px;
+            margin-bottom: 10px;
+            animation: wobble 2s infinite alternate;
+        }
+        .registration-wrapper .reg-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(212, 160, 23, 0.2);
+        }
+        .registration-wrapper .reg-header p {
+            color: var(--gray-light);
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        .registration-wrapper .form-group { margin-bottom: 18px; }
         .registration-wrapper label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: #FFFFFF;
+            font-size: 0.95rem;
         }
         .registration-wrapper input,
         .registration-wrapper select,
@@ -750,11 +807,11 @@
             width: 100%;
             padding: 14px 18px;
             border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.4);
             color: #FFFFFF;
             font-size: 1rem;
-            transition: 0.2s;
+            transition: 0.3s;
         }
         .registration-wrapper input:focus,
         .registration-wrapper select:focus,
@@ -762,6 +819,11 @@
             border-color: var(--gold);
             outline: none;
             box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        .registration-wrapper .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
         }
 
         /* ===== CONTACT ===== */
@@ -794,7 +856,7 @@
         .contact-form textarea:focus { border-color: var(--gold); outline: none; }
         .contact-form textarea { min-height: 120px; }
 
-        /* ===== POPUP NOTIFICATION ===== */
+        /* ===== POPUP ===== */
         .popup-overlay {
             display: none;
             position: fixed;
@@ -802,15 +864,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
         .popup-overlay.active { display: flex; }
         .popup-box {
-            background: var(--dark-card);
-            backdrop-filter: blur(12px);
+            background: linear-gradient(145deg, #1a2a1a, #0D1A0D);
             border: 2px solid var(--gold);
             border-radius: var(--radius);
             padding: 40px;
@@ -821,41 +883,43 @@
             animation: popupPulse 0.5s ease;
         }
         @keyframes popupPulse {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(0.9) rotate(-2deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         .popup-box i {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--gold);
             margin-bottom: 15px;
         }
         .popup-box h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: #FFFFFF;
             margin-bottom: 10px;
+            font-family: 'Amiri', serif;
         }
-        .popup-box p {
-            color: var(--gray-light);
-            font-size: 1rem;
-            margin-bottom: 20px;
+        .popup-box .info-grid {
+            text-align: right;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            font-size: 0.9rem;
         }
-        .popup-box .highlight-text {
-            color: var(--gold);
-            font-weight: 700;
-        }
+        .popup-box .info-grid p { margin: 4px 0; color: var(--gray-light); }
+        .popup-box .info-grid strong { color: var(--gold); }
         .popup-close {
-            background: var(--primary);
+            background: var(--gold);
             border: none;
-            color: #FFFFFF;
+            color: #000;
             padding: 10px 30px;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
             transition: var(--transition);
         }
         .popup-close:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
+            transform: scale(1.04);
+            box-shadow: 0 0 20px var(--gold-glow);
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -893,30 +957,31 @@
         .admin-panel-overlay.active { display: flex; }
 
         .admin-panel {
-            background: #0D1A0D;
+            background: #F0F4F0;
             border-radius: 30px;
-            max-width: 1300px;
+            max-width: 1400px;
             width: 100%;
             max-height: 92vh;
             overflow-y: auto;
             padding: 30px;
-            border: 2px solid var(--gold);
+            border: 2px solid var(--primary);
             position: relative;
+            color: #1a1a1a;
         }
         .admin-panel .close-admin {
             position: sticky;
             top: 0;
             float: left;
-            background: var(--gold);
+            background: var(--primary);
             border: none;
-            color: #000;
+            color: #fff;
             padding: 6px 16px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.9rem;
         }
-        .admin-panel h2 { color: #FFFFFF; margin-bottom: 20px; text-align: center; font-size: 1.8rem; }
+        .admin-panel h2 { color: #1a1a1a; margin-bottom: 20px; text-align: center; font-size: 1.8rem; }
         .admin-panel .admin-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -924,22 +989,23 @@
             margin-bottom: 25px;
         }
         .admin-panel .admin-stat {
-            background: var(--dark-card);
+            background: #fff;
             border-radius: 14px;
             padding: 14px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
         }
-        .admin-panel .admin-stat .num { font-size: 1.8rem; font-weight: 800; color: var(--gold); }
-        .admin-panel .admin-stat .label { color: var(--gray-light); font-size: 0.8rem; opacity: 0.7; }
+        .admin-panel .admin-stat .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+        .admin-panel .admin-stat .label { color: #555; font-size: 0.8rem; }
 
         .admin-panel .admin-section {
             margin-top: 25px;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 2px solid #e0e0e0;
             padding-top: 20px;
         }
         .admin-panel .admin-section h3 {
-            color: #FFFFFF;
+            color: #1a1a1a;
             margin-bottom: 14px;
             font-size: 1.2rem;
         }
@@ -947,7 +1013,8 @@
             overflow-x: auto;
             margin-bottom: 10px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid #ddd;
+            background: #fff;
         }
         .admin-panel table {
             width: 100%;
@@ -964,7 +1031,8 @@
         .admin-panel table td {
             padding: 10px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid #eee;
+            color: #1a1a1a;
         }
         .admin-panel table .status-badge {
             display: inline-block;
@@ -982,30 +1050,43 @@
             width: 100%;
             padding: 10px 14px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-            color: #FFFFFF;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #1a1a1a;
             margin-bottom: 10px;
             font-size: 0.95rem;
         }
         .admin-panel .admin-form button {
-            background: var(--gold);
+            background: var(--primary);
             border: none;
             padding: 8px 18px;
             border-radius: 30px;
-            color: #000;
+            color: #fff;
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
         }
         .admin-panel .admin-form button:hover { transform: scale(1.03); }
 
-        /* ألوان مميزة لجداول لوحة التحكم */
         .admin-panel .table-gallery th { background: #8e44ad; }
         .admin-panel .table-players th { background: #2980b9; }
         .admin-panel .table-matches th { background: #e67e22; }
         .admin-panel .table-schedule th { background: #27ae60; }
-        .admin-panel .table-registrations th { background: #e74c3c; }
+        .admin-panel .table-registrations th { background: #c0392b; }
+        .admin-panel .table-talents th { background: #8e44ad; }
+
+        .admin-panel .print-btn {
+            background: #7f8c8d;
+            border: none;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .admin-panel .print-btn:hover { background: #95a5a6; }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -1049,21 +1130,21 @@
         @media (max-width: 1024px) {
             .hero h1 { font-size: 3.2rem; }
             .section-title { font-size: 2.2rem; }
+            .registration-wrapper .form-row { grid-template-columns: 1fr; }
         }
-
         @media (max-width: 850px) {
             .navbar {
-                padding: 12px 20px;
+                padding: 8px 16px;
                 background: rgba(13, 26, 13, 0.95);
-                backdrop-filter: blur(18px);
+                top: 50px;
             }
             .nav-links {
                 display: none;
                 flex-direction: column;
                 width: 100%;
                 text-align: center;
-                padding: 20px 0;
-                gap: 14px;
+                padding: 16px 0;
+                gap: 12px;
                 background: rgba(13, 26, 13, 0.98);
                 position: absolute;
                 top: 100%;
@@ -1072,31 +1153,30 @@
             }
             .nav-links.show { display: flex; }
             .menu-btn { display: block; }
-            .hero h1 { font-size: 2.4rem; }
+            .hero h1 { font-size: 2.2rem; }
             .hero p { font-size: 1rem; }
             .contact-grid { grid-template-columns: 1fr; }
             .registration-wrapper { padding: 24px; }
-            section { padding: 50px 0; }
-            .section-title { font-size: 1.8rem; }
+            section { padding: 40px 0; }
+            .section-title { font-size: 1.6rem; }
             .admin-panel { padding: 16px; }
-            .hero-stats { gap: 12px; }
-            .hero-stat { padding: 12px 18px; min-width: 80px; }
-            .hero-stat .number { font-size: 1.6rem; }
+            .breaking-news { font-size: 0.8rem; padding: 8px 12px; }
         }
-
         @media (max-width: 480px) {
-            .hero h1 { font-size: 1.8rem; }
-            .btn-primary,
-            .btn-gold,
-            .btn-outline {
-                padding: 10px 24px;
-                font-size: 0.85rem;
-            }
-            .hero-buttons { gap: 10px; }
+            .hero h1 { font-size: 1.7rem; }
+            .btn-primary, .btn-gold, .btn-outline { padding: 8px 20px; font-size: 0.85rem; }
+            .registration-wrapper .reg-header h2 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
+
+<!-- ===== شريط عاجل ===== -->
+<div class="breaking-news" id="breakingNews">
+    <i class="fas fa-bullhorn"></i>
+    <span>📢 تم افتتاح التسجيلات الصيفية لبرنامج الرائد للنخبة – سارع للتسجيل!</span>
+    <a href="#registration" class="btn-go"><i class="fas fa-arrow-left"></i> سجل الآن</a>
+</div>
 
 <!-- ===== HEADER ===== -->
 <header class="navbar" id="navbar">
@@ -1109,11 +1189,11 @@
         <li><a href="#home">الرئيسية</a></li>
         <li><a href="#about">عن الأكاديمية</a></li>
         <li><a href="#coaches">المدربون</a></li>
-        <li><a href="#players">اللاعبون</a></li>
+        <li><a href="#talents">الموهوبون</a></li>
         <li><a href="#gallery">المعرض</a></li>
         <li><a href="#schedule">جدول التدريبات</a></li>
         <li><a href="#matches">المباريات</a></li>
-        <li><a href="#registration">التسجيل</a></li>
+        <li><a href="#registration">التسجيل الصيفي</a></li>
         <li><a href="#contact">اتصل بنا</a></li>
         <li>
             <div class="lang-switch">
@@ -1121,7 +1201,7 @@
                 <button>EN</button>
             </div>
         </li>
-        <li><a href="#registration" class="btn-primary" style="padding:8px 24px; font-size:0.85rem;">سجل الآن</a></li>
+        <li><a href="#registration" class="btn-primary" style="padding:6px 20px; font-size:0.8rem;">سجل الآن</a></li>
     </ul>
 </header>
 
@@ -1158,7 +1238,7 @@
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== ABOUT ===== -->
@@ -1174,7 +1254,7 @@
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== COACHES ===== -->
@@ -1182,35 +1262,30 @@
     <div class="container">
         <h2 class="section-title">المدير <span>الفني</span></h2>
         <p class="section-subtitle">قيادة فنية وخبرة عالية لبناء جيل من الأبطال.</p>
-        <div class="coach-single" id="coachSingle">
+        <div class="coach-single">
             <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1df27a516344950ef0e2827829f4c77d7e759cac/file_000000007fd871f4b2e095dad086c8e3.png" alt="المدير الفني">
             <div class="info">
                 <h4>المدير الفني</h4>
                 <div class="role">مدرب وطني معتمد – UEFA B</div>
                 <div class="details">خبرة 15 سنة في تدريب الفئات العمرية، درب أكثر من 200 لاعب، وقاد فرقاً للفوز ببطولات وطنية.</div>
-                <div class="social">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
-<!-- ===== PLAYERS ===== -->
-<section id="players" class="section-dark">
+<!-- ===== TALENTS (الموهوبون) ===== -->
+<section id="talents" class="section-dark">
     <div class="container">
-        <h2 class="section-title">لاعبونا <span>الموهوبون</span></h2>
-        <p class="section-subtitle">نماذج من لاعبي أكاديمية الرائد الذين يبشرون بمستقبل كبير.</p>
-        <div class="players-grid" id="playersGrid"></div>
+        <h2 class="section-title">الموهوبون <span>في البرنامج</span></h2>
+        <p class="section-subtitle">قائمة اللاعبين الموهوبين المسجلين في برنامج الرائد للنخبة.</p>
+        <div class="players-grid" id="talentsGrid"></div>
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== GALLERY ===== -->
@@ -1222,7 +1297,7 @@
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== SCHEDULE ===== -->
@@ -1235,51 +1310,47 @@
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== MATCHES ===== -->
 <section id="matches" class="green-bg-animated">
     <div class="container">
         <h2 class="section-title">المباريات <span>الودية</span></h2>
-        <p class="section-subtitle">جميع المباريات الودية للفرق.</p>
+        <p class="section-subtitle">جميع المباريات الودية للفرق مع التفاصيل الكاملة.</p>
         <div id="matchesContainer"></div>
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
-<!-- ===== REGISTRATION ===== -->
+<!-- ===== REGISTRATION (تسجيلات الصيفية) ===== -->
 <section id="registration" class="section-dark">
     <div class="container">
-        <h2 class="section-title">سجل <span>الآن</span></h2>
-        <p class="section-subtitle">انضم إلى أكاديمية الرائد وكن جزءاً من مستقبل كرة القدم الجزائرية.</p>
-        <div class="registration-wrapper" id="registrationWrapper">
+        <div class="registration-wrapper">
+            <div class="reg-header">
+                <img src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/4f3f47af840a60ac670ec5cc6a617b559333ca49/1000015619-removebg-preview.png" alt="شعار البرنامج الصيفي">
+                <h2>تسجيلات الصيفية لبرنامج الرائد للنخبة</h2>
+                <p>سجل الآن وانضم إلى النخبة – موسم 2026</p>
+            </div>
             <form id="registrationForm">
-                <div class="form-group"><label>الاسم الكامل للاعب</label><input type="text" id="regFullName" placeholder="مثال: أحمد بن سليمان" required></div>
-                <div class="form-group"><label>تاريخ الميلاد</label><input type="date" id="regBirthDate" required></div>
-                <div class="form-group"><label>الفئة العمرية</label>
-                    <select id="regCategory">
-                        <option value="U6">U6 (6-7 سنوات)</option>
-                        <option value="U8">U8 (8-9 سنوات)</option>
-                        <option value="U10">U10 (10-11 سنوات)</option>
-                        <option value="U12">U12 (12-13 سنوات)</option>
-                        <option value="U14">U14 (14-15 سنوات)</option>
-                        <option value="U16">U16 (16-17 سنوات)</option>
-                        <option value="U18">U18 (18-19 سنوات)</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group"><label>الاسم</label><input type="text" id="regFirstName" placeholder="مثال: أحمد" required></div>
+                    <div class="form-group"><label>اللقب</label><input type="text" id="regLastName" placeholder="مثال: بن سليمان" required></div>
                 </div>
-                <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="regPhone" placeholder="05XXXXXXXX"></div>
-                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="regEmail" placeholder="example@email.com"></div>
-                <div class="form-group"><label>ملاحظات إضافية</label><textarea id="regNotes" placeholder="أي معلومات إضافية تود إخبارنا بها..."></textarea></div>
-                <button type="submit" class="btn-primary" style="width:100%; padding:16px;">إرسال طلب التسجيل</button>
+                <div class="form-row">
+                    <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="regPhone" placeholder="05XXXXXXXX" required></div>
+                    <div class="form-group"><label>العنوان</label><input type="text" id="regAddress" placeholder="المدينة، الحي" required></div>
+                </div>
+                <div class="form-group"><label>تاريخ ومكان الميلاد</label><input type="text" id="regBirth" placeholder="مثال: 01-01-2010، الجزائر" required></div>
+                <button type="submit" class="btn-gold" style="width:100%; padding:16px; font-size:1.1rem;">تسجيل</button>
             </form>
         </div>
     </div>
 </section>
 
-<!-- ===== SECTION DIVIDER ===== -->
+<!-- ===== DIVIDER ===== -->
 <div class="section-divider"></div>
 
 <!-- ===== CONTACT ===== -->
@@ -1313,16 +1384,23 @@
     </div>
 </section>
 
-<!-- ===== POPUP NOTIFICATION ===== -->
-<div class="popup-overlay" id="popupOverlay">
+<!-- ===== POPUP تأكيد التسجيل ===== -->
+<div class="popup-overlay" id="confirmPopup">
     <div class="popup-box">
-        <i class="fas fa-bell"></i>
-        <h3>📢 تنبيه هام</h3>
-        <p>
-            يرجى الاشتراك في الموقع عن طريق مؤسسة <span class="highlight-text">Mohamed</span><br>
-            حتى يتم تزويدكم بصلاحية نشره واستخدامه.
-        </p>
-        <button class="popup-close" onclick="closePopup()">حسناً، فهمت</button>
+        <i class="fas fa-check-circle"></i>
+        <h3>✅ تم التسجيل بنجاح</h3>
+        <div class="info-grid" id="confirmInfo"></div>
+        <button class="popup-close" onclick="closeConfirmPopup()">حسناً</button>
+    </div>
+</div>
+
+<!-- ===== POPUP منع إعادة التسجيل ===== -->
+<div class="popup-overlay" id="blockPopup">
+    <div class="popup-box">
+        <i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i>
+        <h3>⚠️ عذراً</h3>
+        <p style="color:var(--gray-light); font-size:1.1rem;">أنت مسجل من قبل، لا يمكنك إعادة التسجيل من هذا الجهاز.</p>
+        <button class="popup-close" onclick="closeBlockPopup()">فهمت</button>
     </div>
 </div>
 
@@ -1335,31 +1413,31 @@
         <button class="close-admin" id="closeAdmin"><i class="fas fa-times"></i> إغلاق</button>
         <h2>🔐 لوحة تحكم المسؤول</h2>
         <div id="adminLogin" style="text-align:center; margin-bottom:20px;">
-            <input type="password" id="adminPassInput" placeholder="أدخل كلمة السر" style="padding:10px 20px; border-radius:60px; border:1px solid var(--gold); background:rgba(0,0,0,0.3); color:#fff; width:240px; font-size:1rem;">
-            <button onclick="adminLogin()" style="background:var(--gold); border:none; padding:10px 22px; border-radius:60px; color:#000; font-weight:700; cursor:pointer; font-size:1rem;">دخول</button>
+            <input type="password" id="adminPassInput" placeholder="أدخل كلمة السر" style="padding:10px 20px; border-radius:60px; border:1px solid var(--primary); background:#fff; color:#1a1a1a; width:240px; font-size:1rem;">
+            <button onclick="adminLogin()" style="background:var(--primary); border:none; padding:10px 22px; border-radius:60px; color:#fff; font-weight:700; cursor:pointer; font-size:1rem;">دخول</button>
             <div id="adminLoginError" style="color:red; margin-top:8px; display:none;">❌ كلمة سر غير صحيحة</div>
         </div>
         <div id="adminContent" style="display:none;">
             <div class="admin-stats" id="adminStats"></div>
 
-            <!-- طلبات التسجيل -->
+            <!-- طلبات التسجيل الصيفي -->
             <div class="admin-section">
-                <h3>📋 طلبات التسجيل</h3>
+                <h3>📋 طلبات التسجيل الصيفي</h3>
                 <div class="admin-table-wrap">
                     <table class="table-registrations">
-                        <thead><tr><th>#</th><th>الاسم</th><th>تاريخ الميلاد</th><th>الفئة</th><th>الهاتف</th><th>البريد</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
+                        <thead><tr><th>#</th><th>الاسم</th><th>اللقب</th><th>الهاتف</th><th>العنوان</th><th>الميلاد</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
                         <tbody id="adminRegistrations"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- اللاعبون المعتمدون -->
+            <!-- قائمة الموهوبون (برنامج النخبة) -->
             <div class="admin-section">
-                <h3>👕 قائمة اللاعبين المعتمدين</h3>
-                <div class="admin-table-wrap">
-                    <table class="table-players">
-                        <thead><tr><th>#</th><th>الاسم</th><th>الفئة</th><th>الهاتف</th><th>حذف</th></tr></thead>
-                        <tbody id="adminPlayersList"></tbody>
+                <h3>⭐ قائمة الموهوبون (برنامج الرائد للنخبة) <button class="print-btn" onclick="printTalents()"><i class="fas fa-print"></i> طباعة</button></h3>
+                <div class="admin-table-wrap" id="talentsTableWrap">
+                    <table class="table-talents" id="talentsTable">
+                        <thead><tr><th>#</th><th>الاسم</th><th>اللقب</th><th>الهاتف</th><th>العنوان</th><th>الميلاد</th><th>تاريخ القبول</th><th>حذف</th></tr></thead>
+                        <tbody id="adminTalentsList"></tbody>
                     </table>
                 </div>
             </div>
@@ -1380,9 +1458,9 @@
                 </div>
             </div>
 
-            <!-- إدارة جدول التدريبات -->
+            <!-- جدول التدريبات الأسبوعي -->
             <div class="admin-section">
-                <h3>📅 جدول التدريبات</h3>
+                <h3>📅 جدول التدريبات الأسبوعي</h3>
                 <div class="admin-table-wrap">
                     <table class="table-schedule">
                         <thead><tr><th>#</th><th>الفئة</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th><th>حذف</th></tr></thead>
@@ -1390,29 +1468,30 @@
                     </table>
                 </div>
                 <div class="admin-form" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-                    <input type="text" id="newScheduleCategory" placeholder="الفئة (مثال: تحت 16 سنة)" style="flex:1; min-width:120px;">
-                    <input type="text" id="newScheduleSat" placeholder="السبت" style="flex:1; min-width:100px;">
-                    <input type="text" id="newScheduleSun" placeholder="الأحد" style="flex:1; min-width:100px;">
-                    <input type="text" id="newScheduleTue" placeholder="الثلاثاء" style="flex:1; min-width:100px;">
-                    <input type="text" id="newScheduleThu" placeholder="الخميس" style="flex:1; min-width:100px;">
+                    <input type="text" id="newScheduleCategory" placeholder="الفئة" style="flex:1; min-width:100px;">
+                    <input type="text" id="newScheduleSat" placeholder="السبت" style="flex:1; min-width:80px;">
+                    <input type="text" id="newScheduleSun" placeholder="الأحد" style="flex:1; min-width:80px;">
+                    <input type="text" id="newScheduleTue" placeholder="الثلاثاء" style="flex:1; min-width:80px;">
+                    <input type="text" id="newScheduleThu" placeholder="الخميس" style="flex:1; min-width:80px;">
                     <button onclick="addScheduleRow()">إضافة صف</button>
                 </div>
                 <button onclick="saveScheduleAdmin()" style="background:var(--primary); border:none; padding:8px 18px; border-radius:30px; color:#fff; font-weight:700; cursor:pointer; margin-top:10px;">💾 حفظ الجدول</button>
             </div>
 
-            <!-- إدارة المباريات -->
+            <!-- المباريات الودية -->
             <div class="admin-section">
-                <h3>⚽ إدارة المباريات الودية</h3>
+                <h3>⚽ المباريات الودية</h3>
                 <div class="admin-table-wrap">
                     <table class="table-matches">
-                        <thead><tr><th>#</th><th>الخصم</th><th>التاريخ</th><th>المكان</th><th>حذف</th></tr></thead>
+                        <thead><tr><th>#</th><th>الخصم</th><th>التاريخ</th><th>الوقت</th><th>الملعب</th><th>حذف</th></tr></thead>
                         <tbody id="adminMatchesList"></tbody>
                     </table>
                 </div>
                 <div class="admin-form" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-                    <input type="text" id="newMatchOpponent" placeholder="اسم الخصم" style="flex:1; min-width:120px;">
-                    <input type="text" id="newMatchDate" placeholder="التاريخ" style="flex:1; min-width:120px;">
-                    <input type="text" id="newMatchLocation" placeholder="المكان" style="flex:1; min-width:120px;">
+                    <input type="text" id="newMatchOpponent" placeholder="الخصم" style="flex:1; min-width:100px;">
+                    <input type="text" id="newMatchDate" placeholder="التاريخ" style="flex:1; min-width:100px;">
+                    <input type="text" id="newMatchTime" placeholder="الوقت" style="flex:1; min-width:80px;">
+                    <input type="text" id="newMatchLocation" placeholder="الملعب" style="flex:1; min-width:100px;">
                     <button onclick="addMatch()">إضافة مباراة</button>
                 </div>
                 <button onclick="saveMatchesAdmin()" style="background:var(--primary); border:none; padding:8px 18px; border-radius:30px; color:#fff; font-weight:700; cursor:pointer; margin-top:10px;">💾 حفظ المباريات</button>
@@ -1422,7 +1501,7 @@
             <div class="admin-section">
                 <h3>🔑 تغيير كلمة السر</h3>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                    <input type="password" id="newAdminPass" placeholder="كلمة سر جديدة" style="padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff; width:200px;">
+                    <input type="password" id="newAdminPass" placeholder="كلمة سر جديدة" style="padding:10px; border-radius:12px; border:1px solid #ccc; background:#fff; color:#1a1a1a; width:200px;">
                     <button onclick="changeAdminPassword()" style="background:var(--gold); border:none; padding:8px 20px; border-radius:30px; color:#000; font-weight:700; cursor:pointer;">تغيير</button>
                 </div>
             </div>
@@ -1445,7 +1524,7 @@
             <a href="#home">الرئيسية</a>
             <a href="#about">عن الأكاديمية</a>
             <a href="#coaches">المدربون</a>
-            <a href="#registration">التسجيل</a>
+            <a href="#registration">التسجيل الصيفي</a>
         </div>
         <div class="footer-col">
             <h4>تواصل معنا</h4>
@@ -1467,7 +1546,7 @@
 <!-- ===== SCRIPTS ===== -->
 <script>
     // ================================================================
-    // 1. إعدادات Firebase (المقدمة من المستخدم)
+    // 1. إعدادات Firebase
     // ================================================================
     const firebaseConfig = {
         apiKey: "AIzaSyCDrCtY7weMKAfWQq1k3Hx9hx1PPWa4XAE",
@@ -1478,10 +1557,9 @@
         appId: "1:205174400637:web:33c0bb5e284457b34b3314"
     };
 
-    // تهيئة Firebase
     try {
         firebase.initializeApp(firebaseConfig);
-        console.log('✅ Firebase initialized successfully');
+        console.log('✅ Firebase initialized');
     } catch (e) {
         console.error('❌ Firebase init error:', e);
     }
@@ -1490,14 +1568,6 @@
     // ================================================================
     // 2. البيانات الافتراضية (في حال عدم وجود بيانات في Firebase)
     // ================================================================
-    const defaultPlayers = [
-        { id: 1, name: 'ياسين بن عمار', category: 'U16', phone: '0555123456', image: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg' },
-        { id: 2, name: 'أحمد زروقي', category: 'U16', phone: '0555234567', image: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg' },
-        { id: 3, name: 'سفيان بن سالم', category: 'U15', phone: '0555345678', image: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg' },
-        { id: 4, name: 'مهدي شريف', category: 'U14', phone: '0555456789', image: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg' },
-        { id: 5, name: 'محمد لعروسي', category: 'U13', phone: '0555567890', image: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg' }
-    ];
-
     const defaultGallery = [
         { id: 1, title: 'تدريبات الفريق الأول', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg' },
         { id: 2, title: 'تمارين تكتيكية', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg' },
@@ -1510,12 +1580,12 @@
     ];
 
     const defaultSchedule = [
-        { id: 1, category: 'تحت 16 سنة', sat: '—', sun: '—', tue: '—', thu: '—' },
-        { id: 2, category: 'تحت 15 سنة', sat: '—', sun: '—', tue: '—', thu: '—' },
-        { id: 3, category: 'تحت 14 سنة', sat: '—', sun: '—', tue: '—', thu: '—' },
-        { id: 4, category: 'تحت 13 سنة', sat: '—', sun: '—', tue: '—', thu: '—' },
-        { id: 5, category: 'تحت 12 سنة', sat: '—', sun: '—', tue: '—', thu: '—' },
-        { id: 6, category: 'تحت 11 سنة', sat: '—', sun: '—', tue: '—', thu: '—' }
+        { id: 1, category: 'تحت 11 سنة', sat: '—', sun: '16:00-17:30', tue: '—', thu: '16:00-17:30' },
+        { id: 2, category: 'تحت 12 سنة', sat: '—', sun: '—', tue: '16:00-17:30', thu: '—' },
+        { id: 3, category: 'تحت 13 سنة', sat: '16:00-17:30', sun: '—', tue: '—', thu: '17:30-19:00' },
+        { id: 4, category: 'تحت 14 سنة', sat: '—', sun: '17:30-19:00', tue: '—', thu: '—' },
+        { id: 5, category: 'تحت 15 سنة', sat: '17:30-19:00', sun: '—', tue: '17:30-19:00', thu: '—' },
+        { id: 6, category: 'تحت 16 سنة', sat: '—', sun: '19:00-20:30', tue: '19:00-20:30', thu: '—' }
     ];
 
     const defaultMatches = [];
@@ -1524,32 +1594,28 @@
     // 3. الحالة العامة للتطبيق
     // ================================================================
     let appData = {
-        players: [],
         gallery: [],
         schedule: [],
         matches: [],
+        talents: [],      // الموهوبون (برنامج النخبة)
         registrations: [] // سيتم جلبها بشكل منفصل
     };
 
     // ================================================================
-    // 4. دوال مساعدة للقراءة والكتابة من/إلى Firebase + LocalStorage
+    // 4. دوال مساعدة للقراءة والكتابة من/إلى Firebase (بدون LocalStorage)
     // ================================================================
     function saveToFirebase(path, data) {
         return database.ref(path).set(data)
             .then(() => console.log(`✅ تم حفظ ${path}`))
-            .catch(err => {
-                console.warn(`⚠️ فشل حفظ ${path}، تخزين محلي:`, err);
-                localStorage.setItem('fb_' + path.replace(/\//g, '_'), JSON.stringify(data));
-            });
+            .catch(err => console.error(`❌ فشل حفظ ${path}:`, err));
     }
 
     function getFromFirebase(path) {
         return database.ref(path).once('value')
             .then(snapshot => snapshot.val())
             .catch(err => {
-                console.warn(`⚠️ فشل جلب ${path}، استخدام محلي:`, err);
-                const local = localStorage.getItem('fb_' + path.replace(/\//g, '_'));
-                return local ? JSON.parse(local) : null;
+                console.error(`❌ فشل جلب ${path}:`, err);
+                return null;
             });
     }
 
@@ -1558,64 +1624,53 @@
     // ================================================================
     async function loadAllData() {
         try {
-            const [players, gallery, schedule, matches] = await Promise.all([
-                getFromFirebase('raedData/players'),
+            const [gallery, schedule, matches, talents] = await Promise.all([
                 getFromFirebase('raedData/gallery'),
                 getFromFirebase('raedData/schedule'),
-                getFromFirebase('raedData/matches')
+                getFromFirebase('raedData/matches'),
+                getFromFirebase('raedData/talents')
             ]);
 
-            appData.players = players || defaultPlayers;
             appData.gallery = gallery || defaultGallery;
             appData.schedule = schedule || defaultSchedule;
             appData.matches = matches || defaultMatches;
+            appData.talents = talents || [];
 
-            // حفظ البيانات الافتراضية في Firebase إذا كانت فارغة
-            if (!players) await saveToFirebase('raedData/players', appData.players);
             if (!gallery) await saveToFirebase('raedData/gallery', appData.gallery);
             if (!schedule) await saveToFirebase('raedData/schedule', appData.schedule);
             if (!matches) await saveToFirebase('raedData/matches', appData.matches);
+            if (!talents) await saveToFirebase('raedData/talents', appData.talents);
 
             console.log('✅ تم تحميل جميع البيانات من Firebase');
         } catch (error) {
             console.error('❌ خطأ في تحميل البيانات:', error);
-            // استخدام البيانات المحلية إذا وجدت
-            const localPlayers = localStorage.getItem('fb_raedData_players');
-            const localGallery = localStorage.getItem('fb_raedData_gallery');
-            const localSchedule = localStorage.getItem('fb_raedData_schedule');
-            const localMatches = localStorage.getItem('fb_raedData_matches');
-            if (localPlayers) appData.players = JSON.parse(localPlayers);
-            if (localGallery) appData.gallery = JSON.parse(localGallery);
-            if (localSchedule) appData.schedule = JSON.parse(localSchedule);
-            if (localMatches) appData.matches = JSON.parse(localMatches);
         }
     }
 
     // ================================================================
-    // 6. دوال عرض البيانات (Render)
+    // 6. دوال عرض البيانات
     // ================================================================
-    function renderPlayers() {
-        const container = document.getElementById('playersGrid');
+    function renderTalents() {
+        const container = document.getElementById('talentsGrid');
         if (!container) return;
         container.innerHTML = '';
-        if (!appData.players || appData.players.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا يوجد لاعبون مسجلون حالياً.</p>';
+        if (!appData.talents || appData.talents.length === 0) {
+            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا يوجد موهوبون مسجلون حالياً.</p>';
             return;
         }
-        appData.players.forEach(p => {
+        appData.talents.forEach(p => {
             const div = document.createElement('div');
             div.className = 'player-card';
             div.innerHTML = `
-                <img src="${p.image || 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Player'}" alt="${p.name}" loading="lazy">
+                <img src="${p.image || 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Talent'}" alt="${p.firstName} ${p.lastName}" loading="lazy">
                 <div class="info">
-                    <h4>${p.name}</h4>
-                    <div class="role">${p.category || 'فئة'}</div>
+                    <h4>${p.firstName} ${p.lastName}</h4>
+                    <div class="role">${p.category || 'برنامج النخبة'}</div>
                 </div>
             `;
             container.appendChild(div);
         });
-        // تحديث الإحصائيات
-        document.getElementById('statPlayers').textContent = '+' + appData.players.length;
+        document.getElementById('statPlayers').textContent = '+' + appData.talents.length;
     }
 
     function renderGallery() {
@@ -1623,7 +1678,7 @@
         if (!container) return;
         container.innerHTML = '';
         if (!appData.gallery || appData.gallery.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد صور في المعرض.</p>';
+            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد صور.</p>';
             return;
         }
         appData.gallery.forEach(item => {
@@ -1641,11 +1696,11 @@
         const container = document.getElementById('scheduleWrapper');
         if (!container) return;
         if (!appData.schedule || appData.schedule.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد بيانات جدول تدريبات.</p>';
+            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد بيانات جدول.</p>';
             return;
         }
         let html = `<table class="schedule-table">
-            <thead><tr><th>الفئة العمرية</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr></thead>
+            <thead><tr><th>الفئة</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr></thead>
             <tbody>`;
         appData.schedule.forEach(row => {
             html += `<tr>
@@ -1665,10 +1720,10 @@
         if (!container) return;
         if (!appData.matches || appData.matches.length === 0) {
             container.innerHTML = `
-                <div class="matches-empty">
-                    <i class="fas fa-calendar-alt"></i>
-                    <h3>لا يوجد مباريات ودية حالياً</h3>
-                    <p>سيتم الإعلان عن المباريات القادمة فور اعتماد الجدول الزمني.</p>
+                <div class="matches-empty" style="text-align:center; padding:40px; background:var(--dark-card); border-radius:var(--radius); border:2px dashed rgba(0,115,63,0.3);">
+                    <i class="fas fa-calendar-alt" style="font-size:3rem; color:var(--gold); opacity:0.5;"></i>
+                    <h3 style="color:#FFFFFF; margin-top:10px;">لا توجد مباريات ودية حالياً</h3>
+                    <p style="color:var(--gray-light); opacity:0.6;">سيتم الإعلان عن المباريات القادمة فور اعتماد الجدول الزمني.</p>
                 </div>
             `;
             document.getElementById('statMatches').textContent = '+0';
@@ -1681,8 +1736,9 @@
                     <div class="academy-name">⭐ أكاديمية الرائد</div>
                     <div class="vs">VS</div>
                     <div class="opponent">${m.opponent || 'خصم'}</div>
-                    <div class="match-date">📅 ${m.date || 'تاريخ'}</div>
-                    <div class="match-location">📍 ${m.location || 'مكان'}</div>
+                    <div class="match-detail"><i class="fas fa-calendar-alt"></i> ${m.date || 'تاريخ'}</div>
+                    <div class="match-detail"><i class="fas fa-clock"></i> ${m.time || 'الوقت'}</div>
+                    <div class="match-detail"><i class="fas fa-map-marker-alt"></i> ${m.location || 'الملعب'}</div>
                     <span class="match-badge">⚽ مباراة ودية</span>
                 </div>
             `;
@@ -1693,10 +1749,10 @@
     }
 
     // ================================================================
-    // 7. دوال لوحة التحكم (Admin)
+    // 7. دوال لوحة التحكم
     // ================================================================
     const ADMIN_PASSWORD_KEY = 'raed_admin_pass';
-    let adminPassword = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'admin2025';
+    let adminPassword = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'raed92';
     let adminLoggedIn = false;
 
     window.adminLogin = function() {
@@ -1713,7 +1769,7 @@
     };
 
     function renderAdminDashboard() {
-        // عرض الإحصائيات
+        // إحصائيات
         getRegistrations((registrations) => {
             const pending = registrations.filter(r => r.status === 'pending').length;
             const approved = registrations.filter(r => r.status === 'approved').length;
@@ -1721,14 +1777,14 @@
                 <div class="admin-stat"><div class="num">${registrations.length}</div><div class="label">إجمالي الطلبات</div></div>
                 <div class="admin-stat"><div class="num" style="color:#f39c12;">${pending}</div><div class="label">في الانتظار</div></div>
                 <div class="admin-stat"><div class="num" style="color:#2ecc71;">${approved}</div><div class="label">معتمدين</div></div>
-                <div class="admin-stat"><div class="num">${appData.players.length}</div><div class="label">اللاعبون</div></div>
+                <div class="admin-stat"><div class="num">${appData.talents.length}</div><div class="label">الموهوبون</div></div>
                 <div class="admin-stat"><div class="num">${appData.gallery.length}</div><div class="label">الصور</div></div>
                 <div class="admin-stat"><div class="num">${appData.matches.length}</div><div class="label">المباريات</div></div>
             `;
         });
 
         renderAdminRegistrations();
-        renderAdminPlayersList();
+        renderAdminTalentsList();
         renderAdminGalleryList();
         renderAdminScheduleList();
         renderAdminMatchesList();
@@ -1744,18 +1800,18 @@
                 const statusClass = reg.status === 'approved' ? 'approved' : 'pending';
                 const statusText = reg.status === 'approved' ? '✔ معتمد' : '⏳ قيد الانتظار';
                 row.insertCell(0).innerText = idx + 1;
-                row.insertCell(1).innerText = reg.fullName || '';
-                row.insertCell(2).innerText = reg.birthDate || '';
-                row.insertCell(3).innerText = reg.category || '';
-                row.insertCell(4).innerText = reg.phone || '';
-                row.insertCell(5).innerText = reg.email || '';
+                row.insertCell(1).innerText = reg.firstName || '';
+                row.insertCell(2).innerText = reg.lastName || '';
+                row.insertCell(3).innerText = reg.phone || '';
+                row.insertCell(4).innerText = reg.address || '';
+                row.insertCell(5).innerText = reg.birth || '';
                 row.insertCell(6).innerText = reg.date || '';
                 row.insertCell(7).innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
                 const actions = row.insertCell(8);
                 if (reg.status === 'pending') {
                     actions.innerHTML = `
-                        <button class="btn-sm btn-sm-success" onclick="approveRegistration('${reg.id}')">✔ اعتماد</button>
-                        <button class="btn-sm btn-sm-danger" onclick="deleteRegistrationHandler('${reg.id}')">✕</button>
+                        <button class="btn-sm btn-sm-success" onclick="approveRegistration('${reg.id}')">✔ قبول</button>
+                        <button class="btn-sm btn-sm-danger" onclick="rejectRegistration('${reg.id}')">✕ رفض</button>
                     `;
                 } else {
                     actions.innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteRegistrationHandler('${reg.id}')">✕</button>`;
@@ -1765,7 +1821,7 @@
     }
 
     function getRegistrations(callback) {
-        database.ref('raedData/registrations').orderByChild('timestamp').once('value')
+        database.ref('raedData/registrationsSummer').orderByChild('timestamp').once('value')
             .then(snapshot => {
                 const data = snapshot.val();
                 const registrations = [];
@@ -1775,417 +1831,427 @@
                 callback(registrations);
             })
             .catch(err => {
-                console.warn('⚠️ فشل جلب التسجيلات، استخدام محلي:', err);
-                const local = JSON.parse(localStorage.getItem('fb_raedData_registrations')) || [];
-                callback(local);
+                console.error('❌ فشل جلب التسجيلات:', err);
+                callback([]);
             });
     }
 
     function saveRegistrationToFirebase(regData) {
-        return database.ref('raedData/registrations').push(regData)
+        return database.ref('raedData/registrationsSummer').push(regData)
             .then(() => console.log('✅ تم حفظ التسجيل'))
-            .catch(err => {
-                console.warn('⚠️ فشل حفظ التسجيل، تخزين محلي:', err);
-                let local = JSON.parse(localStorage.getItem('fb_raedData_registrations')) || [];
-                local.push({ ...regData, id: Date.now().toString() });
-                localStorage.setItem('fb_raedData_registrations', JSON.stringify(local));
-            });
+            .catch(err => console.error('❌ فشل حفظ التسجيل:', err));
     }
 
     window.approveRegistration = function(id) {
-        if (!confirm('هل تريد اعتماد هذا الطلب؟')) return;
-        // جلب بيانات الطلب
-        database.ref('raedData/registrations/' + id).once('value')
+        if (!confirm('هل تريد قبول هذا الطلب وإضافته إلى قائمة الموهوبون؟')) return;
+        database.ref('raedData/registrationsSummer/' + id).once('value')
             .then(snapshot => {
                 const reg = snapshot.val();
                 if (reg) {
-                    // تحديث الحالة إلى approved
-                    database.ref('raedData/registrations/' + id).update({ status: 'approved' })
+                    database.ref('raedData/registrationsSummer/' + id).update({ status: 'approved' })
                         .then(() => {
-                            // إضافة اللاعب إلى قائمة اللاعبين
-                            const newPlayer = {
+                            // إضافة إلى قائمة الموهوبون
+                            const talent = {
                                 id: Date.now(),
-                                name: reg.fullName,
-                                category: reg.category,
+                                firstName: reg.firstName,
+                                lastName: reg.lastName,
                                 phone: reg.phone,
-                                image: 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Player'
+                                address: reg.address,
+                                birth: reg.birth,
+                                category: 'برنامج النخبة',
+                                image: 'https://via.placeholder.com/300x260/1A3A22/FFFFFF?text=Talent',
+                                approvedDate: new Date().toLocaleString('ar-EG')
                             };
-                            appData.players.push(newPlayer);
-                            saveToFirebase('raedData/players', appData.players)
+                            appData.talents.push(talent);
+                            saveToFirebase('raedData/talents', appData.talents)
                                 .then(() => {
-                                    renderPlayers();
+                                    renderTalents();
                                     renderAdminDashboard();
-                                    alert('✅ تم اعتماد الطلب وإضافة اللاعب بنجاح');
+                                    alert('✅ تم قبول الطلب وإضافته إلى قائمة الموهوبون');
                                 });
                         });
                 }
             });
     };
 
+    window.rejectRegistration = function(id) {
+        if (!confirm('هل تريد رفض هذا الطلب؟')) return;
+        database.ref('raedData/registrationsSummer/' + id).update({ status: 'rejected' })
+            .then(() => renderAdminDashboard());
+    };
+
     window.deleteRegistrationHandler = function(id) {
         if (!confirm('هل تريد حذف هذا الطلب؟')) return;
-        database.ref('raedData/registrations/' + id).remove()
-            .then(() => {
-                renderAdminDashboard();
-            })
-            .catch(err => {
-                console.warn('⚠️ فشل الحذف من Firebase، حذف محلي:', err);
-                let local = JSON.parse(localStorage.getItem('fb_raedData_registrations')) || [];
-                local = local.filter(item => item.id != id);
-                localStorage.setItem('fb_raedData_registrations', JSON.stringify(local));
-                renderAdminDashboard();
-            });
+        database.ref('raedData/registrationsSummer/' + id).remove()
+            .then(() => renderAdminDashboard())
+            .catch(err => console.error('❌ فشل الحذف:', err));
     };
 
-    // --- اللاعبون المعتمدون ---
-    function renderAdminPlayersList() {
-        const tbody = document.getElementById('adminPlayersList');
+    // --- قائمة الموهوبون ---
+    function renderAdminTalentsList() {
+        const tbody = document.getElementById('adminTalentsList');
         tbody.innerHTML = '';
-        appData.players.forEach((p, idx) => {
+        appData.talents.forEach((t, idx) => {
             const row = tbody.insertRow();
             row.insertCell(0).innerText = idx + 1;
-            row.insertCell(1).innerText = p.name || '';
-            row.insertCell(2).innerText = p.category || '';
-            row.insertCell(3).innerText = p.phone || '';
-            row.insertCell(4).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deletePlayerAdmin(${idx})">✕</button>`;
+            row.insertCell(1).innerText = t.firstName || '';
+            row.insertCell(2).innerText = t.lastName || '';
+            row.insertCell(3).innerText = t.phone || '';
+            row.insertCell(4).innerText = t.address || '';
+            row.insertCell(5).innerText = t.birth || '';
+            row.insertCell(6).innerText = t.approvedDate || '';
+            row.insertCell(7).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteTalentAdmin(${idx})">✕</button>`;
         });
     }
 
-    window.deletePlayerAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذا اللاعب؟')) return;
-        appData.players.splice(idx, 1);
-        saveToFirebase('raedData/players', appData.players)
+    window.deleteTalentAdmin = function(idx) {
+        if (!confirm('هل تريد حذف هذا الموهوب؟')) return;
+        appData.talents.splice(idx, 1);
+        saveToFirebase('raedData/talents', appData.talents)
             .then(() => {
-                renderPlayers();
+                renderTalents();
                 renderAdminDashboard();
             });
     };
 
-    // --- المعرض ---
-    function renderAdminGalleryList() {
-        const tbody = document.getElementById('adminGalleryList');
-        tbody.innerHTML = '';
-        appData.gallery.forEach((item, idx) => {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = idx + 1;
-            row.insertCell(1).innerText = item.title || '';
-            row.insertCell(2).innerHTML = `<a href="${item.url}" target="_blank" style="color:var(--gold);">رابط</a>`;
-            row.insertCell(3).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteGalleryAdmin(${idx})">✕</button>`;
-        });
-    }
+    window.printTalents = function() {
+        const content = document.getElementById('talentsTableWrap').innerHTML;
+        const win = window.open('', '_blank');
+        win.document.write(`
+            <html dir="rtl"><head><title>قائمة الموهوبون</title>
+            <style>body{font-family:'Cairo',sans-serif;padding:20px;} table{width:100%;border-collapse:collapse;} th,td{border:1px solid #ddd;padding:8px;text-align:center;} th{background:#8e44ad;color:#fff;}
+</style></head>
+<body><h2 style="text-align:center;">⭐ قائمة الموهوبون - برنامج الرائد للنخبة</h2>${content}</body></html>
+`);
+win.document.close();
+win.print();
+};
 
-    window.addGalleryItem = function() {
-        const title = document.getElementById('newGalleryTitle').value.trim();
-        const url = document.getElementById('newGalleryUrl').value.trim();
-        if (!title || !url) { alert('الرجاء إدخال عنوان ورابط الصورة'); return; }
-        appData.gallery.push({ id: Date.now(), title, url });
-        saveToFirebase('raedData/gallery', appData.gallery)
-            .then(() => {
-                renderGallery();
-                renderAdminDashboard();
-                document.getElementById('newGalleryTitle').value = '';
-                document.getElementById('newGalleryUrl').value = '';
-            });
-    };
+// --- إدارة المعرض ---
+function renderAdminGalleryList() {
+const tbody = document.getElementById('adminGalleryList');
+tbody.innerHTML = '';
+appData.gallery.forEach((item, idx) => {
+const row = tbody.insertRow();
+row.insertCell(0).innerText = idx + 1;
+row.insertCell(1).innerText = item.title || '';
+row.insertCell(2).innerHTML = `<a href="${item.url}" target="_blank" style="color:var(--primary);">رابط</a>`;
+row.insertCell(3).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteGalleryAdmin(${idx})">✕</button>`;
+});
+}
 
-    window.deleteGalleryAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذه الصورة؟')) return;
-        appData.gallery.splice(idx, 1);
-        saveToFirebase('raedData/gallery', appData.gallery)
-            .then(() => {
-                renderGallery();
-                renderAdminDashboard();
-            });
-    };
+window.addGalleryItem = function() {
+const title = document.getElementById('newGalleryTitle').value.trim();
+const url = document.getElementById('newGalleryUrl').value.trim();
+if (!title || !url) { alert('الرجاء إدخال عنوان ورابط الصورة'); return; }
+appData.gallery.push({ id: Date.now(), title, url });
+saveToFirebase('raedData/gallery', appData.gallery)
+.then(() => {
+renderGallery();
+renderAdminDashboard();
+document.getElementById('newGalleryTitle').value = '';
+document.getElementById('newGalleryUrl').value = '';
+});
+};
 
-    // --- جدول التدريبات ---
-    function renderAdminScheduleList() {
-        const tbody = document.getElementById('adminScheduleList');
-        tbody.innerHTML = '';
-        appData.schedule.forEach((row, idx) => {
-            const tr = tbody.insertRow();
-            tr.insertCell(0).innerText = idx + 1;
-            tr.insertCell(1).innerHTML = `<input value="${row.category}" data-idx="${idx}" data-field="category" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            tr.insertCell(2).innerHTML = `<input value="${row.sat || ''}" data-idx="${idx}" data-field="sat" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            tr.insertCell(3).innerHTML = `<input value="${row.sun || ''}" data-idx="${idx}" data-field="sun" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            tr.insertCell(4).innerHTML = `<input value="${row.tue || ''}" data-idx="${idx}" data-field="tue" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            tr.insertCell(5).innerHTML = `<input value="${row.thu || ''}" data-idx="${idx}" data-field="thu" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            tr.insertCell(6).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteScheduleAdmin(${idx})">✕</button>`;
-        });
+window.deleteGalleryAdmin = function(idx) {
+if (!confirm('هل تريد حذف هذه الصورة؟')) return;
+appData.gallery.splice(idx, 1);
+saveToFirebase('raedData/gallery', appData.gallery)
+.then(() => {
+renderGallery();
+renderAdminDashboard();
+});
+};
 
-        // مستمعات التغيير للحفظ التلقائي
-        document.querySelectorAll('.schedule-edit-input').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.dataset.idx);
-                const field = this.dataset.field;
-                appData.schedule[idx][field] = this.value;
-                saveToFirebase('raedData/schedule', appData.schedule)
-                    .then(() => renderSchedule());
-            });
-        });
-    }
+// --- جدول التدريبات ---
+function renderAdminScheduleList() {
+const tbody = document.getElementById('adminScheduleList');
+tbody.innerHTML = '';
+appData.schedule.forEach((row, idx) => {
+const tr = tbody.insertRow();
+tr.insertCell(0).innerText = idx + 1;
+tr.insertCell(1).innerHTML = `<input value="${row.category}" data-idx="${idx}" data-field="category" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+tr.insertCell(2).innerHTML = `<input value="${row.sat || ''}" data-idx="${idx}" data-field="sat" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+tr.insertCell(3).innerHTML = `<input value="${row.sun || ''}" data-idx="${idx}" data-field="sun" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+tr.insertCell(4).innerHTML = `<input value="${row.tue || ''}" data-idx="${idx}" data-field="tue" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+tr.insertCell(5).innerHTML = `<input value="${row.thu || ''}" data-idx="${idx}" data-field="thu" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+tr.insertCell(6).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteScheduleAdmin(${idx})">✕</button>`;
+});
 
-    window.addScheduleRow = function() {
-        const category = document.getElementById('newScheduleCategory').value.trim();
-        const sat = document.getElementById('newScheduleSat').value.trim();
-        const sun = document.getElementById('newScheduleSun').value.trim();
-        const tue = document.getElementById('newScheduleTue').value.trim();
-        const thu = document.getElementById('newScheduleThu').value.trim();
-        if (!category) { alert('الرجاء إدخال الفئة'); return; }
-        appData.schedule.push({ id: Date.now(), category, sat, sun, tue, thu });
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                renderAdminDashboard();
-                document.getElementById('newScheduleCategory').value = '';
-                document.getElementById('newScheduleSat').value = '';
-                document.getElementById('newScheduleSun').value = '';
-                document.getElementById('newScheduleTue').value = '';
-                document.getElementById('newScheduleThu').value = '';
-            });
-    };
+document.querySelectorAll('.schedule-edit-input').forEach(inp => {
+inp.addEventListener('change', function() {
+const idx = parseInt(this.dataset.idx);
+const field = this.dataset.field;
+appData.schedule[idx][field] = this.value;
+saveToFirebase('raedData/schedule', appData.schedule)
+.then(() => renderSchedule());
+});
+});
+}
 
-    window.deleteScheduleAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذا الصف؟')) return;
-        appData.schedule.splice(idx, 1);
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                renderAdminDashboard();
-            });
-    };
+window.addScheduleRow = function() {
+const category = document.getElementById('newScheduleCategory').value.trim();
+const sat = document.getElementById('newScheduleSat').value.trim();
+const sun = document.getElementById('newScheduleSun').value.trim();
+const tue = document.getElementById('newScheduleTue').value.trim();
+const thu = document.getElementById('newScheduleThu').value.trim();
+if (!category) { alert('الرجاء إدخال الفئة'); return; }
+appData.schedule.push({ id: Date.now(), category, sat, sun, tue, thu });
+saveToFirebase('raedData/schedule', appData.schedule)
+.then(() => {
+renderSchedule();
+renderAdminDashboard();
+document.getElementById('newScheduleCategory').value = '';
+document.getElementById('newScheduleSat').value = '';
+document.getElementById('newScheduleSun').value = '';
+document.getElementById('newScheduleTue').value = '';
+document.getElementById('newScheduleThu').value = '';
+});
+};
 
-    window.saveScheduleAdmin = function() {
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                alert('✅ تم حفظ الجدول');
-            });
-    };
+window.deleteScheduleAdmin = function(idx) {
+if (!confirm('هل تريد حذف هذا الصف؟')) return;
+appData.schedule.splice(idx, 1);
+saveToFirebase('raedData/schedule', appData.schedule)
+.then(() => {
+renderSchedule();
+renderAdminDashboard();
+});
+};
 
-    // --- المباريات ---
-    function renderAdminMatchesList() {
-        const tbody = document.getElementById('adminMatchesList');
-        tbody.innerHTML = '';
-        appData.matches.forEach((m, idx) => {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = idx + 1;
-            row.insertCell(1).innerHTML = `<input value="${m.opponent || ''}" data-idx="${idx}" data-field="opponent" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            row.insertCell(2).innerHTML = `<input value="${m.date || ''}" data-idx="${idx}" data-field="date" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            row.insertCell(3).innerHTML = `<input value="${m.location || ''}" data-idx="${idx}" data-field="location" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.3); color:#fff;">`;
-            row.insertCell(4).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteMatchAdmin(${idx})">✕</button>`;
-        });
+window.saveScheduleAdmin = function() {
+saveToFirebase('raedData/schedule', appData.schedule)
+.then(() => {
+renderSchedule();
+alert('✅ تم حفظ الجدول');
+});
+};
 
-        document.querySelectorAll('.match-edit-input').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.dataset.idx);
-                const field = this.dataset.field;
-                appData.matches[idx][field] = this.value;
-                saveToFirebase('raedData/matches', appData.matches)
-                    .then(() => renderMatches());
-            });
-        });
-    }
+// --- المباريات ---
+function renderAdminMatchesList() {
+const tbody = document.getElementById('adminMatchesList');
+tbody.innerHTML = '';
+appData.matches.forEach((m, idx) => {
+const row = tbody.insertRow();
+row.insertCell(0).innerText = idx + 1;
+row.insertCell(1).innerHTML = `<input value="${m.opponent || ''}" data-idx="${idx}" data-field="opponent" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+row.insertCell(2).innerHTML = `<input value="${m.date || ''}" data-idx="${idx}" data-field="date" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+row.insertCell(3).innerHTML = `<input value="${m.time || ''}" data-idx="${idx}" data-field="time" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+row.insertCell(4).innerHTML = `<input value="${m.location || ''}" data-idx="${idx}" data-field="location" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
+row.insertCell(5).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteMatchAdmin(${idx})">✕</button>`;
+});
 
-    window.addMatch = function() {
-        const opponent = document.getElementById('newMatchOpponent').value.trim();
-        const date = document.getElementById('newMatchDate').value.trim();
-        const location = document.getElementById('newMatchLocation').value.trim();
-        if (!opponent || !date || !location) { alert('الرجاء ملء جميع الحقول'); return; }
-        appData.matches.push({ id: Date.now(), opponent, date, location });
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                renderAdminDashboard();
-                document.getElementById('newMatchOpponent').value = '';
-                document.getElementById('newMatchDate').value = '';
-                document.getElementById('newMatchLocation').value = '';
-            });
-    };
+document.querySelectorAll('.match-edit-input').forEach(inp => {
+inp.addEventListener('change', function() {
+const idx = parseInt(this.dataset.idx);
+const field = this.dataset.field;
+appData.matches[idx][field] = this.value;
+saveToFirebase('raedData/matches', appData.matches)
+.then(() => renderMatches());
+});
+});
+}
 
-    window.deleteMatchAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذه المباراة؟')) return;
-        appData.matches.splice(idx, 1);
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                renderAdminDashboard();
-            });
-    };
+window.addMatch = function() {
+const opponent = document.getElementById('newMatchOpponent').value.trim();
+const date = document.getElementById('newMatchDate').value.trim();
+const time = document.getElementById('newMatchTime').value.trim();
+const location = document.getElementById('newMatchLocation').value.trim();
+if (!opponent || !date || !time || !location) { alert('الرجاء ملء جميع الحقول'); return; }
+appData.matches.push({ id: Date.now(), opponent, date, time, location });
+saveToFirebase('raedData/matches', appData.matches)
+.then(() => {
+renderMatches();
+renderAdminDashboard();
+document.getElementById('newMatchOpponent').value = '';
+document.getElementById('newMatchDate').value = '';
+document.getElementById('newMatchTime').value = '';
+document.getElementById('newMatchLocation').value = '';
+});
+};
 
-    window.saveMatchesAdmin = function() {
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                alert('✅ تم حفظ المباريات');
-            });
-    };
+window.deleteMatchAdmin = function(idx) {
+if (!confirm('هل تريد حذف هذه المباراة؟')) return;
+appData.matches.splice(idx, 1);
+saveToFirebase('raedData/matches', appData.matches)
+.then(() => {
+renderMatches();
+renderAdminDashboard();
+});
+};
 
-    // --- تغيير كلمة السر ---
-    window.changeAdminPassword = function() {
-        const newPass = document.getElementById('newAdminPass').value.trim();
-        if (newPass.length < 4) { alert('كلمة السر يجب أن تكون 4 أحرف على الأقل'); return; }
-        adminPassword = newPass;
-        localStorage.setItem(ADMIN_PASSWORD_KEY, adminPassword);
-        alert('✅ تم تغيير كلمة السر بنجاح');
-        document.getElementById('newAdminPass').value = '';
-    };
+window.saveMatchesAdmin = function() {
+saveToFirebase('raedData/matches', appData.matches)
+.then(() => {
+renderMatches();
+alert('✅ تم حفظ المباريات');
+});
+};
 
-    // ================================================================
-    // 8. نموذج التسجيل (حفظ في Firebase)
-    // ================================================================
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const fullName = document.getElementById('regFullName').value.trim();
-        const birthDate = document.getElementById('regBirthDate').value;
-        const category = document.getElementById('regCategory').value;
-        const phone = document.getElementById('regPhone').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const notes = document.getElementById('regNotes').value.trim();
+// --- تغيير كلمة السر ---
+window.changeAdminPassword = function() {
+const newPass = document.getElementById('newAdminPass').value.trim();
+if (newPass.length < 4) { alert('كلمة السر يجب أن تكون 4 أحرف على الأقل'); return; }
+adminPassword = newPass;
+localStorage.setItem(ADMIN_PASSWORD_KEY, adminPassword);
+alert('✅ تم تغيير كلمة السر بنجاح');
+document.getElementById('newAdminPass').value = '';
+};
 
-        if (!fullName || !birthDate || !phone) {
-            alert('❌ الرجاء ملء الحقول الأساسية (الاسم، تاريخ الميلاد، الهاتف)');
-            return;
-        }
+// ================================================================
+// 8. نموذج التسجيل (مع منع إعادة التسجيل من نفس الجهاز)
+// ================================================================
+const deviceId = localStorage.getItem('deviceId_raed');
+if (!deviceId) {
+localStorage.setItem('deviceId_raed', Date.now().toString());
+}
 
-        const regData = {
-            fullName,
-            birthDate,
-            category,
-            phone,
-            email,
-            notes,
-            status: 'pending',
-            date: new Date().toLocaleString('ar-EG'),
-            timestamp: firebase.database.ServerValue.TIMESTAMP || Date.now()
-        };
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+e.preventDefault();
 
-        saveRegistrationToFirebase(regData)
-            .then(() => {
-                alert('✅ تم تسجيل طلبك بنجاح! سيتم التواصل معكم قريباً.');
-                document.getElementById('registrationForm').reset();
-            })
-            .catch(err => {
-                alert('❌ حدث خطأ، لكن بياناتك محفوظة محلياً.');
-                console.error(err);
-            });
-    });
+// التحقق من منع إعادة التسجيل
+if (localStorage.getItem('registered_raed') === 'true') {
+document.getElementById('blockPopup').classList.add('active');
+return;
+}
 
-    // ================================================================
-    // 9. POPUP التنبيه (تظهر كل 15 ثانية)
-    // ================================================================
-    const popup = document.getElementById('popupOverlay');
-    let popupTimer = null;
+const firstName = document.getElementById('regFirstName').value.trim();
+const lastName = document.getElementById('regLastName').value.trim();
+const phone = document.getElementById('regPhone').value.trim();
+const address = document.getElementById('regAddress').value.trim();
+const birth = document.getElementById('regBirth').value.trim();
 
-    function showPopup() {
-        popup.classList.add('active');
-        setTimeout(() => {
-            popup.classList.remove('active');
-        }, 3000);
-    }
+if (!firstName || !lastName || !phone || !address || !birth) {
+alert('❌ الرجاء ملء جميع الحقول');
+return;
+}
 
-    function closePopup() {
-        popup.classList.remove('active');
-        clearTimeout(popupTimer);
-        popupTimer = setTimeout(showPopup, 15000);
-    }
+const regData = {
+firstName,
+lastName,
+phone,
+address,
+birth,
+status: 'pending',
+date: new Date().toLocaleString('ar-EG'),
+timestamp: firebase.database.ServerValue.TIMESTAMP || Date.now()
+};
 
-    setTimeout(() => {
-        showPopup();
-        popupTimer = setTimeout(showPopup, 15000);
-    }, 3000);
+saveRegistrationToFirebase(regData)
+.then(() => {
+// عرض نافذة التأكيد
+document.getElementById('confirmInfo').innerHTML = `
+<p><strong>الاسم:</strong> ${firstName}</p>
+<p><strong>اللقب:</strong> ${lastName}</p>
+<p><strong>الهاتف:</strong> ${phone}</p>
+<p><strong>العنوان:</strong> ${address}</p>
+<p><strong>الميلاد:</strong> ${birth}</p>
+`;
+document.getElementById('confirmPopup').classList.add('active');
+document.getElementById('registrationForm').reset();
+localStorage.setItem('registered_raed', 'true');
+})
+.catch(err => {
+alert('❌ حدث خطأ، حاول مرة أخرى.');
+console.error(err);
+});
+});
 
-    // ================================================================
-    // 10. Hero Slideshow (تغير الصور كل 3 ثواني)
-    // ================================================================
-    const slides = document.querySelectorAll('.hero-slide');
-    let currentSlide = 0;
-    setInterval(() => {
-        slides.forEach(s => s.classList.remove('active'));
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 3000);
+function closeConfirmPopup() {
+document.getElementById('confirmPopup').classList.remove('active');
+}
 
-    // ================================================================
-    // 11. تأثير الكتابة الديناميكي
-    // ================================================================
-    const words = ['الرائد', 'النخبة', 'الأبطال', 'المستقبل'];
-    let wordIndex = 0, charIndex = 0, isDeleting = false;
-    const dynamicText = document.getElementById('dynamicText');
+function closeBlockPopup() {
+document.getElementById('blockPopup').classList.remove('active');
+}
 
-    function typeEffect() {
-        const currentWord = words[wordIndex];
-        if (isDeleting) {
-            dynamicText.textContent = currentWord.substring(0, charIndex - 1);
-            charIndex--;
-        } else {
-            dynamicText.textContent = currentWord.substring(0, charIndex + 1);
-            charIndex++;
-        }
-        if (!isDeleting && charIndex === currentWord.length) {
-            isDeleting = true;
-            setTimeout(typeEffect, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length;
-            setTimeout(typeEffect, 300);
-        } else {
-            setTimeout(typeEffect, isDeleting ? 50 : 120);
-        }
-    }
-    typeEffect();
+// ================================================================
+// 9. Hero Slideshow
+// ================================================================
+const slides = document.querySelectorAll('.hero-slide');
+let currentSlide = 0;
+setInterval(() => {
+slides.forEach(s => s.classList.remove('active'));
+currentSlide = (currentSlide + 1) % slides.length;
+slides[currentSlide].classList.add('active');
+}, 3000);
 
-    // ================================================================
-    // 12. تهيئة الموقع (تحميل البيانات وتشغيل العارضات)
-    // ================================================================
-    async function init() {
-        try {
-            await loadAllData();
-            renderPlayers();
-            renderGallery();
-            renderSchedule();
-            renderMatches();
-            console.log('✅ تم تهيئة الموقع بنجاح');
-        } catch (error) {
-            console.error('❌ فشل التهيئة:', error);
-        }
+// ================================================================
+// 10. Dynamic Text
+// ================================================================
+const words = ['الرائد', 'النخبة', 'الأبطال', 'المستقبل'];
+let wordIndex = 0, charIndex = 0, isDeleting = false;
+const dynamicText = document.getElementById('dynamicText');
 
-        // Navbar
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-        });
+function typeEffect() {
+const currentWord = words[wordIndex];
+if (isDeleting) {
+dynamicText.textContent = currentWord.substring(0, charIndex - 1);
+charIndex--;
+} else {
+dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+charIndex++;
+}
+if (!isDeleting && charIndex === currentWord.length) {
+isDeleting = true;
+setTimeout(typeEffect, 2000);
+} else if (isDeleting && charIndex === 0) {
+isDeleting = false;
+wordIndex = (wordIndex + 1) % words.length;
+setTimeout(typeEffect, 300);
+} else {
+setTimeout(typeEffect, isDeleting ? 50 : 120);
+}
+}
+typeEffect();
 
-        // Mobile menu
-        const menuBtn = document.getElementById('menuBtn');
-        const navLinks = document.getElementById('navLinks');
-        menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
+// ================================================================
+// 11. تهيئة الموقع
+// ================================================================
+async function init() {
+await loadAllData();
+renderTalents();
+renderGallery();
+renderSchedule();
+renderMatches();
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    if (navLinks.classList.contains('show')) navLinks.classList.remove('show');
-                }
-            });
-        });
+// Navbar
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+if (window.scrollY > 60) navbar.classList.add('scrolled');
+else navbar.classList.remove('scrolled');
+});
 
-        // Admin toggle
-        document.getElementById('adminToggle').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.toggle('active');
-            if (adminLoggedIn) renderAdminDashboard();
-        });
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
 
-        document.getElementById('closeAdmin').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.remove('active');
-        });
-    }
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const target = document.querySelector(this.getAttribute('href'));
+if (target) {
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+if (navLinks.classList.contains('show')) navLinks.classList.remove('show');
+}
+});
+});
 
-    document.addEventListener('DOMContentLoaded', init);
+// Admin toggle
+document.getElementById('adminToggle').addEventListener('click', function() {
+document.getElementById('adminPanel').classList.toggle('active');
+if (adminLoggedIn) renderAdminDashboard();
+});
+
+document.getElementById('closeAdmin').addEventListener('click', function() {
+document.getElementById('adminPanel').classList.remove('active');
+});
+}
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
