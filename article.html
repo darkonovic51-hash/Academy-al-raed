@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مقال | أكاديمية الرائد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{--green:#1B5E3A;--green-2:#2E9E5B;--black:#0A0A0A;--gold:#C9A227;--bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Cairo',sans-serif;background:#fff;color:var(--text);}
+.container{max-width:800px;margin:0 auto;padding:0 20px;}
+a{text-decoration:none;color:inherit;}
+
+.topbar{background:var(--black);padding:16px 0;}
+.topbar .container{max-width:900px;display:flex;justify-content:space-between;align-items:center;}
+.topbar .brand{color:#fff;font-weight:800;display:flex;align-items:center;gap:10px;}
+.topbar .brand i{color:var(--green-2);}
+.topbar a.back{color:rgba(255,255,255,0.7);font-size:.85rem;font-weight:600;}
+
+.article-hero{position:relative;height:420px;overflow:hidden;}
+.article-hero img{width:100%;height:100%;object-fit:cover;}
+.article-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.2),rgba(10,10,10,0.9));}
+.article-hero-content{position:absolute;bottom:0;right:0;left:0;padding:40px 0;}
+.article-tag{display:inline-block;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;padding:7px 20px;
+  border-radius:8px;font-size:.78rem;font-weight:800;margin-bottom:14px;}
+.article-hero h1{color:#fff;font-size:2rem;font-weight:900;line-height:1.4;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
+
+.article-meta{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--border);margin-bottom:30px;color:var(--text-2);font-size:.85rem;flex-wrap:wrap;}
+.article-meta span{display:flex;align-items:center;gap:8px;}
+.article-meta i{color:var(--green-2);}
+.article-body{padding-bottom:60px;font-size:1.05rem;line-height:2.1;color:var(--text);white-space:pre-line;}
+.not-found{text-align:center;padding:120px 20px;}
+.not-found i{font-size:3rem;color:var(--border);margin-bottom:16px;}
+@media(max-width:768px){.article-hero{height:280px;} .article-hero h1{font-size:1.4rem;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="container">
+    <div class="brand"><i class="fas fa-shield-halved"></i> أكاديمية الرائد</div>
+    <a href="index.html" class="back"><i class="fas fa-arrow-right"></i> رجوع للصفحة الرئيسية</a>
+  </div>
+</div>
+
+<div id="pageBody"></div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
+  authDomain: "academy-raed-new.firebaseapp.com",
+  projectId: "academy-raed-new",
+  storageBucket: "academy-raed-new.firebasestorage.app",
+  messagingSenderId: "408030922593",
+  appId: "1:408030922593:web:190a2a671fca9cb297a720",
+  measurementId: "G-8ZCCBF7HRK"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const params = new URLSearchParams(window.location.search);
+const articleId = params.get('id');
+const body = document.getElementById('pageBody');
+
+if(!articleId){
+  body.innerHTML = `<div class="not-found"><i class="fas fa-newspaper"></i><h2>لم يتم تحديد مقال</h2><p>الرجاء الوصول لهذه الصفحة عبر رابط مقال صحيح.</p></div>`;
+} else {
+  db.ref('academy/articles/'+articleId).once('value').then(snap => {
+    const a = snap.val();
+    if(!a){
+      body.innerHTML = `<div class="not-found"><i class="fas fa-newspaper"></i><h2>المقال غير موجود</h2></div>`;
+      return;
+    }
+    document.title = `${a.title} | أكاديمية الرائد`;
+    const dateStr = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('ar-EG', {year:'numeric',month:'long',day:'numeric'}) : '';
+    body.innerHTML = `
+      <div class="article-hero">
+        ${a.image ? `<img src="${a.image}" />` : `<div style="width:100%;height:100%;background:linear-gradient(160deg,#0A0A0A,#1B5E3A);"></div>`}
+        <div class="article-hero-content"><div class="container">
+          ${a.tag ? `<span class="article-tag">${a.tag}</span>` : ''}
+          <h1>${a.title}</h1>
+        </div></div>
+      </div>
+      <div class="container">
+        <div class="article-meta">
+          <span><i class="fas fa-user"></i> ${a.author||'إدارة الأكاديمية'}</span>
+          ${dateStr ? `<span><i class="fas fa-calendar"></i> ${dateStr}</span>` : ''}
+        </div>
+        <div class="article-body">${a.content||''}</div>
+      </div>`;
+  });
+}
+</script>
+</body>
+</html>
