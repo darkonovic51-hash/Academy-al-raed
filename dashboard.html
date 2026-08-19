@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>لوحة تحكم أكاديمية الرائد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --green:#1B5E3A;--green-2:#2E9E5B;--black:#0A0A0A;--gold:#C9A227;--white:#FFFFFF;
+  --bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;--radius:14px;
+  --shadow:0 15px 40px rgba(10,10,10,0.08);--ease:cubic-bezier(0.16,1,0.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);}
+.num-font{font-family:'Barlow Condensed',sans-serif;}
+button{font-family:'Cairo',sans-serif;cursor:pointer;}
+img{max-width:100%;}
+
+/* LOGIN */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--black),#0f2818);padding:20px;}
+.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.4);text-align:center;}
+.login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green-2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
+.login-box .icon i{font-size:1.8rem;color:#fff;}
+.login-box h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;}
+.login-box p{color:var(--text-2);font-size:.85rem;margin-bottom:28px;}
+.login-box input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;margin-bottom:14px;text-align:center;}
+.login-box input:focus{outline:none;border-color:var(--green-2);}
+.login-box button{width:100%;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;border-bottom:4px solid #0f3d25;}
+.login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
+
+/* SHELL */
+.shell{display:none;min-height:100vh;}
+.shell.active{display:flex;}
+.sidebar{width:260px;background:var(--black);color:#fff;flex-shrink:0;padding:24px 0;height:100vh;position:sticky;top:0;overflow-y:auto;}
+.sidebar .logo{text-align:center;padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:14px;}
+.sidebar .logo .box{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--green-2),var(--green));margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
+.sidebar .logo .box i{font-size:1.5rem;color:#fff;}
+.sidebar .logo h3{font-size:1rem;font-weight:800;}
+.sidebar .logo span{font-size:.7rem;color:rgba(255,255,255,0.5);}
+.menu-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:rgba(255,255,255,0.65);font-weight:600;font-size:.88rem;
+  cursor:pointer;border-right:3px solid transparent;transition:.25s;}
+.menu-item i{width:20px;text-align:center;}
+.menu-item:hover,.menu-item.active{background:rgba(46,158,91,0.12);color:#fff;border-right-color:var(--green-2);}
+.logout-btn{margin:20px 24px 0;width:calc(100% - 48px);background:rgba(192,57,43,0.15);color:#e57373;border:none;padding:11px;border-radius:8px;font-weight:700;font-size:.85rem;}
+
+.content{flex:1;padding:28px 34px;overflow-y:auto;}
+.page-title{font-size:1.6rem;font-weight:900;margin-bottom:4px;}
+.page-sub{color:var(--text-2);font-size:.88rem;margin-bottom:26px;}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px;}
+.stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;}
+.stat-card .n{font-size:2rem;font-weight:800;color:var(--green);}
+.stat-card .l{font-size:.8rem;color:var(--text-2);font-weight:600;}
+
+.panel{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:22px;}
+.panel h3{font-size:1.05rem;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.panel h3 i{color:var(--green-2);}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-grid .full{grid-column:1/-1;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg label{font-size:.8rem;font-weight:700;}
+.fg input,.fg select,.fg textarea{border:2px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Cairo',sans-serif;font-size:.88rem;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--green-2);}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:none;font-weight:700;font-size:.83rem;transition:.2s;}
+.btn-primary{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;}
+.btn-danger{background:#FBEAEA;color:#B23A3A;}
+.btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);}
+.btn:hover{transform:translateY(-2px);}
+
+.list-item{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;}
+.list-item img{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+.list-item .thumb-icon{width:50px;height:50px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;}
+.list-item .body{flex:1;min-width:0;}
+.list-item .t{font-weight:700;font-size:.88rem;}
+.list-item .s{font-size:.76rem;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.list-item .actions{display:flex;gap:6px;flex-shrink:0;}
+.badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;}
+.badge.pending{background:#FFF3CD;color:#856404;}
+.badge.accepted{background:#D4EDDA;color:#155724;}
+.badge.rejected{background:#F8D7DA;color:#721C24;}
+
+@media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="icon"><i class="fas fa-shield-halved"></i></div>
+    <h2>لوحة تحكم أكاديمية الرائد</h2>
+    <p>أدخل كلمة السر للوصول إلى لوحة التحكم</p>
+    <input type="password" id="loginPassword" placeholder="كلمة السر" />
+    <button onclick="tryLogin()"><i class="fas fa-unlock"></i> دخول</button>
+    <div class="login-error" id="loginError">❌ كلمة السر غير صحيحة</div>
+  </div>
+</div>
+
+<div class="shell" id="shell">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="box"><i class="fas fa-shield-halved"></i></div>
+      <h3>أكاديمية الرائد</h3>
+      <span>لوحة التحكم</span>
+    </div>
+    <div class="menu-item active" data-page="home"><i class="fas fa-chart-pie"></i> الرئيسية</div>
+    <div class="menu-item" data-page="ticker"><i class="fas fa-bullhorn"></i> شريط الأخبار</div>
+    <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الأكاديمية</div>
+    <div class="menu-item" data-page="edu"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
+    <div class="menu-item" data-page="players"><i class="fas fa-users"></i> اللاعبون</div>
+    <div class="menu-item" data-page="articles"><i class="fas fa-newspaper"></i> المقالات والأخبار</div>
+    <div class="menu-item" data-page="registrations"><i class="fas fa-inbox"></i> طلبات التسجيل</div>
+    <div class="menu-item" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</div>
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+  </aside>
+  <main class="content" id="content"></main>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
+  authDomain: "academy-raed-new.firebaseapp.com",
+  projectId: "academy-raed-new",
+  storageBucket: "academy-raed-new.firebasestorage.app",
+  messagingSenderId: "408030922593",
+  appId: "1:408030922593:web:190a2a671fca9cb297a720",
+  measurementId: "G-8ZCCBF7HRK"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const DEFAULT_PASSWORD = "Raed@2026#";
+
+let newsTicker = [], gallery = [], eduVideos = [], players = [], articles = [], registrations = [];
+
+/* ===== LOGIN ===== */
+function tryLogin(){
+  const input = document.getElementById('loginPassword').value.trim();
+  db.ref('academy/adminSettings/password').once('value').then(snap => {
+    const stored = snap.val();
+    if(!stored){
+      db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD);
+      if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError();
+    } else {
+      if(input === stored) grantAccess(); else showLoginError();
+    }
+  }).catch(() => { if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError(); });
+}
+function showLoginError(){ document.getElementById('loginError').style.display = 'block'; }
+function grantAccess(){
+  sessionStorage.setItem('raed_admin_auth','1');
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('shell').classList.add('active');
+  loadAllData();
+}
+function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
+if(sessionStorage.getItem('raed_admin_auth') === '1'){ grantAccess(); }
+document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+
+/* ===== LOAD ALL DATA ===== */
+function loadAllData(){
+  Promise.all([
+    db.ref('academy/newsTicker').once('value'),
+    db.ref('academy/gallery').once('value'),
+    db.ref('academy/eduVideos').once('value'),
+    db.ref('academy/players').once('value'),
+    db.ref('academy/articles').once('value'),
+    db.ref('academy/registrations').once('value')
+  ]).then(([t,g,e,p,a,r]) => {
+    newsTicker = t.val() || [];
+    gallery = g.val() || [];
+    eduVideos = e.val() || [];
+    players = p.val() ? Object.entries(p.val()).map(([id,v])=>({id,...v})) : [];
+    articles = a.val() ? Object.entries(a.val()).map(([id,v])=>({id,...v})) : [];
+    registrations = r.val() ? Object.entries(r.val()).map(([id,v])=>({id,...v})) : [];
+    showPage('home');
+  });
+}
+
+/* ===== NAVIGATION ===== */
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+    item.classList.add('active');
+    showPage(item.dataset.page);
+  });
+});
+
+function showPage(page){
+  const c = document.getElementById('content');
+  if(page === 'home') renderHome(c);
+  else if(page === 'ticker') renderTicker(c);
+  else if(page === 'gallery') renderGallery(c);
+  else if(page === 'edu') renderEdu(c);
+  else if(page === 'players') renderPlayers(c);
+  else if(page === 'articles') renderArticles(c);
+  else if(page === 'registrations') renderRegistrations(c);
+  else if(page === 'settings') renderSettings(c);
+}
+
+/* ===== HOME ===== */
+function renderHome(c){
+  const pending = registrations.filter(r => r.status === 'pending').length;
+  c.innerHTML = `
+    <h2 class="page-title">🏠 نظرة عامة</h2>
+    <p class="page-sub">إحصائيات سريعة عن محتوى الموقع</p>
+    <div class="stats-row">
+      <div class="stat-card"><div class="n num-font">${players.length}</div><div class="l">لاعب مسجّل</div></div>
+      <div class="stat-card"><div class="n num-font">${articles.length}</div><div class="l">مقال منشور</div></div>
+      <div class="stat-card"><div class="n num-font">${gallery.length}</div><div class="l">صورة بالألبوم</div></div>
+      <div class="stat-card"><div class="n num-font">${pending}</div><div class="l">طلب تسجيل معلّق</div></div>
+    </div>
+    <div class="panel">
+      <h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=players]').click()"><i class="fas fa-user-plus"></i> إضافة لاعب</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال جديد</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=registrations]').click()"><i class="fas fa-inbox"></i> مراجعة طلبات التسجيل</button>
+      </div>
+    </div>`;
+}
+
+/* ===== NEWS TICKER ===== */
+function renderTicker(c){
+  c.innerHTML = `
+    <h2 class="page-title">📢 شريط الأخبار</h2>
+    <p class="page-sub">العبارات التي تظهر في الشريط المتحرك أسفل الهيدرو</p>
+    <div class="panel">
+      <h3><i class="fas fa-plus-circle"></i> إضافة خبر جديد</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>نص الخبر</label><input type="text" id="newTickerText" placeholder="مثال: 🏆 فتح باب التسجيل..." /></div>
+      </div>
+      <button class="btn btn-primary" onclick="addTickerItem()"><i class="fas fa-check"></i> إضافة للشريط</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${newsTicker.length})</h3><div id="tickerList"></div></div>`;
+  renderTickerList();
+}
+function renderTickerList(){
+  const el = document.getElementById('tickerList');
+  el.innerHTML = newsTicker.map((t,i) => `
+    <div class="list-item">
+      <div class="thumb-icon"><i class="fas fa-bullhorn"></i></div>
+      <div class="body"><div class="t">${t}</div></div>
+      <div class="actions"><button class="btn btn-danger" onclick="deleteTickerItem(${i})"><i class="fas fa-trash"></i></button></div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد عناصر</p>';
+}
+function addTickerItem(){
+  const val = document.getElementById('newTickerText').value.trim();
+  if(!val) return alert('أدخل نص الخبر');
+  newsTicker.push(val);
+  db.ref('academy/newsTicker').set(newsTicker).then(() => { document.getElementById('newTickerText').value=''; renderTickerList(); });
+}
+function deleteTickerItem(i){
+  if(!confirm('حذف هذا الخبر؟')) return;
+  newsTicker.splice(i,1);
+  db.ref('academy/newsTicker').set(newsTicker).then(renderTickerList);
+}
+
+/* ===== GALLERY ===== */
+function renderGallery(c){
+  c.innerHTML = `
+    <h2 class="page-title">🖼️ ألبوم الأكاديمية</h2>
+    <p class="page-sub">صور تظهر في قسم "ألبوم الأكاديمية" بالصفحة الرئيسية</p>
+    <div class="panel">
+      <h3><i class="fas fa-plus-circle"></i> إضافة صورة جديدة</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>رابط الصورة (GitHub raw)</label><input type="text" id="newGalleryUrl" placeholder="https://raw.githubusercontent.com/..." /></div>
+        <div class="fg full"><label>وصف الصورة</label><input type="text" id="newGalleryCaption" placeholder="مثال: تدريبات الأكاديمية" /></div>
+      </div>
+      <button class="btn btn-primary" onclick="addGalleryItem()"><i class="fas fa-check"></i> إضافة للألبوم</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-list"></i> الصور الحالية (${gallery.length})</h3><div id="galleryList"></div></div>`;
+  renderGalleryList();
+}
+function renderGalleryList(){
+  const el = document.getElementById('galleryList');
+  el.innerHTML = gallery.map((g,i) => `
+    <div class="list-item">
+      <img src="${g.url}" onerror="this.style.display='none'" />
+      <div class="body"><div class="t">${g.caption}</div><div class="s">${g.url}</div></div>
+      <div class="actions"><button class="btn btn-danger" onclick="deleteGalleryItem(${i})"><i class="fas fa-trash"></i></button></div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد صور</p>';
+}
+function addGalleryItem(){
+  const url = document.getElementById('newGalleryUrl').value.trim();
+  const caption = document.getElementById('newGalleryCaption').value.trim() || 'صورة من الأكاديمية';
+  if(!url) return alert('أدخل رابط الصورة');
+  gallery.push({url,caption});
+  db.ref('academy/gallery').set(gallery).then(() => { document.getElementById('newGalleryUrl').value=''; document.getElementById('newGalleryCaption').value=''; renderGalleryList(); });
+}
+function deleteGalleryItem(i){
+  if(!confirm('حذف هذه الصورة؟')) return;
+  gallery.splice(i,1);
+  db.ref('academy/gallery').set(gallery).then(renderGalleryList);
+}
+
+/* ===== EDUCATIONAL VIDEOS ===== */
+function renderEdu(c){
+  c.innerHTML = `
+    <h2 class="page-title">🎓 الفيديوهات التعليمية</h2>
+    <p class="page-sub">فيديوهات قسم "أكاديمية المعرفة" مع أوصافها التفصيلية</p>
+    <div class="panel">
+      <h3><i class="fas fa-plus-circle"></i> إضافة فيديو تعليمي جديد</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>رابط الفيديو (GitHub raw)</label><input type="text" id="eduUrl" placeholder="https://raw.githubusercontent.com/..." /></div>
+        <div class="fg"><label>عنوان الفيديو</label><input type="text" id="eduTitle" /></div>
+        <div class="fg"><label>اسم المدرب</label><input type="text" id="eduCoach" /></div>
+        <div class="fg full"><label>الوصف التفصيلي</label><textarea id="eduDesc" rows="3"></textarea></div>
+        <div class="fg full"><label>الكلمات المفتاحية (افصل بفاصلة)</label><input type="text" id="eduTopics" placeholder="التركيز الذهني, المسح البصري" /></div>
+      </div>
+      <button class="btn btn-primary" onclick="addEduVideo()"><i class="fas fa-check"></i> إضافة الفيديو</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-list"></i> الفيديوهات الحالية (${eduVideos.length})</h3><div id="eduList"></div></div>`;
+  renderEduList();
+}
+function renderEduList(){
+  const el = document.getElementById('eduList');
+  el.innerHTML = eduVideos.map((v,i) => `
+    <div class="list-item">
+      <div class="thumb-icon"><i class="fas fa-video"></i></div>
+      <div class="body"><div class="t">${v.title}</div><div class="s">${v.coach} — ${(v.topics||[]).join('، ')}</div></div>
+      <div class="actions"><button class="btn btn-danger" onclick="deleteEduVideo(${i})"><i class="fas fa-trash"></i></button></div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد فيديوهات</p>';
+}
+function addEduVideo(){
+  const url = document.getElementById('eduUrl').value.trim();
+  const title = document.getElementById('eduTitle').value.trim();
+  const coach = document.getElementById('eduCoach').value.trim() || 'الطاقم الفني';
+  const description = document.getElementById('eduDesc').value.trim();
+  const topics = document.getElementById('eduTopics').value.split(',').map(s=>s.trim()).filter(Boolean);
+  if(!url || !title) return alert('الرابط والعنوان إجباريان');
+  eduVideos.push({url,title,coach,description,topics});
+  db.ref('academy/eduVideos').set(eduVideos).then(() => {
+    ['eduUrl','eduTitle','eduCoach','eduDesc','eduTopics'].forEach(id => document.getElementById(id).value='');
+    renderEduList();
+  });
+}
+function deleteEduVideo(i){
+  if(!confirm('حذف هذا الفيديو؟')) return;
+  eduVideos.splice(i,1);
+  db.ref('academy/eduVideos').set(eduVideos).then(renderEduList);
+}
+
+/* ===== PLAYERS ===== */
+function renderPlayers(c){
+  c.innerHTML = `
+    <h2 class="page-title">👥 اللاعبون</h2>
+    <p class="page-sub">كل لاعب يحصل على صفحة ملف شخصي عامة (player.html)</p>
+    <div class="panel">
+      <h3><i class="fas fa-user-plus"></i> إضافة لاعب جديد</h3>
+      <div class="form-grid">
+        <div class="fg"><label>الاسم الأول</label><input type="text" id="pFirstName" /></div>
+        <div class="fg"><label>اللقب</label><input type="text" id="pLastName" /></div>
+        <div class="fg"><label>الفئة العمرية</label>
+          <select id="pCategory"><option>U07</option><option>U09</option><option>U11</option><option>U13</option><option>U15</option></select>
+        </div>
+        <div class="fg"><label>رقم القميص</label><input type="number" id="pJersey" min="1" /></div>
+        <div class="fg"><label>المركز</label><input type="text" id="pPosition" placeholder="مهاجم / وسط / مدافع..." /></div>
+        <div class="fg"><label>تاريخ الميلاد</label><input type="date" id="pBirthDate" /></div>
+        <div class="fg full"><label>رابط صورة اللاعب</label><input type="text" id="pPhoto" placeholder="https://raw.githubusercontent.com/..." /></div>
+        <div class="fg full"><label>نبذة عن اللاعب</label><textarea id="pBio" rows="3"></textarea></div>
+        <div class="fg"><label>عدد الأهداف</label><input type="number" id="pGoals" value="0" /></div>
+        <div class="fg"><label>عدد التمريرات الحاسمة</label><input type="number" id="pAssists" value="0" /></div>
+        <div class="fg"><label>عدد المباريات</label><input type="number" id="pMatches" value="0" /></div>
+      </div>
+      <button class="btn btn-primary" onclick="addPlayer()"><i class="fas fa-check"></i> حفظ اللاعب</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-list"></i> اللاعبون الحاليون (${players.length})</h3><div id="playersList"></div></div>`;
+  renderPlayersList();
+}
+function renderPlayersList(){
+  const el = document.getElementById('playersList');
+  el.innerHTML = players.map(p => `
+    <div class="list-item">
+      ${p.photo ? `<img src="${p.photo}" onerror="this.style.display='none'" />` : `<div class="thumb-icon"><i class="fas fa-user"></i></div>`}
+      <div class="body"><div class="t">#${p.jersey||'-'} ${p.firstName} ${p.lastName}</div><div class="s">${p.category} — ${p.position||'-'}</div></div>
+      <div class="actions">
+        <a class="btn btn-secondary" href="player.html?id=${p.id}" target="_blank"><i class="fas fa-eye"></i></a>
+        <button class="btn btn-danger" onclick="deletePlayer('${p.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا يوجد لاعبون بعد</p>';
+}
+function addPlayer(){
+  const firstName = document.getElementById('pFirstName').value.trim();
+  const lastName = document.getElementById('pLastName').value.trim();
+  if(!firstName || !lastName) return alert('الاسم واللقب إجباريان');
+  const data = {
+    firstName, lastName,
+    category: document.getElementById('pCategory').value,
+    jersey: parseInt(document.getElementById('pJersey').value)||0,
+    position: document.getElementById('pPosition').value.trim(),
+    birthDate: document.getElementById('pBirthDate').value,
+    photo: document.getElementById('pPhoto').value.trim(),
+    bio: document.getElementById('pBio').value.trim(),
+    goals: parseInt(document.getElementById('pGoals').value)||0,
+    assists: parseInt(document.getElementById('pAssists').value)||0,
+    matches: parseInt(document.getElementById('pMatches').value)||0,
+    createdAt: new Date().toISOString()
+  };
+  db.ref('academy/players').push(data).then((snap) => {
+    players.push({id:snap.key,...data});
+    ['pFirstName','pLastName','pJersey','pPosition','pBirthDate','pPhoto','pBio','pGoals','pAssists','pMatches'].forEach(id => document.getElementById(id).value='');
+    renderPlayersList();
+  });
+}
+function deletePlayer(id){
+  if(!confirm('حذف هذا اللاعب نهائياً؟')) return;
+  db.ref('academy/players/'+id).remove().then(() => {
+    players = players.filter(p => p.id !== id);
+    renderPlayersList();
+  });
+}
+
+/* ===== ARTICLES ===== */
+function renderArticles(c){
+  c.innerHTml = '';
+  c.innerHTML = `
+    <h2 class="page-title">📰 المقالات والأخبار</h2>
+    <p class="page-sub">كل مقال يحصل على صفحة قراءة مستقلة (article.html)</p>
+    <div class="panel">
+      <h3><i class="fas fa-pen"></i> نشر مقال جديد</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>عنوان المقال</label><input type="text" id="aTitle" /></div>
+        <div class="fg full"><label>رابط الصورة الرئيسية</label><input type="text" id="aImage" placeholder="https://raw.githubusercontent.com/..." /></div>
+        <div class="fg"><label>الكاتب</label><input type="text" id="aAuthor" value="إدارة الأكاديمية" /></div>
+        <div class="fg"><label>التصنيف</label><input type="text" id="aTag" placeholder="أخبار / تدريبات / بطولات" /></div>
+        <div class="fg full"><label>ملخص قصير</label><textarea id="aExcerpt" rows="2"></textarea></div>
+        <div class="fg full"><label>محتوى المقال الكامل</label><textarea id="aContent" rows="6"></textarea></div>
+      </div>
+      <button class="btn btn-primary" onclick="addArticle()"><i class="fas fa-check"></i> نشر المقال</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-list"></i> المقالات المنشورة (${articles.length})</h3><div id="articlesList"></div></div>`;
+  renderArticlesList();
+}
+function renderArticlesList(){
+  const el = document.getElementById('articlesList');
+  el.innerHTML = articles.map(a => `
+    <div class="list-item">
+      ${a.image ? `<img src="${a.image}" onerror="this.style.display='none'" />` : `<div class="thumb-icon"><i class="fas fa-newspaper"></i></div>`}
+      <div class="body"><div class="t">${a.title}</div><div class="s">${a.author} — ${a.tag||''}</div></div>
+      <div class="actions">
+        <a class="btn btn-secondary" href="article.html?id=${a.id}" target="_blank"><i class="fas fa-eye"></i></a>
+        <button class="btn btn-danger" onclick="deleteArticle('${a.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد مقالات بعد</p>';
+}
+function addArticle(){
+  const title = document.getElementById('aTitle').value.trim();
+  const content = document.getElementById('aContent').value.trim();
+  if(!title || !content) return alert('العنوان والمحتوى إجباريان');
+  const data = {
+    title, content,
+    image: document.getElementById('aImage').value.trim(),
+    author: document.getElementById('aAuthor').value.trim() || 'إدارة الأكاديمية',
+    tag: document.getElementById('aTag').value.trim(),
+    excerpt: document.getElementById('aExcerpt').value.trim(),
+    publishedAt: new Date().toISOString()
+  };
+  db.ref('academy/articles').push(data).then((snap) => {
+    articles.push({id:snap.key,...data});
+    ['aTitle','aImage','aTag','aExcerpt','aContent'].forEach(id => document.getElementById(id).value='');
+    renderArticlesList();
+  });
+}
+function deleteArticle(id){
+  if(!confirm('حذف هذا المقال؟')) return;
+  db.ref('academy/articles/'+id).remove().then(() => {
+    articles = articles.filter(a => a.id !== id);
+    renderArticlesList();
+  });
+}
+
+/* ===== REGISTRATIONS ===== */
+function renderRegistrations(c){
+  c.innerHTML = `
+    <h2 class="page-title">📥 طلبات التسجيل</h2>
+    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية</p>
+    <div class="panel"><div id="regList"></div></div>`;
+  renderRegList();
+}
+function renderRegList(){
+  const el = document.getElementById('regList');
+  const sorted = [...registrations].sort((a,b) => new Date(b.submittedAt||0) - new Date(a.submittedAt||0));
+  el.innerHTML = sorted.map(r => `
+    <div class="list-item">
+      <div class="thumb-icon"><i class="fas fa-user"></i></div>
+      <div class="body">
+        <div class="t">${r.firstName} ${r.lastName} — ${r.categoryId}</div>
+        <div class="s">ولي الأمر: ${r.guardianName} — ${r.guardianPhone} ${r.notes?'— '+r.notes:''}</div>
+      </div>
+      <span class="badge ${r.status||'pending'}">${r.status==='accepted'?'مقبول':r.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="setRegStatus('${r.id}','accepted')"><i class="fas fa-check"></i></button>
+        <button class="btn btn-danger" onclick="setRegStatus('${r.id}','rejected')"><i class="fas fa-times"></i></button>
+      </div>
+    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد طلبات بعد</p>';
+}
+function setRegStatus(id,status){
+  db.ref('academy/registrations/'+id).update({status}).then(() => {
+    const r = registrations.find(x => x.id === id);
+    if(r) r.status = status;
+    renderRegList();
+  });
+}
+
+/* ===== SETTINGS ===== */
+function renderSettings(c){
+  c.innerHTML = `
+    <h2 class="page-title">⚙️ الإعدادات</h2>
+    <p class="page-sub">تغيير كلمة سر لوحة التحكم</p>
+    <div class="panel">
+      <h3><i class="fas fa-key"></i> كلمة السر الجديدة</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>كلمة السر الجديدة</label><input type="text" id="newPassword" placeholder="أدخل كلمة سر جديدة" /></div>
+      </div>
+      <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-check"></i> حفظ كلمة السر</button>
+    </div>`;
+}
+function changePassword(){
+  const val = document.getElementById('newPassword').value.trim();
+  if(val.length < 6) return alert('كلمة السر يجب أن تكون 6 أحرف على الأقل');
+  db.ref('academy/adminSettings/password').set(val).then(() => alert('✅ تم تحديث كلمة السر بنجاح'));
+}
+</script>
+</body>
+</html>
