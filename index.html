@@ -1,2197 +1,714 @@
- 
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>أكاديمية الرائد | RAED Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>أكاديمية الرائد لكرة القدم | Al-Raed Football Academy</title>
+<meta name="description" content="أكاديمية الرائد الرياضية المحترفة لكرة القدم — تكوين نخبة من نجوم الغد." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --green:#1B5E3A;
+  --green-2:#2E9E5B;
+  --black:#0A0A0A;
+  --gray-dark:#141614;
+  --white:#FFFFFF;
+  --gold:#C9A227;
+  --bg:#F4F6F5;
+  --border:#E3E8E5;
+  --text:#141614;
+  --text-2:#5C665F;
+  --radius:14px;
+  --shadow-soft:0 20px 55px rgba(10,10,10,0.1);
+  --shadow-green:0 15px 40px rgba(27,94,58,0.35);
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;position:relative;}
+.container{max-width:1280px;margin:0 auto;padding:0 24px;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+img,video{max-width:100%;display:block;}
+button{font-family:'Cairo',sans-serif;cursor:pointer;}
+.num-font{font-family:'Barlow Condensed',sans-serif;}
 
-    <style>
-        /* ===== CSS Variables & Reset ===== */
-        :root {
-            --primary: #00733F;
-            --primary-dark: #005A2E;
-            --primary-light: #E8F5E9;
-            --primary-glow: rgba(0, 115, 63, 0.3);
-            --gold: #D4A017;
-            --gold-light: #F5E6A3;
-            --gold-glow: rgba(212, 160, 23, 0.4);
-            --white: #FFFFFF;
-            --dark: #0D1A0D;
-            --dark-card: rgba(20, 40, 25, 0.85);
-            --gray: #6A7A6A;
-            --gray-light: #E8F0E8;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            --radius: 24px;
-            --transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
-            --color-1: #0D1A0D;
-            --color-2: #1A3A22;
-            --color-3: #0F1F0F;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', 'Cairo', sans-serif;
-            background: var(--dark);
-            color: #E8F0E8;
-            overflow-x: hidden;
-            line-height: 1.6;
-            padding-top: 40px;
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--dark); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+/* ===== SIGNATURE BG: Dynamic Pitch Lines ===== */
+.pitch-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.045;will-change:transform;}
+.pitch-bg svg{width:100%;height:100%;}
+.pitch-bg line,.pitch-bg circle,.pitch-bg path{stroke:var(--green);fill:none;stroke-width:1;}
+.pitch-bg .dashed{stroke-dasharray:5 10;}
+main{position:relative;z-index:1;}
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+/* ===== NAVBAR ===== */
+.navbar{position:fixed;top:0;left:0;width:100%;z-index:1000;transition:.4s var(--ease);}
+.navbar-top{background:var(--black);padding:8px 0;}
+.navbar-top .container{display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:rgba(255,255,255,0.6);}
+.navbar-top .contacts{display:flex;gap:20px;}
+.navbar-top .contacts span{display:flex;align-items:center;gap:6px;}
+.navbar-top .contacts i{color:var(--green-2);}
+.navbar-top .socials{display:flex;gap:12px;}
+.navbar-top .socials a{color:rgba(255,255,255,0.6);transition:.3s;}
+.navbar-top .socials a:hover{color:var(--gold);}
+.navbar-main{background:rgba(10,10,10,0.85);backdrop-filter:blur(14px);padding:14px 0;transition:.4s var(--ease);border-bottom:2px solid rgba(46,158,91,0.2);}
+.navbar.scrolled .navbar-top{display:none;}
+.navbar.scrolled .navbar-main{padding:9px 0;background:rgba(10,10,10,0.97);}
+.navbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand img{height:52px;width:52px;object-fit:contain;}
+.brand-text{font-weight:900;font-size:1.05rem;color:#fff;line-height:1.25;}
+.brand-text span{display:block;font-size:.66rem;color:var(--green-2);font-weight:700;letter-spacing:.5px;}
+.nav-links{display:flex;gap:26px;align-items:center;}
+.nav-links a{font-weight:700;font-size:.86rem;color:rgba(255,255,255,0.85);position:relative;transition:.3s;}
+.nav-links a::after{content:'';position:absolute;bottom:-8px;right:0;width:0;height:3px;background:var(--gold);transition:.3s var(--ease);}
+.nav-links a:hover{color:#fff;}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:800;padding:11px 26px;
+  border-radius:8px;font-size:.85rem;box-shadow:var(--shadow-green);border:none;border-bottom:3px solid #0f3d25;transition:.25s var(--ease);}
+.nav-cta:hover{transform:translateY(-3px);}
+.nav-cta:active{transform:translateY(0);border-bottom-width:1px;}
+.menu-toggle{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#fff;}
+@media(max-width:1080px){
+  .navbar-top{display:none;}
+  .nav-links{position:fixed;top:0;right:-100%;width:78%;height:100vh;background:var(--black);flex-direction:column;justify-content:center;gap:26px;transition:.5s var(--ease);box-shadow:-10px 0 40px rgba(0,0,0,0.3);}
+  .nav-links.show{right:0;}
+  .menu-toggle{display:block;}
+}
 
-        /* ===== شريط عاجل ===== */
-        .breaking-news {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 9999;
-            background: linear-gradient(90deg, #C0392B, #E74C3C, #F39C12);
-            background-size: 300% 100%;
-            animation: flashBg 1.5s infinite alternate, slideInRight 0.6s ease-out, vibrate 0.2s infinite alternate;
-            padding: 6px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 10px rgba(231, 76, 60, 0.3);
-            color: #fff;
-            text-align: center;
-            flex-wrap: wrap;
-        }
-        @keyframes flashBg {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        @keyframes slideInRight {
-            0% { transform: translateX(100%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes vibrate {
-            0% { transform: translateX(-1px) rotate(-0.5deg); }
-            100% { transform: translateX(1px) rotate(0.5deg); }
-        }
-        .breaking-news i { font-size: 1rem; animation: pulseIcon 0.8s infinite; }
-        @keyframes pulseIcon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-        .breaking-news .btn-go {
-            background: var(--gold);
-            color: #000;
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.7rem;
-            text-decoration: none;
-            transition: 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .breaking-news .btn-go:hover { transform: scale(1.05); }
+/* ===== HERO ===== */
+.hero{position:relative;min-height:96vh;display:flex;align-items:flex-end;overflow:hidden;background:var(--black);padding:0 0 0;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85;}
+.hero-overlay{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,0.55) 0%,rgba(10,10,10,0.15) 35%,rgba(10,10,10,0.55) 65%,rgba(10,10,10,0.95) 100%);}
+.hero-content-wrap{position:relative;z-index:3;width:100%;padding:150px 0 0;}
+.hero-content{max-width:820px;color:#fff;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(46,158,91,0.18);border:1px solid rgba(46,158,91,0.5);
+  padding:9px 22px;border-radius:8px;font-size:.8rem;font-weight:800;color:var(--green-2);margin-bottom:24px;
+  opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
+.hero-content h1{font-size:3.6rem;font-weight:900;line-height:1.15;margin-bottom:20px;opacity:0;animation:fadeUp .8s .22s var(--ease) forwards;
+  text-shadow:0 6px 30px rgba(0,0,0,0.6);}
+.hero-content h1 .g{color:var(--green-2);}
+.hero-content p{font-size:1.08rem;color:rgba(255,255,255,0.85);max-width:600px;margin-bottom:32px;line-height:1.85;
+  opacity:0;animation:fadeUp .8s .35s var(--ease) forwards;}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .48s var(--ease) forwards;}
+.btn-green{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:800;padding:16px 34px;
+  border-radius:8px;border:none;border-bottom:4px solid #0f3d25;box-shadow:var(--shadow-green);font-size:.94rem;
+  display:inline-flex;align-items:center;gap:10px;transition:.2s var(--ease);}
+.btn-green:hover{transform:translateY(-3px);}
+.btn-green:active{transform:translateY(0);border-bottom-width:1px;}
+.btn-outline-w{background:rgba(255,255,255,0.06);color:#fff;border:1.5px solid rgba(255,255,255,0.4);padding:15px 32px;
+  border-radius:8px;font-weight:700;font-size:.94rem;transition:.3s var(--ease);backdrop-filter:blur(6px);}
+.btn-outline-w:hover{background:#fff;color:var(--black);border-color:#fff;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){.hero-content h1{font-size:2.2rem;}}
 
-        /* ===== GLASSMORPHISM ===== */
-        .glass {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-        }
+/* ===== NEWS TICKER (beIN Sports style) ===== */
+.news-ticker{position:relative;z-index:3;background:var(--black);border-top:2px solid var(--green-2);
+  display:flex;align-items:stretch;overflow:hidden;height:56px;}
+.ticker-label{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:900;font-size:.85rem;
+  padding:0 26px;display:flex;align-items:center;gap:10px;flex-shrink:0;white-space:nowrap;position:relative;z-index:2;
+  clip-path:polygon(0 0,100% 0,88% 100%,0% 100%);padding-left:40px;margin-left:-1px;}
+.ticker-track-wrap{flex:1;overflow:hidden;position:relative;display:flex;align-items:center;}
+.ticker-track{display:flex;gap:50px;white-space:nowrap;animation:tickerScroll 32s linear infinite;padding-right:50px;}
+.ticker-item{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:.88rem;}
+.ticker-item i{color:var(--gold);font-size:.8rem;}
+@keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-        /* ===== BUTTONS ===== */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            padding: 14px 36px;
-            border-radius: 60px;
-            font-weight: 700;
-            color: #FFFFFF;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-block;
-            text-decoration: none;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            opacity: 0;
-            transition: 0.4s;
-        }
-        .btn-primary:hover::after { opacity: 1; }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px var(--primary-glow);
-        }
+/* ===== SECTION GENERIC ===== */
+section{padding:100px 0;position:relative;}
+.section-tag{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-weight:900;font-size:.8rem;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.section-tag::before{content:'';width:30px;height:3px;background:var(--gold);}
+.section-title{font-size:2.5rem;font-weight:900;color:var(--black);margin-bottom:16px;line-height:1.3;}
+.section-title span{color:var(--green);}
+.section-sub{color:var(--text-2);font-size:1.03rem;max-width:640px;line-height:1.85;margin-bottom:50px;}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+.reveal{opacity:0;transform:translateX(30px);transition:.7s var(--ease);}
+.reveal.in{opacity:1;transform:translateX(0);}
 
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold), #F5A623);
-            border: none;
-            padding: 14px 36px;
-            border-radius: 60px;
-            font-weight: 700;
-            color: var(--dark);
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-block;
-            text-decoration: none;
-            font-size: 1rem;
-        }
-        .btn-gold:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px var(--gold-glow);
-        }
+/* ===== ABOUT / PHILOSOPHY ===== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
+.about-stat{background:var(--black);border-radius:var(--radius);padding:22px;text-align:center;position:relative;overflow:hidden;}
+.about-stat::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green-2),var(--gold));}
+.about-stat .n{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--green-2);}
+.about-stat .l{color:rgba(255,255,255,0.65);font-size:.78rem;font-weight:600;}
+.about-text p{color:var(--text-2);line-height:2;margin-bottom:16px;font-size:1rem;}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px;}}
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            padding: 12px 32px;
-            border-radius: 60px;
-            font-weight: 600;
-            color: #FFFFFF;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-block;
-            text-decoration: none;
-        }
-        .btn-outline:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
+/* ===== COACH SECTION ===== */
+.coach-card{display:grid;grid-template-columns:0.85fr 1.15fr;gap:0;background:var(--black);border-radius:24px;overflow:hidden;
+  box-shadow:0 35px 90px rgba(10,10,10,0.35);}
+.coach-photo-wrap{position:relative;min-height:460px;}
+.coach-photo-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.coach-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(10,10,10,0.9));}
+.coach-info{padding:50px 46px;color:#fff;display:flex;flex-direction:column;justify-content:center;}
+.coach-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,162,39,0.18);border:1px solid rgba(201,162,39,0.5);
+  padding:8px 20px;border-radius:8px;font-size:.76rem;font-weight:800;color:var(--gold);margin-bottom:18px;width:fit-content;}
+.coach-info h3{font-size:2rem;font-weight:900;margin-bottom:8px;}
+.coach-info .role{color:var(--green-2);font-weight:700;font-size:.95rem;margin-bottom:20px;}
+.coach-info p{color:rgba(255,255,255,0.72);line-height:1.95;margin-bottom:24px;}
+.coach-tags{display:flex;flex-wrap:wrap;gap:10px;}
+.coach-tag{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);padding:9px 18px;border-radius:8px;
+  font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:8px;}
+.coach-tag i{color:var(--green-2);}
+@media(max-width:900px){.coach-card{grid-template-columns:1fr;}.coach-photo-wrap{min-height:320px;}}
 
-        .btn-sm {
-            padding: 6px 16px;
-            font-size: 0.85rem;
-            border-radius: 30px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-sm-success { background: #2ecc71; color: #000; }
-        .btn-sm-success:hover { background: #27ae60; transform: scale(1.04); }
-        .btn-sm-danger { background: #e74c3c; color: #fff; }
-        .btn-sm-danger:hover { background: #c0392b; transform: scale(1.04); }
-        .btn-sm-warning { background: #f39c12; color: #000; }
-        .btn-sm-warning:hover { background: #e67e22; transform: scale(1.04); }
-        .btn-sm-info { background: #3498db; color: #fff; }
-        .btn-sm-info:hover { background: #2980b9; transform: scale(1.04); }
-        .btn-sm-print { background: #7f8c8d; color: #fff; }
-        .btn-sm-print:hover { background: #95a5a6; transform: scale(1.04); }
+/* ===== GALLERY ===== */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow-soft);aspect-ratio:4/3;transition:.4s var(--ease);cursor:pointer;}
+.gallery-item:hover{transform:translateY(-8px);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
+.gallery-item:hover img{transform:scale(1.1);}
+.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,10,10,0.8));}
+.gallery-caption{position:absolute;bottom:14px;right:16px;left:16px;color:#fff;z-index:2;font-weight:700;font-size:.85rem;}
+.gallery-zoom-icon{position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.5);
+  display:flex;align-items:center;justify-content:center;color:#fff;z-index:2;opacity:0;transition:.3s;}
+.gallery-item:hover .gallery-zoom-icon{opacity:1;}
+@media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.gallery-grid{grid-template-columns:1fr;}}
 
-        /* ===== TYPOGRAPHY ===== */
-        .section-title {
-            font-size: 2.6rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 50px;
-            color: #FFFFFF;
-        }
-        .section-title span {
-            background: linear-gradient(135deg, var(--gold), #FFD700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--gold), var(--primary));
-            margin: 15px auto 0;
-            border-radius: 5px;
-        }
+/* ===== VIDEO CARDS (tournament + educational) ===== */
+.video-card{background:var(--black);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);transition:.4s var(--ease);}
+.video-card:hover{transform:translateY(-8px);box-shadow:0 30px 70px rgba(10,10,10,0.3);}
+.video-frame-wrap{position:relative;background:#000;}
+.video-frame-wrap video{width:100%;display:block;background:#000;}
+.video-play-badge{position:absolute;top:16px;right:16px;background:rgba(27,94,58,0.85);backdrop-filter:blur(8px);
+  color:#fff;padding:8px 18px;border-radius:8px;font-size:.76rem;font-weight:800;display:flex;align-items:center;gap:8px;z-index:2;pointer-events:none;}
+.tournament-showcase{max-width:900px;margin:0 auto;}
+.tournament-body{padding:26px 30px;color:#fff;}
+.tournament-body h4{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
+.tournament-body p{color:rgba(255,255,255,0.6);font-size:.9rem;line-height:1.8;}
 
-        .section-subtitle {
-            text-align: center;
-            color: var(--gray-light);
-            max-width: 700px;
-            margin: -30px auto 50px;
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
+/* ===== EDUCATIONAL VIDEOS ===== */
+.edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.edu-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-soft);transition:.4s var(--ease);}
+.edu-card:hover{transform:translateY(-8px);}
+.edu-video-wrap{position:relative;background:#000;}
+.edu-video-wrap video{width:100%;display:block;max-height:220px;object-fit:cover;background:#000;}
+.edu-number{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:8px;background:var(--gold);
+  color:var(--black);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;display:flex;align-items:center;
+  justify-content:center;z-index:2;}
+.edu-desc{padding:24px 22px;}
+.edu-coach{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.edu-coach-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green-2),var(--green));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;}
+.edu-coach-name{font-weight:800;font-size:.85rem;color:var(--black);}
+.edu-desc h4{font-size:1.05rem;font-weight:800;color:var(--black);margin-bottom:10px;line-height:1.5;}
+.edu-desc p{color:var(--text-2);font-size:.86rem;line-height:1.85;margin-bottom:14px;}
+.edu-topics{display:flex;flex-wrap:wrap;gap:8px;}
+.edu-topic-chip{background:var(--bg);border:1px solid var(--border);color:var(--green);font-weight:700;font-size:.72rem;
+  padding:6px 14px;border-radius:20px;}
+@media(max-width:960px){.edu-grid{grid-template-columns:1fr;}}
 
-        .arabic-font {
-            font-family: 'Amiri', 'Cairo', serif;
-        }
+/* ===== STATS ===== */
+.stats-section{background:linear-gradient(135deg,var(--black),#0f2818);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+.stat-box .counter{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:800;
+  background:linear-gradient(135deg,var(--gold),var(--green-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-box .label{color:rgba(255,255,255,0.65);font-weight:600;font-size:.88rem;margin-top:6px;}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr;}}
 
-        /* ===== HEADER ===== */
-        .navbar {
-            position: fixed;
-            top: 40px;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 10px 40px;
-            background: transparent;
-            transition: 0.4s cubic-bezier(0.2, 0.9, 0.4, 1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .navbar.scrolled {
-            background: rgba(13, 26, 13, 0.95);
-            backdrop-filter: blur(18px);
-            border-bottom: 1px solid rgba(0, 115, 63, 0.3);
-            padding: 8px 40px;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .logo img {
-            height: 45px;
-            width: auto;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
-        }
-        .logo span {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            letter-spacing: -0.5px;
-        }
-        .logo span .accent { color: var(--gold); }
+/* ===== REGISTRATION FORM ===== */
+.reg-wrap{background:var(--black);border-radius:30px;overflow:hidden;box-shadow:0 40px 100px rgba(10,10,10,0.4);
+  display:grid;grid-template-columns:0.9fr 1.1fr;}
+.reg-side{padding:50px 42px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,var(--green),#0f3d25);}
+.reg-side::before{content:'';position:absolute;top:-30%;left:-20%;width:280px;height:280px;
+  background:radial-gradient(circle,rgba(201,162,39,0.2),transparent 70%);}
+.reg-side h3{font-size:1.9rem;font-weight:900;margin-bottom:18px;position:relative;line-height:1.4;}
+.reg-side p{color:rgba(255,255,255,0.75);line-height:1.9;margin-bottom:28px;position:relative;}
+.reg-point{display:flex;align-items:center;gap:12px;margin-bottom:16px;position:relative;font-weight:700;font-size:.9rem;}
+.reg-point i{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.12);display:flex;align-items:center;
+  justify-content:center;color:var(--gold);flex-shrink:0;}
+.reg-form{padding:46px 42px;background:#fff;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:.82rem;font-weight:700;color:var(--text);}
+.form-group input,.form-group select,.form-group textarea{
+  border:2px solid var(--border);border-radius:10px;padding:13px 15px;font-family:'Cairo',sans-serif;font-size:.9rem;
+  transition:.3s;background:var(--bg);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green-2);background:#fff;}
+.form-submit{width:100%;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border:none;
+  padding:16px;border-radius:10px;font-weight:800;font-size:.98rem;border-bottom:4px solid #0f3d25;
+  display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s var(--ease);margin-top:6px;}
+.form-submit:hover{transform:translateY(-2px);}
+.form-submit:active{transform:translateY(0);border-bottom-width:1px;}
+.form-msg{margin-top:14px;padding:12px 16px;border-radius:10px;font-size:.85rem;font-weight:700;display:none;}
+.form-msg.show{display:block;}
+.form-msg.success{background:#E6F6ED;color:#1B5E3A;}
+.form-msg.error{background:#FBEAEA;color:#B23A3A;}
+@media(max-width:960px){.reg-wrap{grid-template-columns:1fr;} .form-grid{grid-template-columns:1fr;}}
 
-        .nav-links {
-            display: flex;
-            gap: 18px;
-            list-style: none;
-            align-items: center;
-        }
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            transition: 0.2s;
-            padding: 4px 0;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-links a:hover {
-            color: #FFFFFF;
-            border-bottom-color: var(--gold);
-        }
-        .lang-switch {
-            display: flex;
-            gap: 6px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 30px;
-            padding: 4px 8px;
-        }
-        .lang-switch button {
-            background: transparent;
-            border: none;
-            color: rgba(255,255,255,0.5);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .lang-switch button.active {
-            background: var(--primary);
-            color: #FFFFFF;
-        }
-        .lang-switch button:hover { color: #FFFFFF; }
+/* ===== FLOATING WHATSAPP ===== */
+.wa-float{position:fixed;bottom:26px;left:26px;z-index:999;width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#27AE60,#1e8449);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.6rem;box-shadow:0 12px 30px rgba(39,174,96,0.4);transition:.35s var(--ease);}
+.wa-float:hover{transform:translateY(-5px) scale(1.06);}
 
-        .menu-btn {
-            display: none;
-            font-size: 1.8rem;
-            color: #FFFFFF;
-            cursor: pointer;
-        }
+/* ===== FOOTER ===== */
+footer{background:var(--black);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:44px;margin-bottom:50px;}
+.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.footer-brand img{height:46px;}
+.footer-brand .name{color:#fff;font-weight:900;font-size:1.05rem;}
+.footer-col h5{color:#fff;font-weight:800;margin-bottom:18px;font-size:.9rem;}
+.footer-col a{display:block;color:rgba(255,255,255,0.55);font-size:.85rem;margin-bottom:12px;transition:.3s;}
+.footer-col a:hover{color:var(--green-2);}
+.footer-social{display:flex;gap:12px;margin-top:16px;}
+.footer-social a{width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;
+  justify-content:center;color:var(--gold);transition:.3s;}
+.footer-social a:hover{background:var(--green);color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;text-align:center;font-size:.78rem;color:rgba(255,255,255,0.4);}
+@media(max-width:960px){.footer-grid{grid-template-columns:1fr 1fr;gap:30px;}}
+@media(max-width:560px){.footer-grid{grid-template-columns:1fr;}}
 
-        /* ===== HERO ===== */
-        .hero {
-            min-height: 100vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 100px 20px 60px;
-            overflow: hidden;
-            margin-top: 40px;
-        }
-        .hero-slideshow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-        .hero-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-        .hero-slide.active { opacity: 1; }
-        .hero-slide:nth-child(1) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/d1c8e862b48a4591f25ca1b4710dd78548e8f6cf/1781869815626.jpg'); }
-        .hero-slide:nth-child(2) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg'); }
-        .hero-slide:nth-child(3) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/e06a9457975cfd42c616a9ac86776fde9e05dc6c/1781869894374.jpg'); }
-        .hero-slide:nth-child(4) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg'); }
-        .hero-slide:nth-child(5) { background-image: url('https://github.com/darkonovic51-hash/Academy-al-raed/raw/f1cc62258d86575c1485195537f9a67e69e09868/1781876420019.jpg'); }
+/* ===== LIGHTBOX ===== */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;}
+.lightbox.active{display:flex;}
+.lightbox img{max-width:92%;max-height:92%;border-radius:12px;}
+.lightbox-close{position:fixed;top:24px;left:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);
+  border:none;color:#fff;font-size:1.3rem;}
 
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(13, 26, 13, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
-            z-index: -1;
-        }
-        .hero-overlay::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            background: linear-gradient(0deg, rgba(13, 26, 13, 0.9) 0%, transparent 100%);
-        }
-
-        .hero-content {
-            max-width: 900px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4.2rem;
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.8);
-            color: #FFFFFF;
-            min-height: 5rem;
-        }
-        .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--gold), #FFD700);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: none;
-        }
-        .hero h1 .dynamic-text {
-            display: inline-block;
-            min-width: 120px;
-            border-left: 3px solid var(--gold);
-            padding-left: 8px;
-            animation: blinkCursor 0.8s step-end infinite;
-        }
-        @keyframes blinkCursor {
-            0%, 100% { border-color: var(--gold); }
-            50% { border-color: transparent; }
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 35px;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards 1.5s;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 18px;
-            justify-content: center;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards 2s;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 50px;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards 2.5s;
-        }
-        .hero-stat {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 16px 28px;
-            text-align: center;
-            min-width: 120px;
-            transition: var(--transition);
-        }
-        .hero-stat:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-        }
-        .hero-stat .number {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--gold);
-        }
-        .hero-stat .label {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.7);
-            margin-top: 4px;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.7rem;
-            animation: bounceDown 2s infinite;
-        }
-        .scroll-indicator i { font-size: 1.2rem; }
-        @keyframes bounceDown {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
-        }
-
-        /* ===== خلفية خضراء حركية ===== */
-        .green-bg-animated {
-            position: relative;
-            background: linear-gradient(135deg, #0A2F1A, #0D3B26, #1A5C3A);
-            background-size: 400% 400%;
-            animation: gradientShift 12s ease infinite;
-            overflow: hidden;
-        }
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* ===== SECTION DIVIDER ===== */
-        .section-divider {
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, var(--primary), var(--gold), var(--primary));
-            position: relative;
-        }
-        .section-divider::after {
-            content: '⚽';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--gold);
-            font-size: 1.2rem;
-            background: var(--dark);
-            padding: 0 20px;
-        }
-
-        /* ===== SECTION BASE ===== */
-        section { padding: 80px 0; }
-        .section-dark { background: var(--color-1); }
-        .section-light { background: var(--color-2); }
-        .section-mid { background: var(--color-3); }
-
-        /* ===== ABOUT ===== */
-        .about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        .about-card {
-            background: var(--dark-card);
-            border-radius: var(--radius);
-            padding: 32px 24px;
-            text-align: center;
-            border: 1px solid rgba(0, 115, 63, 0.2);
-            transition: var(--transition);
-        }
-        .about-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold);
-            box-shadow: var(--shadow);
-        }
-        .about-card i { font-size: 2.8rem; color: var(--gold); margin-bottom: 16px; }
-        .about-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #FFFFFF; }
-        .about-card p { color: var(--gray-light); opacity: 0.8; }
-
-        /* ===== COACHES ===== */
-        .coach-single {
-            max-width: 400px;
-            margin: 0 auto;
-            background: var(--dark-card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid rgba(0, 115, 63, 0.2);
-            transition: var(--transition);
-            text-align: center;
-        }
-        .coach-single:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold);
-            box-shadow: var(--shadow);
-        }
-        .coach-single img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-        }
-        .coach-single .info { padding: 24px; }
-        .coach-single .info h4 { font-size: 1.4rem; color: #FFFFFF; margin-bottom: 4px; }
-        .coach-single .info .role { color: var(--gold); font-weight: 600; font-size: 1rem; }
-        .coach-single .info .details { color: var(--gray-light); opacity: 0.7; font-size: 0.9rem; margin-top: 8px; }
-
-        /* ===== PLAYERS (لاعبي الأكاديمية - ديكور ثابت) ===== */
-        .players-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-        }
-        .player-card {
-            background: var(--dark-card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid rgba(0, 115, 63, 0.15);
-            transition: var(--transition);
-            text-align: center;
-            animation: wobble 3s infinite alternate;
-        }
-        @keyframes wobble {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(0.5deg) scale(1.02); }
-        }
-        .player-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--gold);
-            box-shadow: var(--shadow);
-        }
-        .player-card img {
-            width: 100%;
-            height: 260px;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        .player-card:hover img { transform: scale(1.05); }
-        .player-card .info { padding: 16px; }
-        .player-card .info h4 { font-size: 1.1rem; color: #FFFFFF; }
-        .player-card .info .role { color: var(--gold); font-size: 0.85rem; font-weight: 600; }
-
-        /* ===== SCHEDULE ===== */
-        .schedule-wrapper {
-            background: var(--dark-card);
-            border-radius: var(--radius);
-            padding: 30px;
-            border: 1px solid rgba(0, 115, 63, 0.15);
-            overflow-x: auto;
-        }
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
-        }
-        .schedule-table th {
-            background: var(--primary);
-            color: #FFFFFF;
-            padding: 14px;
-            text-align: center;
-            font-weight: 700;
-        }
-        .schedule-table td {
-            padding: 12px 14px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .schedule-table tr:hover td { background: rgba(0, 115, 63, 0.1); }
-        .schedule-table .empty { color: var(--gray); opacity: 0.6; font-style: italic; }
-
-        /* ===== MATCHES ===== */
-        .matches-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-        .match-card {
-            background: linear-gradient(145deg, #1a2a1a, #0D1A0D);
-            border-radius: var(--radius);
-            padding: 25px 20px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 10px 30px rgba(212, 160, 23, 0.15);
-            text-align: center;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        .match-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212,160,23,0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .match-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(212, 160, 23, 0.25); }
-        .match-card .vs {
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: var(--gold);
-            margin: 6px 0;
-        }
-        .match-card .opponent {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-        .match-card .match-detail {
-            color: var(--gray-light);
-            font-size: 1rem;
-            margin: 4px 0;
-        }
-        .match-card .match-detail i { color: var(--gold); margin-left: 6px; }
-        .match-card .match-badge {
-            display: inline-block;
-            background: var(--gold);
-            color: #000;
-            padding: 2px 20px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.75rem;
-            margin-top: 8px;
-        }
-        .match-card .academy-name {
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        /* ===== GALLERY ===== */
-        .gallery-masonry {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-        }
-        .gallery-masonry .item {
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            animation: wobble 3s infinite alternate;
-        }
-        .gallery-masonry .item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease, filter 0.4s ease;
-        }
-        .gallery-masonry .item:hover img {
-            transform: scale(1.08);
-            filter: brightness(1.1);
-        }
-        .gallery-masonry .item .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .gallery-masonry .item:hover .overlay { opacity: 1; }
-        .gallery-masonry .item .overlay span { color: #FFFFFF; font-weight: 600; }
-
-        /* ===== VIDEO ===== */
-        .video-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-        .video-wrapper video { width: 100%; display: block; }
-
-        /* ===== REGISTRATION ===== */
-        .registration-wrapper {
-            max-width: 850px;
-            margin: 0 auto;
-            background: linear-gradient(145deg, rgba(20, 40, 25, 0.9), rgba(13, 26, 13, 0.95));
-            border-radius: var(--radius);
-            padding: 45px 40px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 40px rgba(212, 160, 23, 0.15);
-            position: relative;
-            overflow: hidden;
-        }
-        .registration-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212,160,23,0.03) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .registration-wrapper .reg-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .registration-wrapper .reg-header img {
-            max-width: 120px;
-            margin-bottom: 10px;
-            animation: wobble 2s infinite alternate;
-        }
-        .registration-wrapper .reg-header h2 {
-            font-family: 'Amiri', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--gold);
-            text-shadow: 0 0 30px rgba(212, 160, 23, 0.2);
-        }
-        .registration-wrapper .reg-header p {
-            color: var(--gray-light);
-            font-size: 1rem;
-            opacity: 0.7;
-        }
-        .registration-wrapper .form-group { margin-bottom: 18px; }
-        .registration-wrapper label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #FFFFFF;
-            font-size: 0.95rem;
-        }
-        .registration-wrapper input,
-        .registration-wrapper select,
-        .registration-wrapper textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 16px;
-            border: 2px solid rgba(255,255,255,0.08);
-            background: rgba(0,0,0,0.4);
-            color: #FFFFFF;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-        .registration-wrapper input:focus,
-        .registration-wrapper select:focus,
-        .registration-wrapper textarea:focus {
-            border-color: var(--gold);
-            outline: none;
-            box-shadow: 0 0 0 3px var(--gold-glow);
-        }
-        .registration-wrapper .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        /* ===== CONTACT ===== */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-        .contact-info p {
-            margin: 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: var(--gray-light);
-        }
-        .contact-info i { color: var(--gold); width: 24px; }
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-            color: #FFFFFF;
-            font-size: 1rem;
-            margin-bottom: 16px;
-            transition: 0.2s;
-        }
-        .contact-form input:focus,
-        .contact-form textarea:focus { border-color: var(--gold); outline: none; }
-        .contact-form textarea { min-height: 120px; }
-
-        /* ===== POPUP ===== */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(6px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .popup-overlay.active { display: flex; }
-        .popup-box {
-            background: linear-gradient(145deg, #1a2a1a, #0D1A0D);
-            border: 2px solid var(--gold);
-            border-radius: var(--radius);
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-            animation: popupPulse 0.5s ease;
-        }
-        @keyframes popupPulse {
-            0% { transform: scale(0.9) rotate(-2deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-        .popup-box i {
-            font-size: 3.5rem;
-            color: var(--gold);
-            margin-bottom: 15px;
-        }
-        .popup-box h3 {
-            font-size: 1.6rem;
-            color: #FFFFFF;
-            margin-bottom: 10px;
-            font-family: 'Amiri', serif;
-        }
-        .popup-box .info-grid {
-            text-align: right;
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            font-size: 0.9rem;
-        }
-        .popup-box .info-grid p { margin: 4px 0; color: var(--gray-light); }
-        .popup-box .info-grid strong { color: var(--gold); }
-        .popup-box .important-note {
-            background: rgba(212, 160, 23, 0.15);
-            border-right: 3px solid var(--gold);
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            color: var(--gray-light);
-        }
-        .popup-close {
-            background: var(--gold);
-            border: none;
-            color: #000;
-            padding: 10px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: var(--transition);
-        }
-        .popup-close:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 20px var(--gold-glow);
-        }
-
-        /* ===== ADMIN PANEL ===== */
-        .admin-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 9999;
-            background: rgba(0, 115, 63, 0.85);
-            border: none;
-            color: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            backdrop-filter: blur(4px);
-            transition: 0.3s;
-        }
-        .admin-toggle:hover { background: var(--primary); }
-
-        .admin-panel-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.88);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .admin-panel-overlay.active { display: flex; }
-
-        .admin-panel {
-            background: #F0F4F0;
-            border-radius: 30px;
-            max-width: 1400px;
-            width: 100%;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 30px;
-            border: 2px solid var(--primary);
-            position: relative;
-            color: #1a1a1a;
-        }
-        .admin-panel .close-admin {
-            position: sticky;
-            top: 0;
-            float: left;
-            background: var(--primary);
-            border: none;
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-        }
-        .admin-panel h2 { color: #1a1a1a; margin-bottom: 20px; text-align: center; font-size: 1.8rem; }
-        .admin-panel .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        .admin-panel .admin-stat {
-            background: #fff;
-            border-radius: 14px;
-            padding: 14px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #e0e0e0;
-        }
-        .admin-panel .admin-stat .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
-        .admin-panel .admin-stat .label { color: #555; font-size: 0.8rem; }
-
-        .admin-panel .admin-section {
-            margin-top: 25px;
-            border-top: 2px solid #e0e0e0;
-            padding-top: 20px;
-        }
-        .admin-panel .admin-section h3 {
-            color: #1a1a1a;
-            margin-bottom: 14px;
-            font-size: 1.2rem;
-        }
-        .admin-panel .admin-table-wrap {
-            overflow-x: auto;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            border: 1px solid #ddd;
-            background: #fff;
-        }
-        .admin-panel table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            min-width: 700px;
-        }
-        .admin-panel table th {
-            padding: 10px;
-            text-align: center;
-            font-weight: 700;
-            color: #fff;
-        }
-        .admin-panel table td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            color: #1a1a1a;
-        }
-        .admin-panel table .status-badge {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-        .status-badge.pending { background: #f39c12; color: #000; }
-        .status-badge.approved { background: #2ecc71; color: #000; }
-        .status-badge.rejected { background: #e74c3c; color: #fff; }
-
-        .admin-panel .admin-form input,
-        .admin-panel .admin-form textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            background: #fff;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-        }
-        .admin-panel .admin-form button {
-            background: var(--primary);
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .admin-panel .admin-form button:hover { transform: scale(1.03); }
-
-        .admin-panel .table-gallery th { background: #8e44ad; }
-        .admin-panel .table-matches th { background: #e67e22; }
-        .admin-panel .table-schedule th { background: #27ae60; }
-        .admin-panel .table-registrations th { background: #c0392b; }
-
-        .admin-panel .print-btn {
-            background: #7f8c8d;
-            border: none;
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .admin-panel .print-btn:hover { background: #95a5a6; }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: #0A1A0A;
-            padding: 60px 20px 30px;
-            border-top: 1px solid rgba(0, 115, 63, 0.2);
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 40px;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-        .footer-col h4 { color: #FFFFFF; margin-bottom: 16px; font-size: 1.1rem; }
-        .footer-col p,
-        .footer-col a {
-            color: var(--gray-light);
-            opacity: 0.7;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-        .footer-col a:hover { color: var(--gold); opacity: 1; }
-        .footer-social { display: flex; gap: 16px; margin-top: 12px; }
-        .footer-social a { color: var(--gray-light); font-size: 1.4rem; transition: 0.2s; }
-        .footer-social a:hover { color: var(--gold); }
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            margin-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: var(--gray-light);
-            opacity: 0.5;
-            font-size: 0.85rem;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .hero h1 { font-size: 3.2rem; }
-            .section-title { font-size: 2.2rem; }
-            .registration-wrapper .form-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 850px) {
-            body { padding-top: 36px; }
-            .navbar {
-                padding: 8px 16px;
-                background: rgba(13, 26, 13, 0.95);
-                top: 36px;
-            }
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                padding: 16px 0;
-                gap: 12px;
-                background: rgba(13, 26, 13, 0.98);
-                position: absolute;
-                top: 100%;
-                left: 0;
-                border-bottom: 1px solid rgba(0, 115, 63, 0.2);
-            }
-            .nav-links.show { display: flex; }
-            .menu-btn { display: block; }
-            .hero h1 { font-size: 2.2rem; }
-            .hero p { font-size: 1rem; }
-            .contact-grid { grid-template-columns: 1fr; }
-            .registration-wrapper { padding: 24px; }
-            section { padding: 40px 0; }
-            .section-title { font-size: 1.6rem; }
-            .admin-panel { padding: 16px; }
-            .breaking-news { font-size: 0.7rem; padding: 4px 10px; }
-        }
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.7rem; }
-            .btn-primary, .btn-gold, .btn-outline { padding: 8px 20px; font-size: 0.85rem; }
-            .registration-wrapper .reg-header h2 { font-size: 1.6rem; }
-            .breaking-news { font-size: 0.65rem; padding: 3px 8px; gap: 6px; }
-            .breaking-news .btn-go { font-size: 0.6rem; padding: 1px 8px; }
-        }
-    </style>
+@media(max-width:960px){
+  .section-title{font-size:1.85rem;}
+  .about-grid{grid-template-columns:1fr;}
+  section{padding:70px 0;}
+}
+</style>
 </head>
 <body>
 
-<!-- ===== شريط عاجل ===== -->
-<div class="breaking-news" id="breakingNews">
-    <i class="fas fa-bullhorn"></i>
-    <span>📢 تم افتتاح التسجيلات الصيفية لبرنامج الرائد للنخبة – سارع للتسجيل!</span>
-    <a href="#registration" class="btn-go"><i class="fas fa-arrow-left"></i> سجل الآن</a>
+<div class="pitch-bg" id="pitchBg">
+  <svg viewBox="0 0 1440 4600" preserveAspectRatio="xMidYMin slice">
+    <line class="dashed" x1="-100" y1="200" x2="600" y2="700"/>
+    <line class="dashed" x1="900" y1="100" x2="1600" y2="600"/>
+    <circle cx="1200" cy="900" r="140"/>
+    <line x1="1200" y1="760" x2="1200" y2="1040"/>
+    <line class="dashed" x1="-100" y1="1600" x2="700" y2="2200"/>
+    <circle cx="250" cy="2200" r="120"/>
+    <line class="dashed" x1="900" y1="2600" x2="1600" y2="3100"/>
+    <circle cx="1100" cy="3400" r="150"/>
+    <line class="dashed" x1="-100" y1="3800" x2="600" y2="4300"/>
+  </svg>
 </div>
 
-<!-- ===== HEADER ===== -->
-<header class="navbar" id="navbar">
-    <div class="logo">
-        <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/b015e2b2e5d128ec6e4b1f14525ca59296dd5a69/1000012096-removebg-preview.png" alt="شعار الأكاديمية">
-        <span>الرائد <span class="accent">Academy</span></span>
+<nav class="navbar" id="navbar">
+  <div class="navbar-top">
+    <div class="container">
+      <div class="contacts">
+        <span><i class="fas fa-phone"></i> اتصل بنا</span>
+        <span><i class="fas fa-map-marker-alt"></i> ملعب الأكاديمية</span>
+      </div>
+      <div class="socials">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+      </div>
     </div>
-    <div class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></div>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="#home">الرئيسية</a></li>
+  </div>
+  <div class="navbar-main">
+    <div class="container navbar-inner">
+      <div class="brand">
+        <img src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/3d67c17c589fbe2ae9ce875c9199d21981740058/file_000000007fd871f4b2e095dad086c8e3.png" alt="أكاديمية الرائد" style="display:none;" />
+        <div style="width:52px;height:52px;background:linear-gradient(135deg,var(--green-2),var(--green));border-radius:10px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-shield-halved" style="color:#fff;font-size:1.4rem;"></i></div>
+        <div class="brand-text">أكاديمية الرائد<span>AL-RAED FOOTBALL ACADEMY</span></div>
+      </div>
+      <ul class="nav-links" id="navLinks">
         <li><a href="#about">عن الأكاديمية</a></li>
-        <li><a href="#coaches">المدربون</a></li>
-        <li><a href="#players">لاعبي الأكاديمية</a></li>
-        <li><a href="#gallery">المعرض</a></li>
-        <li><a href="#schedule">جدول التدريبات</a></li>
-        <li><a href="#matches">المباريات</a></li>
-        <li><a href="#registration">التسجيل الصيفي</a></li>
-        <li><a href="#contact">اتصل بنا</a></li>
-        <li>
-            <div class="lang-switch">
-                <button class="active">عربي</button>
-                <button>EN</button>
-            </div>
-        </li>
-        <li><a href="#registration" class="btn-primary" style="padding:6px 20px; font-size:0.8rem;">سجل الآن</a></li>
-    </ul>
-</header>
-
-<!-- ===== HERO ===== -->
-<section id="home" class="hero">
-    <div class="hero-slideshow">
-        <div class="hero-slide active"></div>
-        <div class="hero-slide"></div>
-        <div class="hero-slide"></div>
-        <div class="hero-slide"></div>
-        <div class="hero-slide"></div>
+        <li><a href="#coach">المدير الفني</a></li>
+        <li><a href="#gallery">الألبوم</a></li>
+        <li><a href="#tournament">دوراتنا</a></li>
+        <li><a href="#education">فيديوهات تعليمية</a></li>
+        <li><a href="#register" class="nav-cta">سجّل الآن</a></li>
+      </ul>
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
     </div>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1>
-            <span class="highlight">أكاديمية</span>
-            <span class="dynamic-text" id="dynamicText"></span>
-        </h1>
-        <p>حيث تُصنع النجوم وتُكتب الأساطير. نعدّ الجيل القادم من أبطال كرة القدم.</p>
+  </div>
+</nav>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="home">
+  <video class="hero-video" autoplay muted loop playsinline>
+    <source src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/3d67c17c589fbe2ae9ce875c9199d21981740058/_%D9%85%D9%88%D8%B3%D9%85%20_25%20_26%20_%20Raed%20Foot%20Ball%20Academy(720P_HD).mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content-wrap">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge"><i class="fas fa-shield-halved"></i> النادي الرياضي المحترف — تأسست 2018</div>
+        <h1>نصنع <span class="g">نجوم</span> كرة القدم<br/>منذ اليوم الأول</h1>
+        <p>أكاديمية الرائد الرياضية المحترفة — تكوين تقني واحترافي متكامل للاعبي الغد، بإشراف طاقم فني معتمد ومنهج تدريبي عالمي.</p>
         <div class="hero-buttons">
-            <a href="#registration" class="btn-primary">سجل الآن</a>
-            <a href="#coaches" class="btn-outline">اكتشف البرامج</a>
+          <a href="#register" class="btn-green"><i class="fas fa-user-plus"></i> سجّل ابنك الآن</a>
+          <a href="#about" class="btn-outline-w"><i class="fas fa-play"></i> اكتشف الأكاديمية</a>
         </div>
-        <div class="hero-stats">
-            <div class="hero-stat"><div class="number" id="statPlayers">+0</div><div class="label">لاعب متدرب</div></div>
-            <div class="hero-stat"><div class="number" id="statMatches">+0</div><div class="label">مباراة</div></div>
-            <div class="hero-stat"><div class="number">12</div><div class="label">مدرب محترف</div></div>
-            <div class="hero-stat"><div class="number">8</div><div class="label">بطولة</div></div>
-        </div>
+      </div>
     </div>
-    <div class="scroll-indicator">
-        <span>مرر للأسفل</span>
-        <i class="fas fa-chevron-down"></i>
+  </div>
+
+  <!-- NEWS TICKER -->
+  <div class="news-ticker">
+    <div class="ticker-label"><i class="fas fa-bolt"></i> آخر الأخبار</div>
+    <div class="ticker-track-wrap">
+      <div class="ticker-track" id="tickerTrack"></div>
     </div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== ABOUT ===== -->
-<section id="about" class="section-dark">
-    <div class="container">
-        <h2 class="section-title">عن <span>الأكاديمية</span></h2>
-        <p class="section-subtitle">قصة أكاديمية الرائد – رؤية، رسالة، وقيم نبني عليها مستقبل كرة القدم في الجزائر.</p>
-        <div class="about-grid">
-            <div class="about-card"><i class="fas fa-eye"></i><h3>رؤيتنا</h3><p>تخريج جيل من اللاعبين المحترفين القادرين على تمثيل النادي والوطن في أكبر المحافل الدولية.</p></div>
-            <div class="about-card"><i class="fas fa-bullhorn"></i><h3>رسالتنا</h3><p>توفير بيئة تدريبية عالمية المستوى، وتطوير المهارات الفنية والبدنية والنفسية للاعبين من الفئات العمرية الصغيرة.</p></div>
-            <div class="about-card"><i class="fas fa-trophy"></i><h3>قيمنا</h3><p>الانضباط، العمل الجماعي، الاحترام، التميز، والشغف – هذه هي القيم التي نبني عليها كل لاعب.</p></div>
-        </div>
+<!-- ABOUT -->
+<section id="about">
+  <div class="container about-grid">
+    <div class="about-text reveal">
+      <div class="section-tag">من نحن</div>
+      <h2 class="section-title">فلسفة <span>الريادة والتميز</span></h2>
+      <p>أكاديمية الرائد نادٍ رياضي محترف مؤسَّس منذ 2018، متخصص في اكتشاف وصقل مواهب كرة القدم الشابة، عبر برامج تدريبية علمية مدروسة تجمع بين الجانب التقني والبدني والذهني.</p>
+      <p>نؤمن بأن كل لاعب يحمل بداخله "رائداً" — دورنا أن نوفر له البيئة والأدوات والتوجيه المناسب ليصل إلى أعلى مستوياته.</p>
+      <div class="about-stats">
+        <div class="about-stat"><div class="n num-font">2018</div><div class="l">سنة التأسيس</div></div>
+        <div class="about-stat"><div class="n num-font">+300</div><div class="l">لاعب متكوّن</div></div>
+        <div class="about-stat"><div class="n num-font">+15</div><div class="l">مدرب مؤهل</div></div>
+        <div class="about-stat"><div class="n num-font">+40</div><div class="l">بطولة ودورة</div></div>
+      </div>
     </div>
+    <div class="reveal">
+      <div class="video-card">
+        <div class="video-frame-wrap">
+          <video controls playsinline preload="metadata">
+            <source src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/fe735c7adacdbd6dcb27d461e12a8aa770d41f43/%D8%B5%D9%87%D9%8A%D8%A8%20Sohaib%20Ben%20Ahmed%20%D8%A3%D8%AD%D8%B3%D9%86%20%D9%85%D8%AF%D8%B1%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20%F0%9F%92%9A%F0%9F%92%AA(720P_HD).mp4" type="video/mp4">
+          </video>
+          <div class="video-play-badge"><i class="fas fa-trophy"></i> أفضل مدرب في الدورة</div>
+        </div>
+        <div class="tournament-body">
+          <h4>صهيب بن أحمد — أحسن مدرب في الدورة</h4>
+          <p>تكريم يعكس جهود طاقمنا الفني المتفاني في تطوير مهارات لاعبينا داخل الدورات التي تنظمها الأكاديمية.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== COACHES ===== -->
-<section id="coaches" class="green-bg-animated">
-    <div class="container">
-        <h2 class="section-title">المدير <span>الفني</span></h2>
-        <p class="section-subtitle">قيادة فنية وخبرة عالية لبناء جيل من الأبطال.</p>
-        <div class="coach-single">
-            <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/1df27a516344950ef0e2827829f4c77d7e759cac/file_000000007fd871f4b2e095dad086c8e3.png" alt="المدير الفني">
-            <div class="info">
-                <h4>المدير الفني</h4>
-                <div class="role">مدرب وطني معتمد – UEFA B</div>
-                <div class="details">خبرة 15 سنة في تدريب الفئات العمرية، درب أكثر من 200 لاعب، وقاد فرقاً للفوز ببطولات وطنية.</div>
-            </div>
-        </div>
+<!-- COACH -->
+<section id="coach" style="background:#fff;">
+  <div class="container">
+    <div class="reveal center" style="max-width:680px;margin-bottom:50px;">
+      <div class="section-tag" style="justify-content:center;">الطاقم الفني</div>
+      <h2 class="section-title">المدير <span>الفني للأكاديمية</span></h2>
     </div>
+    <div class="coach-card reveal">
+      <div class="coach-photo-wrap">
+        <img src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/3d67c17c589fbe2ae9ce875c9199d21981740058/file_000000007fd871f4b2e095dad086c8e3.png" alt="المدير الفني" />
+      </div>
+      <div class="coach-info">
+        <div class="coach-badge"><i class="fas fa-star"></i> المدير الفني</div>
+        <h3>الأستاذ كامل مراد</h3>
+        <div class="role">مدير فني — أكاديمية الرائد لكرة القدم</div>
+        <p>يقود المدير الفني الجهاز التقني للأكاديمية بخبرة طويلة في تكوين اللاعبين الشباب، مع تركيز خاص على التدريب المعرفي وتطوير الذكاء التكتيكي للاعب منذ الفئات الصغرى.</p>
+        <div class="coach-tags">
+          <div class="coach-tag"><i class="fas fa-brain"></i> التدريب المعرفي</div>
+          <div class="coach-tag"><i class="fas fa-futbol"></i> التكوين الفني</div>
+          <div class="coach-tag"><i class="fas fa-users"></i> تطوير الفئات الشابة</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== PLAYERS (لاعبي الأكاديمية - ديكور ثابت) ===== -->
-<section id="players" class="section-dark">
-    <div class="container">
-        <h2 class="section-title">لاعبي <span>الأكاديمية</span></h2>
-        <p class="section-subtitle">نخبة من لاعبي أكاديمية الرائد.</p>
-        <div class="players-grid" id="playersGrid">
-            <!-- صور ثابتة (ديكور) -->
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/578a8a57e64c374eb27ebc33231a79e5dd001900/IMG-20250929-WA0008.jpg" alt="ياسين بن عمار" loading="lazy">
-                <div class="info"><h4>ياسين بن عمار</h4><div class="role">جناح أيسر – U16</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/25e422d33c687a38efa3e6f19da909648110e9bf/IMG-20250929-WA0010.jpg" alt="أحمد زروقي" loading="lazy">
-                <div class="info"><h4>أحمد زروقي</h4><div class="role">وسط ميدان – U16</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/53bab77934ae303e113960bca868f72ceed9dd59/IMG-20250929-WA0014.jpg" alt="سفيان بن سالم" loading="lazy">
-                <div class="info"><h4>سفيان بن سالم</h4><div class="role">مهاجم – U15</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/a890889a14b2c3414b48952abb24f9ee3b29abb3/1781876643811.jpg" alt="مهدي شريف" loading="lazy">
-                <div class="info"><h4>مهدي شريف</h4><div class="role">ظهير أيمن – U14</div></div>
-            </div>
-            <div class="player-card">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/118ee0e610fd4ae6b32d518e10f19b1884268fd4/1781876631732.jpg" alt="محمد لعروسي" loading="lazy">
-                <div class="info"><h4>محمد لعروسي</h4><div class="role">قلب دفاع – U13</div></div>
-            </div>
-        </div>
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
+      <div class="section-tag" style="justify-content:center;">ألبوم الأكاديمية</div>
+      <h2 class="section-title">لحظات من <span>مسيرتنا</span></h2>
+      <p class="section-sub center">صور من تدريباتنا، مبارياتنا، ومناسباتنا المختلفة.</p>
     </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== GALLERY ===== -->
-<section id="gallery" class="green-bg-animated">
-    <div class="container">
-        <h2 class="section-title">معرض <span>الصور</span></h2>
-        <p class="section-subtitle">لقطات من التدريبات، المباريات، والمناسبات التي تعكس روح الأكاديمية.</p>
-        <div class="gallery-masonry" id="galleryGrid"></div>
+<!-- EDUCATIONAL VIDEOS -->
+<section id="education" style="background:var(--bg);">
+  <div class="container">
+    <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
+      <div class="section-tag" style="justify-content:center;">أكاديمية المعرفة</div>
+      <h2 class="section-title">فيديوهات <span>تعليمية متخصصة</span></h2>
+      <p class="section-sub center">محتوى تدريبي احترافي يشرح أسس التدريب الحديث بطريقة علمية مبسطة.</p>
     </div>
+    <div class="edu-grid" id="eduGrid"></div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== SCHEDULE ===== -->
-<section id="schedule" class="section-light">
-    <div class="container">
-        <h2 class="section-title">جدول <span>التدريبات</span></h2>
-        <p class="section-subtitle">جدول أسبوعي منظم لجميع الفئات العمرية.</p>
-        <div class="schedule-wrapper" id="scheduleWrapper"></div>
-        <p style="text-align:center; color:var(--gray); margin-top:15px; font-size:0.85rem;">📌 يتم تحديث الجدول دورياً من قبل الإدارة.</p>
+<!-- STATS -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-box reveal"><div class="counter num-font" data-target="2018" data-static="true">2018</div><div class="label">سنة التأسيس</div></div>
+      <div class="stat-box reveal"><div class="counter num-font" data-target="300">0</div><div class="label">لاعب متكوّن</div></div>
+      <div class="stat-box reveal"><div class="counter num-font" data-target="40">0</div><div class="label">بطولة ودورة</div></div>
+      <div class="stat-box reveal"><div class="counter num-font" data-target="15">0</div><div class="label">مدرب مؤهل</div></div>
     </div>
+  </div>
 </section>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== MATCHES ===== -->
-<section id="matches" class="green-bg-animated">
-    <div class="container">
-        <h2 class="section-title">المباريات <span>الودية</span></h2>
-        <p class="section-subtitle">جميع المباريات الودية للفرق مع التفاصيل الكاملة.</p>
-        <div id="matchesContainer"></div>
+<!-- REGISTRATION -->
+<section id="register">
+  <div class="container">
+    <div class="reveal center" style="max-width:680px;margin-bottom:50px;">
+      <div class="section-tag" style="justify-content:center;">انضم إلينا</div>
+      <h2 class="section-title">سجّل ابنك <span>في أكاديمية الرائد</span></h2>
     </div>
+    <div class="reg-wrap reveal">
+      <div class="reg-side">
+        <h3>ابدأ رحلة ابنك نحو الاحتراف</h3>
+        <p>استمارة التسجيل بسيطة وسريعة — سيتواصل معكم فريقنا الإداري خلال 48 ساعة لتأكيد التسجيل وتحديد موعد الاختبار الفني.</p>
+        <div class="reg-point"><i class="fas fa-user-check"></i> فحص وتقييم فني مجاني</div>
+        <div class="reg-point"><i class="fas fa-shield-halved"></i> بيئة تدريبية آمنة ومنظمة</div>
+        <div class="reg-point"><i class="fas fa-chalkboard-teacher"></i> مدربون مؤهلون معتمدون</div>
+        <div class="reg-point"><i class="fas fa-clock"></i> رد سريع خلال 48 ساعة</div>
+      </div>
+      <form class="reg-form" id="registerForm">
+        <div class="form-grid">
+          <div class="form-group"><label>اسم اللاعب</label><input type="text" id="regFirstName" required /></div>
+          <div class="form-group"><label>لقب اللاعب</label><input type="text" id="regLastName" required /></div>
+          <div class="form-group"><label>تاريخ الميلاد</label><input type="date" id="regBirthDate" required /></div>
+          <div class="form-group"><label>الفئة العمرية المقترحة</label>
+            <select id="regCategory">
+              <option value="U07">U07</option><option value="U09">U09</option><option value="U11">U11</option>
+              <option value="U13">U13</option><option value="U15">U15</option>
+            </select>
+          </div>
+          <div class="form-group"><label>اسم ولي الأمر</label><input type="text" id="regGuardianName" required /></div>
+          <div class="form-group"><label>هاتف ولي الأمر</label><input type="tel" id="regGuardianPhone" required /></div>
+          <div class="form-group full"><label>ملاحظات إضافية (اختياري)</label><textarea id="regNotes" rows="3"></textarea></div>
+        </div>
+        <button type="submit" class="form-submit" id="regSubmitBtn"><i class="fas fa-paper-plane"></i> إرسال طلب التسجيل</button>
+        <div class="form-msg" id="regMsg"></div>
+      </form>
+    </div>
+  </div>
 </section>
+</main>
 
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
+<a href="#" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<!-- ===== REGISTRATION ===== -->
-<section id="registration" class="section-dark">
-    <div class="container">
-        <div class="registration-wrapper">
-            <div class="reg-header">
-                <img src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/4f3f47af840a60ac670ec5cc6a617b559333ca49/1000015619-removebg-preview.png" alt="شعار البرنامج الصيفي">
-                <h2>تسجيلات الصيفية لبرنامج الرائد للنخبة</h2>
-                <p>سجل الآن وانضم إلى النخبة – موسم 2026</p>
-            </div>
-            <form id="registrationForm">
-                <div class="form-row">
-                    <div class="form-group"><label>الاسم</label><input type="text" id="regFirstName" placeholder="مثال: أحمد" required></div>
-                    <div class="form-group"><label>اللقب</label><input type="text" id="regLastName" placeholder="مثال: بن سليمان" required></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="regPhone" placeholder="05XXXXXXXX" required></div>
-                    <div class="form-group"><label>العنوان</label><input type="text" id="regAddress" placeholder="المدينة، الحي" required></div>
-                </div>
-                <div class="form-group"><label>تاريخ ومكان الميلاد</label><input type="text" id="regBirth" placeholder="مثال: 01-01-2010، الجزائر" required></div>
-                <button type="submit" class="btn-gold" style="width:100%; padding:16px; font-size:1.1rem;">تسجيل</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<!-- ===== DIVIDER ===== -->
-<div class="section-divider"></div>
-
-<!-- ===== CONTACT ===== -->
-<section id="contact" class="section-light">
-    <div class="container">
-        <h2 class="section-title">تواصل <span>معنا</span></h2>
-        <p class="section-subtitle">نحن هنا للإجابة على استفساراتكم. تواصلوا معنا عبر أي من القنوات التالية.</p>
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h3 style="color:#FFFFFF; margin-bottom:20px;">معلومات الاتصال</h3>
-                <p><i class="fas fa-map-marker-alt"></i> المركب الرياضي، زرالدة، الجزائر</p>
-                <p><i class="fas fa-phone-alt"></i> 06655135621</p>
-                <p><i class="fas fa-envelope"></i> raedpro16@gmail.com</p>
-                <p><i class="fab fa-whatsapp"></i> 06655135621</p>
-                <p><i class="fas fa-clock"></i> السبت – الخميس: 14:00 – 19:00</p>
-                <div style="display:flex; gap:16px; margin-top:20px;">
-                    <a href="https://www.facebook.com/profile.php?id=100064191305057" target="_blank" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-youtube"></i></a>
-                    <a href="#" style="color:var(--gold); font-size:1.8rem;"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
-            <div class="contact-form">
-                <input type="text" placeholder="الاسم الكامل">
-                <input type="email" placeholder="البريد الإلكتروني">
-                <input type="tel" placeholder="رقم الهاتف">
-                <textarea placeholder="رسالتك..."></textarea>
-                <button class="btn-primary">إرسال الرسالة</button>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ===== POPUP تأكيد التسجيل ===== -->
-<div class="popup-overlay" id="confirmPopup">
-    <div class="popup-box">
-        <i class="fas fa-check-circle"></i>
-        <h3>✅ تم التسجيل بنجاح</h3>
-        <div class="info-grid" id="confirmInfo"></div>
-        <div class="important-note">
-            <strong>📌 مهم:</strong> سيتم الاتصال بك في أجل أقصاه <strong>24 ساعة</strong>، وإن لم يتم الاتصال بك، يجب أن تتصل بنا لحجز مقعدك.
-        </div>
-        <button class="popup-close" onclick="closeConfirmPopup()">حسناً، فهمت</button>
-    </div>
-</div>
-
-<!-- ===== POPUP منع إعادة التسجيل ===== -->
-<div class="popup-overlay" id="blockPopup">
-    <div class="popup-box">
-        <i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i>
-        <h3>⚠️ عذراً</h3>
-        <p style="color:var(--gray-light); font-size:1.1rem;">أنت مسجل من قبل، لا يمكنك إعادة التسجيل من هذا الجهاز.</p>
-        <button class="popup-close" onclick="closeBlockPopup()">فهمت</button>
-    </div>
-</div>
-
-<!-- ===== ADMIN TOGGLE ===== -->
-<button class="admin-toggle" id="adminToggle"><i class="fas fa-cog"></i> إدارة</button>
-
-<!-- ===== ADMIN PANEL ===== -->
-<div class="admin-panel-overlay" id="adminPanel">
-    <div class="admin-panel">
-        <button class="close-admin" id="closeAdmin"><i class="fas fa-times"></i> إغلاق</button>
-        <h2>🔐 لوحة تحكم المسؤول</h2>
-        <div id="adminLogin" style="text-align:center; margin-bottom:20px;">
-            <input type="password" id="adminPassInput" placeholder="أدخل كلمة السر" style="padding:10px 20px; border-radius:60px; border:1px solid var(--primary); background:#fff; color:#1a1a1a; width:240px; font-size:1rem;">
-            <button onclick="adminLogin()" style="background:var(--primary); border:none; padding:10px 22px; border-radius:60px; color:#fff; font-weight:700; cursor:pointer; font-size:1rem;">دخول</button>
-            <div id="adminLoginError" style="color:red; margin-top:8px; display:none;">❌ كلمة سر غير صحيحة</div>
-        </div>
-        <div id="adminContent" style="display:none;">
-            <div class="admin-stats" id="adminStats"></div>
-
-            <!-- طلبات التسجيل الصيفي -->
-            <div class="admin-section">
-                <h3>📋 طلبات التسجيل الصيفي</h3>
-                <div class="admin-table-wrap">
-                    <table class="table-registrations">
-                        <thead><tr><th>#</th><th>الاسم</th><th>اللقب</th><th>الهاتف</th><th>العنوان</th><th>الميلاد</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
-                        <tbody id="adminRegistrations"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- إدارة المعرض -->
-            <div class="admin-section">
-                <h3>🖼️ إدارة المعرض</h3>
-                <div class="admin-table-wrap">
-                    <table class="table-gallery">
-                        <thead><tr><th>#</th><th>العنوان</th><th>رابط الصورة</th><th>حذف</th></tr></thead>
-                        <tbody id="adminGalleryList"></tbody>
-                    </table>
-                </div>
-                <div class="admin-form" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-                    <input type="text" id="newGalleryTitle" placeholder="عنوان الصورة" style="flex:1; min-width:150px;">
-                    <input type="text" id="newGalleryUrl" placeholder="رابط الصورة" style="flex:2; min-width:200px;">
-                    <button onclick="addGalleryItem()">إضافة صورة</button>
-                </div>
-            </div>
-
-            <!-- جدول التدريبات -->
-            <div class="admin-section">
-                <h3>📅 جدول التدريبات الأسبوعي</h3>
-                <div class="admin-table-wrap">
-                    <table class="table-schedule">
-                        <thead><tr><th>#</th><th>الفئة</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th><th>حذف</th></tr></thead>
-                        <tbody id="adminScheduleList"></tbody>
-                    </table>
-                </div>
-                <div class="admin-form" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-                    <input type="text" id="newScheduleCategory" placeholder="الفئة" style="flex:1; min-width:100px;">
-                    <input type="text" id="newScheduleSat" placeholder="السبت" style="flex:1; min-width:80px;">
-                    <input type="text" id="newScheduleSun" placeholder="الأحد" style="flex:1; min-width:80px;">
-                    <input type="text" id="newScheduleTue" placeholder="الثلاثاء" style="flex:1; min-width:80px;">
-                    <input type="text" id="newScheduleThu" placeholder="الخميس" style="flex:1; min-width:80px;">
-                    <button onclick="addScheduleRow()">إضافة صف</button>
-                </div>
-                <button onclick="saveScheduleAdmin()" style="background:var(--primary); border:none; padding:8px 18px; border-radius:30px; color:#fff; font-weight:700; cursor:pointer; margin-top:10px;">💾 حفظ الجدول</button>
-            </div>
-
-            <!-- المباريات -->
-            <div class="admin-section">
-                <h3>⚽ المباريات الودية</h3>
-                <div class="admin-table-wrap">
-                    <table class="table-matches">
-                        <thead><tr><th>#</th><th>الخصم</th><th>التاريخ</th><th>الوقت</th><th>الملعب</th><th>حذف</th></tr></thead>
-                        <tbody id="adminMatchesList"></tbody>
-                    </table>
-                </div>
-                <div class="admin-form" style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
-                    <input type="text" id="newMatchOpponent" placeholder="الخصم" style="flex:1; min-width:100px;">
-                    <input type="text" id="newMatchDate" placeholder="التاريخ" style="flex:1; min-width:100px;">
-                    <input type="text" id="newMatchTime" placeholder="الوقت" style="flex:1; min-width:80px;">
-                    <input type="text" id="newMatchLocation" placeholder="الملعب" style="flex:1; min-width:100px;">
-                    <button onclick="addMatch()">إضافة مباراة</button>
-                </div>
-                <button onclick="saveMatchesAdmin()" style="background:var(--primary); border:none; padding:8px 18px; border-radius:30px; color:#fff; font-weight:700; cursor:pointer; margin-top:10px;">💾 حفظ المباريات</button>
-            </div>
-
-            <!-- تغيير كلمة السر -->
-            <div class="admin-section">
-                <h3>🔑 تغيير كلمة السر</h3>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                    <input type="password" id="newAdminPass" placeholder="كلمة سر جديدة" style="padding:10px; border-radius:12px; border:1px solid #ccc; background:#fff; color:#1a1a1a; width:200px;">
-                    <button onclick="changeAdminPassword()" style="background:var(--gold); border:none; padding:8px 20px; border-radius:30px; color:#000; font-weight:700; cursor:pointer;">تغيير</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ===== FOOTER ===== -->
-<footer class="footer">
+<footer>
+  <div class="container">
     <div class="footer-grid">
-        <div class="footer-col">
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
-                <img src="https://github.com/darkonovic51-hash/Academy-al-raed/raw/b015e2b2e5d128ec6e4b1f14525ca59296dd5a69/1000012096-removebg-preview.png" alt="شعار" style="height:45px; width:auto;">
-                <span style="font-size:1.4rem; font-weight:800; color:#FFFFFF;">الرائد <span style="color:var(--gold);">Academy</span></span>
-            </div>
-            <p style="opacity:0.6;">أكاديمية كرة القدم الرائدة في الجزائر، نصنع النجوم ونبني المستقبل.</p>
+      <div>
+        <div class="footer-brand">
+          <div style="width:46px;height:46px;background:linear-gradient(135deg,var(--green-2),var(--green));border-radius:10px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-shield-halved" style="color:#fff;"></i></div>
+          <div class="name">أكاديمية الرائد لكرة القدم</div>
         </div>
-        <div class="footer-col">
-            <h4>روابط سريعة</h4>
-            <a href="#home">الرئيسية</a>
-            <a href="#about">عن الأكاديمية</a>
-            <a href="#coaches">المدربون</a>
-            <a href="#registration">التسجيل الصيفي</a>
-        </div>
-        <div class="footer-col">
-            <h4>تواصل معنا</h4>
-            <p>📞 06655135621</p>
-            <p>📧 raedpro16@gmail.com</p>
-            <p>📍 زرالدة، الجزائر</p>
-            <div class="footer-social">
-                <a href="https://www.facebook.com/profile.php?id=100064191305057" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
+        <p style="font-size:.85rem;line-height:1.9;color:rgba(255,255,255,0.5);">النادي الرياضي المحترف — نصنع نجوم كرة القدم منذ 2018.</p>
+        <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
+      </div>
+      <div class="footer-col"><h5>روابط سريعة</h5><a href="#about">عن الأكاديمية</a><a href="#coach">المدير الفني</a><a href="#gallery">الألبوم</a><a href="#register">التسجيل</a></div>
+      <div class="footer-col"><h5>الفئات العمرية</h5><a href="#register">U07</a><a href="#register">U09</a><a href="#register">U11</a><a href="#register">U13 - U15</a></div>
+      <div class="footer-col"><h5>تواصل معنا</h5><a href="#"><i class="fas fa-phone"></i> اتصل بنا</a><a href="#"><i class="fas fa-map-marker-alt"></i> ملعب الأكاديمية</a></div>
     </div>
-    <div class="footer-bottom">
-        &copy; 2026 أكاديمية الرائد R.F.A – جميع الحقوق محفوظة
-    </div>
+    <div class="footer-bottom">© 2026 أكاديمية الرائد لكرة القدم. جميع الحقوق محفوظة.</div>
+  </div>
 </footer>
 
-<!-- ===== SCRIPTS ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <img id="lightboxImg" src="" alt="" />
+</div>
+
 <script>
-    // ================================================================
-    // 1. إعدادات Firebase
-    // ================================================================
-    const firebaseConfig = {
-        apiKey: "AIzaSyCDrCtY7weMKAfWQq1k3Hx9hx1PPWa4XAE",
-        authDomain: "academy-al.firebaseapp.com",
-        projectId: "academy-al",
-        storageBucket: "academy-al.firebasestorage.app",
-        messagingSenderId: "205174400637",
-        appId: "1:205174400637:web:33c0bb5e284457b34b3314"
-    };
+/* ============ FIREBASE INIT ============ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
+  authDomain: "academy-raed-new.firebaseapp.com",
+  projectId: "academy-raed-new",
+  storageBucket: "academy-raed-new.firebasestorage.app",
+  messagingSenderId: "408030922593",
+  appId: "1:408030922593:web:190a2a671fca9cb297a720",
+  measurementId: "G-8ZCCBF7HRK"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-    try {
-        firebase.initializeApp(firebaseConfig);
-        console.log('✅ Firebase initialized');
-    } catch (e) {
-        console.error('❌ Firebase init error:', e);
-    }
-    const database = firebase.database();
+/* ============ DEFAULT CONTENT (seeded into Firebase on first load, editable later via dashboard.html) ============ */
+const GITHUB_RAW = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed";
 
-    // ================================================================
-    // 2. البيانات الافتراضية
-    // ================================================================
-    const defaultGallery = [
-        { id: 1, title: 'تدريبات الفريق الأول', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/a1e34ad8777a9a65f367bcce4bd78f2464e5b911/1781869815626.jpg' },
-        { id: 2, title: 'تمارين تكتيكية', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/081259b9f7cd4d24acf0bed12b69723f81c8ea1b/1781870007660.jpg' },
-        { id: 3, title: 'إعداد بدني', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/7189d2e97a0c2688ef550c50c4a1e5da9014f182/1781876690623.jpg' },
-        { id: 4, title: 'فريق تحت 13 سنة', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/e06a9457975cfd42c616a9ac86776fde9e05dc6c/1781869894374.jpg' },
-        { id: 5, title: 'فريق تحت 16 سنة', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/f1cc62258d86575c1485195537f9a67e69e09868/1781876420019.jpg' },
-        { id: 6, title: 'فريق تحت 13 سنة', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/c952d1e675e8642675795281b572bf3ab933f61f/1781876491766.jpg' },
-        { id: 7, title: 'فريق تحت 11 سنة', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/d6545022df84c4e0f9385c1bb028c4c4164a335a/1781876621648.jpg' },
-        { id: 8, title: 'ملعب الأكاديمية', url: 'https://github.com/darkonovic51-hash/Academy-al-raed/raw/3329dc263b5679c36a11417e7720fd58b1bd4120/1781875639267.jpg' }
-    ];
+const defaultNewsTicker = [
+  "🏆 فتح باب التسجيل لموسم 2025/2026 لجميع الفئات العمرية",
+  "⚽ تكريم المدرب صهيب بن أحمد كأفضل مدرب في الدورة الأخيرة",
+  "📅 انطلاق الحصص التدريبية الأسبوعية بداية الأسبوع القادم",
+  "🎓 دروس تعليمية جديدة حول تطوير القدرات المعرفية للاعب",
+  "🤝 شراكات جديدة قيد الإعداد لتطوير البنية التحتية للأكاديمية"
+];
 
-    const defaultSchedule = [
-        { id: 1, category: 'تحت 11 سنة', sat: '—', sun: '16:00-17:30', tue: '—', thu: '16:00-17:30' },
-        { id: 2, category: 'تحت 12 سنة', sat: '—', sun: '—', tue: '16:00-17:30', thu: '—' },
-        { id: 3, category: 'تحت 13 سنة', sat: '16:00-17:30', sun: '—', tue: '—', thu: '17:30-19:00' },
-        { id: 4, category: 'تحت 14 سنة', sat: '—', sun: '17:30-19:00', tue: '—', thu: '—' },
-        { id: 5, category: 'تحت 15 سنة', sat: '17:30-19:00', sun: '—', tue: '17:30-19:00', thu: '—' },
-        { id: 6, category: 'تحت 16 سنة', sat: '—', sun: '19:00-20:30', tue: '19:00-20:30', thu: '—' }
-    ];
+const defaultGallery = [
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781876420019.jpg`, caption:"تدريبات الأكاديمية" },
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781876491766.jpg`, caption:"لحظات من مبارياتنا" },
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781876690623.jpg`, caption:"روح الفريق الواحد" },
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781876621648.jpg`, caption:"أجيال الرائد الصاعدة" },
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781870007660.jpg`, caption:"تكوين تقني احترافي" },
+  { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781869815626.jpg`, caption:"نجوم الغد يتدربون هنا" }
+];
 
-    const defaultMatches = [];
+const defaultEduVideos = [
+  {
+    url:`${GITHUB_RAW}/ad2eb055fdbbee628ab6667af6909f6f4c65bb43/%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D8%BA%20%D9%81%D9%8A%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85%20%F0%9F%A7%A0%E2%9A%BD%20%D9%87%D9%88%20%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%D8%A9%20%D9%84%D9%84%D8%A7%D8%B9%D8%A8%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A%D8%B2%D8%8C%20%D8%A7%D9%84%D9%85%D8%B3%D8%AD%20%D8%A7%D9%84%D8%A8%D8%B5.mp4`,
+    title:"تدريب الدماغ في كرة القدم",
+    coach:"الطاقم الفني",
+    description:"هو تطوير القدرات المعرفية للاعب مثل التركيز، المسح البصري، واتخاذ القرار السريع — عناصر أساسية تميّز اللاعب الحديث عن غيره داخل الملعب.",
+    topics:["التركيز الذهني","المسح البصري","اتخاذ القرار"]
+  },
+  {
+    url:`${GITHUB_RAW}/7494d81a6458ab38cc54a9ce7f0cba75244042ad/%F0%9F%A7%A0%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%20%D9%81%D9%8A%20%D8%B7%D8%B1%D9%8A%D9%82%D8%A9%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9(720P_HD).mp4`,
+    title:"التدريب المعرفي بطريقة الرائد التعليمية",
+    coach:"الطاقم الفني",
+    description:"منهجية تدريبية خاصة بأكاديمية الرائد تدمج الجانب المعرفي مع التمارين التقنية، لتكوين لاعب يفكر بسرعة بقدر ما يتحرك بسرعة.",
+    topics:["منهج الرائد","تطوير الإدراك","تمارين تطبيقية"]
+  },
+  {
+    url:`${GITHUB_RAW}/185e54fe2fb088b72fda7b680f2cc6b2d25ab8c6/_RaedFootballLearning%20_CoachKamelMerad%20_FootballEducation%20_PositionalRondo%20_YouthDevelopment%20_CSPRaed(720P_HD).mp4`,
+    title:"الروندو الوضعي (Positional Rondo)",
+    coach:"الأستاذ كامل مراد",
+    description:"تمرين الروندو الوضعي يُستخدم لتطوير الحس التكتيكي والتموضع الصحيح للاعبين الشباب، ويُعتبر من أهم أدوات التكوين الحديثة عالمياً.",
+    topics:["الحس التكتيكي","التموضع","تطوير الفئات الشابة"]
+  }
+];
 
-    // ================================================================
-    // 3. الحالة العامة
-    // ================================================================
-    let appData = {
-        gallery: [],
-        schedule: [],
-        matches: []
-        // لا يوجد players هنا لأنهم ثابتون في HTML
-    };
+/* ============ RENDER NEWS TICKER ============ */
+function renderTicker(items){
+  const track = document.getElementById('tickerTrack');
+  const doubled = [...items, ...items];
+  track.innerHTML = doubled.map(t => `<div class="ticker-item"><i class="fas fa-circle" style="font-size:5px;"></i> ${t}</div>`).join('');
+}
+db.ref('academy/newsTicker').once('value').then(snap => {
+  const data = snap.val();
+  if(data && Array.isArray(data) && data.length){ renderTicker(data); }
+  else { renderTicker(defaultNewsTicker); db.ref('academy/newsTicker').set(defaultNewsTicker); }
+}).catch(() => renderTicker(defaultNewsTicker));
 
-    // ================================================================
-    // 4. دوال مساعدة للقراءة والكتابة من/إلى Firebase
-    // ================================================================
-    function saveToFirebase(path, data) {
-        return database.ref(path).set(data)
-            .then(() => console.log(`✅ تم حفظ ${path}`))
-            .catch(err => console.error(`❌ فشل حفظ ${path}:`, err));
-    }
+/* ============ RENDER GALLERY ============ */
+function renderGallery(items){
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = items.map(g => `
+    <div class="gallery-item reveal in" onclick="openLightbox('${g.url}')">
+      <img src="${g.url}" alt="${g.caption}" loading="lazy" />
+      <div class="gallery-zoom-icon"><i class="fas fa-expand"></i></div>
+      <div class="gallery-caption">${g.caption}</div>
+    </div>`).join('');
+}
+db.ref('academy/gallery').once('value').then(snap => {
+  const data = snap.val();
+  if(data && Array.isArray(data) && data.length){ renderGallery(data); }
+  else { renderGallery(defaultGallery); db.ref('academy/gallery').set(defaultGallery); }
+}).catch(() => renderGallery(defaultGallery));
 
-    function getFromFirebase(path) {
-        return database.ref(path).once('value')
-            .then(snapshot => snapshot.val())
-            .catch(err => {
-                console.error(`❌ فشل جلب ${path}:`, err);
-                return null;
-            });
-    }
+/* ============ RENDER EDUCATIONAL VIDEOS ============ */
+function renderEduVideos(items){
+  const grid = document.getElementById('eduGrid');
+  grid.innerHTML = items.map((v,i) => `
+    <div class="edu-card reveal in">
+      <div class="edu-video-wrap">
+        <span class="edu-number num-font">${i+1}</span>
+        <video controls playsinline preload="metadata"><source src="${v.url}" type="video/mp4"></video>
+      </div>
+      <div class="edu-desc">
+        <div class="edu-coach">
+          <div class="edu-coach-avatar"><i class="fas fa-user-tie"></i></div>
+          <div class="edu-coach-name">${v.coach}</div>
+        </div>
+        <h4>${v.title}</h4>
+        <p>${v.description}</p>
+        <div class="edu-topics">${(v.topics||[]).map(t => `<span class="edu-topic-chip">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+db.ref('academy/eduVideos').once('value').then(snap => {
+  const data = snap.val();
+  if(data && Array.isArray(data) && data.length){ renderEduVideos(data); }
+  else { renderEduVideos(defaultEduVideos); db.ref('academy/eduVideos').set(defaultEduVideos); }
+}).catch(() => renderEduVideos(defaultEduVideos));
 
-    // ================================================================
-    // 5. تحميل البيانات من Firebase
-    // ================================================================
-    async function loadAllData() {
-        try {
-            const [gallery, schedule, matches] = await Promise.all([
-                getFromFirebase('raedData/gallery'),
-                getFromFirebase('raedData/schedule'),
-                getFromFirebase('raedData/matches')
-            ]);
+/* ============ LIGHTBOX ============ */
+function openLightbox(url){
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('active'); }
+document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target === this) closeLightbox(); });
 
-            appData.gallery = gallery || defaultGallery;
-            appData.schedule = schedule || defaultSchedule;
-            appData.matches = matches || defaultMatches;
+/* ============ REGISTRATION FORM -> FIREBASE ============ */
+document.getElementById('registerForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const btn = document.getElementById('regSubmitBtn');
+  const msg = document.getElementById('regMsg');
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
 
-            if (!gallery) await saveToFirebase('raedData/gallery', appData.gallery);
-            if (!schedule) await saveToFirebase('raedData/schedule', appData.schedule);
-            if (!matches) await saveToFirebase('raedData/matches', appData.matches);
+  const data = {
+    firstName: document.getElementById('regFirstName').value.trim(),
+    lastName: document.getElementById('regLastName').value.trim(),
+    birthDate: document.getElementById('regBirthDate').value,
+    categoryId: document.getElementById('regCategory').value,
+    guardianName: document.getElementById('regGuardianName').value.trim(),
+    guardianPhone: document.getElementById('regGuardianPhone').value.trim(),
+    notes: document.getElementById('regNotes').value.trim(),
+    status: 'pending',
+    submittedAt: new Date().toISOString()
+  };
 
-            console.log('✅ تم تحميل البيانات من Firebase');
-        } catch (error) {
-            console.error('❌ خطأ في تحميل البيانات:', error);
-        }
-    }
-
-    // ================================================================
-    // 6. دوال عرض البيانات (المعرض، الجدول، المباريات)
-    // ================================================================
-    function renderGallery() {
-        const container = document.getElementById('galleryGrid');
-        if (!container) return;
-        container.innerHTML = '';
-        if (!appData.gallery || appData.gallery.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد صور.</p>';
-            return;
-        }
-        appData.gallery.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'item';
-            div.innerHTML = `
-                <img src="${item.url}" alt="${item.title}" loading="lazy">
-                <div class="overlay"><span>${item.title}</span></div>
-            `;
-            container.appendChild(div);
-        });
-    }
-
-    function renderSchedule() {
-        const container = document.getElementById('scheduleWrapper');
-        if (!container) return;
-        if (!appData.schedule || appData.schedule.length === 0) {
-            container.innerHTML = '<p style="color:var(--gray-light); text-align:center; padding:20px;">لا توجد بيانات جدول.</p>';
-            return;
-        }
-        let html = `<table class="schedule-table">
-            <thead><tr><th>الفئة</th><th>السبت</th><th>الأحد</th><th>الثلاثاء</th><th>الخميس</th></tr></thead>
-            <tbody>`;
-        appData.schedule.forEach(row => {
-            html += `<tr>
-                <td><strong>${row.category}</strong></td>
-                <td>${row.sat || '—'}</td>
-                <td>${row.sun || '—'}</td>
-                <td>${row.tue || '—'}</td>
-                <td>${row.thu || '—'}</td>
-            </tr>`;
-        });
-        html += `</tbody></table>`;
-        container.innerHTML = html;
-    }
-
-    function renderMatches() {
-        const container = document.getElementById('matchesContainer');
-        if (!container) return;
-        if (!appData.matches || appData.matches.length === 0) {
-            container.innerHTML = `
-                <div class="matches-empty" style="text-align:center; padding:40px; background:var(--dark-card); border-radius:var(--radius); border:2px dashed rgba(0,115,63,0.3);">
-                    <i class="fas fa-calendar-alt" style="font-size:3rem; color:var(--gold); opacity:0.5;"></i>
-                    <h3 style="color:#FFFFFF; margin-top:10px;">لا توجد مباريات ودية حالياً</h3>
-                    <p style="color:var(--gray-light); opacity:0.6;">سيتم الإعلان عن المباريات القادمة فور اعتماد الجدول الزمني.</p>
-                </div>
-            `;
-            document.getElementById('statMatches').textContent = '+0';
-            return;
-        }
-        let html = `<div class="matches-container">`;
-        appData.matches.forEach(m => {
-            html += `
-                <div class="match-card">
-                    <div class="academy-name">⭐ أكاديمية الرائد</div>
-                    <div class="vs">VS</div>
-                    <div class="opponent">${m.opponent || 'خصم'}</div>
-                    <div class="match-detail"><i class="fas fa-calendar-alt"></i> ${m.date || 'تاريخ'}</div>
-                    <div class="match-detail"><i class="fas fa-clock"></i> ${m.time || 'الوقت'}</div>
-                    <div class="match-detail"><i class="fas fa-map-marker-alt"></i> ${m.location || 'الملعب'}</div>
-                    <span class="match-badge">⚽ مباراة ودية</span>
-                </div>
-            `;
-        });
-        html += `</div>`;
-        container.innerHTML = html;
-        document.getElementById('statMatches').textContent = '+' + appData.matches.length;
-    }
-
-    // ================================================================
-    // 7. دوال لوحة التحكم (طلبات التسجيل، المعرض، الجدول، المباريات)
-    // ================================================================
-    const ADMIN_PASSWORD_KEY = 'raed_admin_pass';
-    let adminPassword = localStorage.getItem(ADMIN_PASSWORD_KEY) || 'raed92';
-    let adminLoggedIn = false;
-
-    window.adminLogin = function() {
-        const input = document.getElementById('adminPassInput').value;
-        if (input === adminPassword) {
-            adminLoggedIn = true;
-            document.getElementById('adminLogin').style.display = 'none';
-            document.getElementById('adminContent').style.display = 'block';
-            renderAdminDashboard();
-        } else {
-            document.getElementById('adminLoginError').style.display = 'block';
-            setTimeout(() => document.getElementById('adminLoginError').style.display = 'none', 3000);
-        }
-    };
-
-    function renderAdminDashboard() {
-        getRegistrations((registrations) => {
-            const pending = registrations.filter(r => r.status === 'pending').length;
-            const approved = registrations.filter(r => r.status === 'approved').length;
-            document.getElementById('adminStats').innerHTML = `
-                <div class="admin-stat"><div class="num">${registrations.length}</div><div class="label">إجمالي الطلبات</div></div>
-                <div class="admin-stat"><div class="num" style="color:#f39c12;">${pending}</div><div class="label">في الانتظار</div></div>
-                <div class="admin-stat"><div class="num" style="color:#2ecc71;">${approved}</div><div class="label">معتمدين</div></div>
-                <div class="admin-stat"><div class="num">${appData.gallery.length}</div><div class="label">الصور</div></div>
-                <div class="admin-stat"><div class="num">${appData.matches.length}</div><div class="label">المباريات</div></div>
-            `;
-        });
-
-        renderAdminRegistrations();
-        renderAdminGalleryList();
-        renderAdminScheduleList();
-        renderAdminMatchesList();
-    }
-
-    // --- طلبات التسجيل ---
-    function renderAdminRegistrations() {
-        getRegistrations((registrations) => {
-            const tbody = document.getElementById('adminRegistrations');
-            tbody.innerHTML = '';
-            registrations.forEach((reg, idx) => {
-                const row = tbody.insertRow();
-                const statusClass = reg.status === 'approved' ? 'approved' : 'pending';
-                const statusText = reg.status === 'approved' ? '✔ معتمد' : '⏳ قيد الانتظار';
-                row.insertCell(0).innerText = idx + 1;
-                row.insertCell(1).innerText = reg.firstName || '';
-                row.insertCell(2).innerText = reg.lastName || '';
-                row.insertCell(3).innerText = reg.phone || '';
-                row.insertCell(4).innerText = reg.address || '';
-                row.insertCell(5).innerText = reg.birth || '';
-                row.insertCell(6).innerText = reg.date || '';
-                row.insertCell(7).innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
-                const actions = row.insertCell(8);
-                if (reg.status === 'pending') {
-                    actions.innerHTML = `
-                        <button class="btn-sm btn-sm-success" onclick="approveRegistration('${reg.id}')">✔ قبول</button>
-                        <button class="btn-sm btn-sm-danger" onclick="rejectRegistration('${reg.id}')">✕ رفض</button>
-                    `;
-                } else {
-                    actions.innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteRegistrationHandler('${reg.id}')">✕</button>`;
-                }
-            });
-        });
-    }
-
-    function getRegistrations(callback) {
-        database.ref('raedData/registrationsSummer').orderByChild('timestamp').once('value')
-            .then(snapshot => {
-                const data = snapshot.val();
-                const registrations = [];
-                if (data) {
-                    Object.keys(data).forEach(key => registrations.push({ id: key, ...data[key] }));
-                }
-                callback(registrations);
-            })
-            .catch(err => {
-                console.error('❌ فشل جلب التسجيلات:', err);
-                callback([]);
-            });
-    }
-
-    function saveRegistrationToFirebase(regData) {
-        return database.ref('raedData/registrationsSummer').push(regData)
-            .then(() => console.log('✅ تم حفظ التسجيل'))
-            .catch(err => console.error('❌ فشل حفظ التسجيل:', err));
-    }
-
-    window.approveRegistration = function(id) {
-        if (!confirm('هل تريد قبول هذا الطلب؟')) return;
-        database.ref('raedData/registrationsSummer/' + id).update({ status: 'approved' })
-            .then(() => {
-                renderAdminDashboard();
-                alert('✅ تم قبول الطلب');
-            })
-            .catch(err => alert('❌ حدث خطأ: ' + err.message));
-    };
-
-    window.rejectRegistration = function(id) {
-        if (!confirm('هل تريد رفض هذا الطلب؟')) return;
-        database.ref('raedData/registrationsSummer/' + id).update({ status: 'rejected' })
-            .then(() => renderAdminDashboard())
-            .catch(err => alert('❌ حدث خطأ: ' + err.message));
-    };
-
-    window.deleteRegistrationHandler = function(id) {
-        if (!confirm('هل تريد حذف هذا الطلب؟')) return;
-        database.ref('raedData/registrationsSummer/' + id).remove()
-            .then(() => renderAdminDashboard())
-            .catch(err => alert('❌ حدث خطأ: ' + err.message));
-    };
-
-    // --- إدارة المعرض ---
-    function renderAdminGalleryList() {
-        const tbody = document.getElementById('adminGalleryList');
-        tbody.innerHTML = '';
-        appData.gallery.forEach((item, idx) => {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = idx + 1;
-            row.insertCell(1).innerText = item.title || '';
-            row.insertCell(2).innerHTML = `<a href="${item.url}" target="_blank" style="color:var(--primary);">رابط</a>`;
-            row.insertCell(3).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteGalleryAdmin(${idx})">✕</button>`;
-        });
-    }
-
-    window.addGalleryItem = function() {
-        const title = document.getElementById('newGalleryTitle').value.trim();
-        const url = document.getElementById('newGalleryUrl').value.trim();
-        if (!title || !url) { alert('الرجاء إدخال عنوان ورابط الصورة'); return; }
-        appData.gallery.push({ id: Date.now(), title, url });
-        saveToFirebase('raedData/gallery', appData.gallery)
-            .then(() => {
-                renderGallery();
-                renderAdminDashboard();
-                document.getElementById('newGalleryTitle').value = '';
-                document.getElementById('newGalleryUrl').value = '';
-            });
-    };
-
-    window.deleteGalleryAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذه الصورة؟')) return;
-        appData.gallery.splice(idx, 1);
-        saveToFirebase('raedData/gallery', appData.gallery)
-            .then(() => {
-                renderGallery();
-                renderAdminDashboard();
-            });
-    };
-
-    // --- جدول التدريبات ---
-    function renderAdminScheduleList() {
-        const tbody = document.getElementById('adminScheduleList');
-        tbody.innerHTML = '';
-        appData.schedule.forEach((row, idx) => {
-            const tr = tbody.insertRow();
-            tr.insertCell(0).innerText = idx + 1;
-            tr.insertCell(1).innerHTML = `<input value="${row.category}" data-idx="${idx}" data-field="category" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            tr.insertCell(2).innerHTML = `<input value="${row.sat || ''}" data-idx="${idx}" data-field="sat" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            tr.insertCell(3).innerHTML = `<input value="${row.sun || ''}" data-idx="${idx}" data-field="sun" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            tr.insertCell(4).innerHTML = `<input value="${row.tue || ''}" data-idx="${idx}" data-field="tue" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            tr.insertCell(5).innerHTML = `<input value="${row.thu || ''}" data-idx="${idx}" data-field="thu" class="schedule-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            tr.insertCell(6).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteScheduleAdmin(${idx})">✕</button>`;
-        });
-
-        document.querySelectorAll('.schedule-edit-input').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.dataset.idx);
-                const field = this.dataset.field;
-                appData.schedule[idx][field] = this.value;
-                saveToFirebase('raedData/schedule', appData.schedule)
-                    .then(() => renderSchedule());
-            });
-        });
-    }
-
-    window.addScheduleRow = function() {
-        const category = document.getElementById('newScheduleCategory').value.trim();
-        const sat = document.getElementById('newScheduleSat').value.trim();
-        const sun = document.getElementById('newScheduleSun').value.trim();
-        const tue = document.getElementById('newScheduleTue').value.trim();
-        const thu = document.getElementById('newScheduleThu').value.trim();
-        if (!category) { alert('الرجاء إدخال الفئة'); return; }
-        appData.schedule.push({ id: Date.now(), category, sat, sun, tue, thu });
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                renderAdminDashboard();
-                document.getElementById('newScheduleCategory').value = '';
-                document.getElementById('newScheduleSat').value = '';
-                document.getElementById('newScheduleSun').value = '';
-                document.getElementById('newScheduleTue').value = '';
-                document.getElementById('newScheduleThu').value = '';
-            });
-    };
-
-    window.deleteScheduleAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذا الصف؟')) return;
-        appData.schedule.splice(idx, 1);
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                renderAdminDashboard();
-            });
-    };
-
-    window.saveScheduleAdmin = function() {
-        saveToFirebase('raedData/schedule', appData.schedule)
-            .then(() => {
-                renderSchedule();
-                alert('✅ تم حفظ الجدول');
-            });
-    };
-
-    // --- المباريات ---
-    function renderAdminMatchesList() {
-        const tbody = document.getElementById('adminMatchesList');
-        tbody.innerHTML = '';
-        appData.matches.forEach((m, idx) => {
-            const row = tbody.insertRow();
-            row.insertCell(0).innerText = idx + 1;
-            row.insertCell(1).innerHTML = `<input value="${m.opponent || ''}" data-idx="${idx}" data-field="opponent" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            row.insertCell(2).innerHTML = `<input value="${m.date || ''}" data-idx="${idx}" data-field="date" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            row.insertCell(3).innerHTML = `<input value="${m.time || ''}" data-idx="${idx}" data-field="time" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            row.insertCell(4).innerHTML = `<input value="${m.location || ''}" data-idx="${idx}" data-field="location" class="match-edit-input" style="width:100%; padding:4px 8px; border-radius:8px; border:1px solid #ccc; background:#fff; color:#1a1a1a;">`;
-            row.insertCell(5).innerHTML = `<button class="btn-sm btn-sm-danger" onclick="deleteMatchAdmin(${idx})">✕</button>`;
-        });
-
-        document.querySelectorAll('.match-edit-input').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.dataset.idx);
-                const field = this.dataset.field;
-                appData.matches[idx][field] = this.value;
-                saveToFirebase('raedData/matches', appData.matches)
-                    .then(() => renderMatches());
-            });
-        });
-    }
-
-    window.addMatch = function() {
-        const opponent = document.getElementById('newMatchOpponent').value.trim();
-        const date = document.getElementById('newMatchDate').value.trim();
-        const time = document.getElementById('newMatchTime').value.trim();
-        const location = document.getElementById('newMatchLocation').value.trim();
-        if (!opponent || !date || !time || !location) { alert('الرجاء ملء جميع الحقول'); return; }
-        appData.matches.push({ id: Date.now(), opponent, date, time, location });
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                renderAdminDashboard();
-                document.getElementById('newMatchOpponent').value = '';
-                document.getElementById('newMatchDate').value = '';
-                document.getElementById('newMatchTime').value = '';
-                document.getElementById('newMatchLocation').value = '';
-            });
-    };
-
-    window.deleteMatchAdmin = function(idx) {
-        if (!confirm('هل تريد حذف هذه المباراة؟')) return;
-        appData.matches.splice(idx, 1);
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                renderAdminDashboard();
-            });
-    };
-
-    window.saveMatchesAdmin = function() {
-        saveToFirebase('raedData/matches', appData.matches)
-            .then(() => {
-                renderMatches();
-                alert('✅ تم حفظ المباريات');
-            });
-    };
-
-    // --- تغيير كلمة السر ---
-    window.changeAdminPassword = function() {
-        const newPass = document.getElementById('newAdminPass').value.trim();
-        if (newPass.length < 4) { alert('كلمة السر يجب أن تكون 4 أحرف على الأقل'); return; }
-        adminPassword = newPass;
-        localStorage.setItem(ADMIN_PASSWORD_KEY, adminPassword);
-        alert('✅ تم تغيير كلمة السر بنجاح');
-        document.getElementById('newAdminPass').value = '';
-    };
-
-    // ================================================================
-    // 8. نموذج التسجيل (مع منع إعادة التسجيل)
-    // ================================================================
-    const deviceId = localStorage.getItem('deviceId_raed');
-    if (!deviceId) {
-        localStorage.setItem('deviceId_raed', Date.now().toString());
-    }
-
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        if (localStorage.getItem('registered_raed') === 'true') {
-            document.getElementById('blockPopup').classList.add('active');
-            return;
-        }
-
-        const firstName = document.getElementById('regFirstName').value.trim();
-        const lastName = document.getElementById('regLastName').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const address = document.getElementById('regAddress').value.trim();
-        const birth = document.getElementById('regBirth').value.trim();
-
-        if (!firstName || !lastName || !phone || !address || !birth) {
-            alert('❌ الرجاء ملء جميع الحقول');
-            return;
-        }
-
-        const regData = {
-            firstName,
-            lastName,
-            phone,
-            address,
-            birth,
-            status: 'pending',
-            date: new Date().toLocaleString('ar-EG'),
-            timestamp: firebase.database.ServerValue.TIMESTAMP || Date.now()
-        };
-
-        saveRegistrationToFirebase(regData)
-            .then(() => {
-                document.getElementById('confirmInfo').innerHTML = `
-                    <p><strong>الاسم:</strong> ${firstName}</p>
-                    <p><strong>اللقب:</strong> ${lastName}</p>
-                    <p><strong>الهاتف:</strong> ${phone}</p>
-                    <p><strong>العنوان:</strong> ${address}</p>
-                    <p><strong>الميلاد:</strong> ${birth}</p>
-                `;
-                document.getElementById('confirmPopup').classList.add('active');
-                document.getElementById('registrationForm').reset();
-                localStorage.setItem('registered_raed', 'true');
-            })
-            .catch(err => {
-                alert('❌ حدث خطأ، حاول مرة أخرى.');
-                console.error(err);
-            });
+  db.ref('academy/registrations').push(data)
+    .then(() => {
+      msg.textContent = '✅ تم إرسال طلب التسجيل بنجاح، سيتواصل معكم فريقنا الإداري قريباً.';
+      msg.className = 'form-msg show success';
+      document.getElementById('registerForm').reset();
+    })
+    .catch((err) => {
+      msg.textContent = '❌ حدث خطأ أثناء الإرسال، الرجاء المحاولة مجدداً أو الاتصال بنا مباشرة.';
+      msg.className = 'form-msg show error';
+      console.error(err);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
     });
+});
 
-    function closeConfirmPopup() {
-        document.getElementById('confirmPopup').classList.remove('active');
+/* ============ NAVBAR / MENU ============ */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  document.getElementById('pitchBg').style.transform = `translateY(${window.scrollY * 0.03}px)`;
+});
+document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('show'));
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('show')));
+
+/* ============ REVEAL ON SCROLL (fast slide-in) ============ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); } });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ============ COUNTERS ============ */
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      const el = entry.target;
+      if(el.dataset.static === 'true'){ counterObserver.unobserve(el); return; }
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const step = Math.max(1, Math.ceil(target/60));
+      const timer = setInterval(() => { current += step; if(current >= target){current = target; clearInterval(timer);} el.textContent = current; }, 25);
+      counterObserver.unobserve(el);
     }
-
-    function closeBlockPopup() {
-        document.getElementById('blockPopup').classList.remove('active');
-    }
-
-    // ================================================================
-    // 9. Hero Slideshow
-    // ================================================================
-    const slides = document.querySelectorAll('.hero-slide');
-    let currentSlide = 0;
-    setInterval(() => {
-        slides.forEach(s => s.classList.remove('active'));
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 3000);
-
-    // ================================================================
-    // 10. Dynamic Text
-    // ================================================================
-    const words = ['الرائد', 'النخبة', 'الأبطال', 'المستقبل'];
-    let wordIndex = 0, charIndex = 0, isDeleting = false;
-    const dynamicText = document.getElementById('dynamicText');
-
-    function typeEffect() {
-        const currentWord = words[wordIndex];
-        if (isDeleting) {
-            dynamicText.textContent = currentWord.substring(0, charIndex - 1);
-            charIndex--;
-        } else {
-            dynamicText.textContent = currentWord.substring(0, charIndex + 1);
-            charIndex++;
-        }
-        if (!isDeleting && charIndex === currentWord.length) {
-            isDeleting = true;
-            setTimeout(typeEffect, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length;
-            setTimeout(typeEffect, 300);
-        } else {
-            setTimeout(typeEffect, isDeleting ? 50 : 120);
-        }
-    }
-    typeEffect();
-
-    // ================================================================
-    // 11. تهيئة الموقع
-    // ================================================================
-    async function init() {
-        await loadAllData();
-        renderGallery();
-        renderSchedule();
-        renderMatches();
-
-        // Navbar
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 60) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-        });
-
-        // Mobile menu
-        const menuBtn = document.getElementById('menuBtn');
-        const navLinks = document.getElementById('navLinks');
-        menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    if (navLinks.classList.contains('show')) navLinks.classList.remove('show');
-                }
-            });
-        });
-
-        // Admin toggle
-        document.getElementById('adminToggle').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.toggle('active');
-            if (adminLoggedIn) renderAdminDashboard();
-        });
-
-        document.getElementById('closeAdmin').addEventListener('click', function() {
-            document.getElementById('adminPanel').classList.remove('active');
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
 </script>
 </body>
 </html>
-
