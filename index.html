@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>أكاديمية الرائد لكرة القدم | Al-Raed Football Academy</title>
-<meta name="description" content="أكاديمية الرائد الرياضية المحترفة لكرة القدم — تكوين نخبة من نجوم الغد." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,59 +12,58 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{
-  --green:#1B5E3A;--green-2:#2E9E5B;--ink:#10241B;--ink-2:#173322;--white:#FFFFFF;
-  --gold:#C9A227;--cream:#FFFCF3;--bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;
-  --radius:14px;--shadow-soft:0 20px 55px rgba(16,36,27,0.1);--shadow-green:0 15px 40px rgba(27,94,58,0.35);
-  --ease:cubic-bezier(0.16,1,0.3,1);--ticker-h:54px;--nav-h:76px;
+  /* ===== unified green-family palette ===== */
+  --ink:#0B2818; --ink-2:#123322; --ink-3:#194328;
+  --emerald:#1F7A4D; --emerald-2:#2FAE6B;
+  --gold:#C9A227; --gold-light:#E4C568;
+  --cream:#FAF7EE; --bg:#F3F5F2; --border:#E1E6DE;
+  --text:#16241C; --text-2:#5B6B5F;
+  --radius:16px; --shadow:0 22px 55px rgba(11,40,24,0.1);
+  --shadow-gold:0 15px 38px rgba(201,162,39,0.28);
+  --ease:cubic-bezier(0.16,1,0.3,1); --ticker-h:56px; --nav-h:78px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;position:relative;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 .container{max-width:1280px;margin:0 auto;padding:0 24px;}
 a{text-decoration:none;color:inherit;}
 ul{list-style:none;}
 img,video{max-width:100%;display:block;}
 button{font-family:'Cairo',sans-serif;cursor:pointer;}
 .num-font{font-family:'Barlow Condensed',sans-serif;}
-
-.pitch-bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.04;will-change:transform;}
-.pitch-bg svg{width:100%;height:100%;}
-.pitch-bg line,.pitch-bg circle,.pitch-bg path{stroke:var(--green);fill:none;stroke-width:1;}
-.pitch-bg .dashed{stroke-dasharray:5 10;}
 main{position:relative;z-index:1;}
 
-/* ===== TOP TICKER — fixed topmost, light & distinctive ===== */
+/* ===== TOP TICKER ===== */
 .top-ticker{position:fixed;top:0;left:0;width:100%;z-index:1002;background:var(--cream);
-  border-bottom:2px solid var(--gold);height:var(--ticker-h);box-shadow:0 4px 20px rgba(16,36,27,0.06);}
+  border-bottom:2px solid var(--gold);height:var(--ticker-h);box-shadow:0 4px 20px rgba(11,40,24,0.06);}
 .ticker-inner{display:flex;align-items:stretch;height:100%;}
-.ticker-label{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:900;font-size:.95rem;
-  padding:0 24px 0 46px;display:flex;align-items:center;gap:10px;flex-shrink:0;white-space:nowrap;position:relative;z-index:2;
+.ticker-label{background:linear-gradient(135deg,var(--emerald-2),var(--emerald));color:#fff;font-weight:900;font-size:.92rem;
+  padding:0 24px 0 44px;display:flex;align-items:center;gap:9px;flex-shrink:0;white-space:nowrap;position:relative;z-index:2;
   clip-path:polygon(0 0,100% 0,84% 100%,0% 100%);}
-.ticker-label i{color:var(--gold);font-size:1rem;}
-.ticker-track-wrap{flex:1;overflow:hidden;position:relative;display:flex;align-items:center;background:var(--cream);}
-.ticker-track{display:flex;gap:60px;white-space:nowrap;animation:tickerScroll 38s linear infinite;padding-right:60px;}
-.ticker-item{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:800;font-size:.95rem;}
-.ticker-item i{color:var(--green-2);font-size:.7rem;}
+.ticker-label i{color:var(--gold-light);}
+.ticker-track-wrap{flex:1;overflow:hidden;display:flex;align-items:center;background:var(--cream);}
+.ticker-track{display:flex;gap:56px;white-space:nowrap;animation:tickerScroll 38s linear infinite;padding-right:56px;}
+.ticker-item{display:flex;align-items:center;gap:9px;color:var(--ink);font-weight:800;font-size:.92rem;}
+.ticker-item i{color:var(--emerald-2);font-size:.65rem;}
 @keyframes tickerScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-@media(max-width:768px){.ticker-label{padding:0 16px 0 30px;font-size:.8rem;} .ticker-item{font-size:.82rem;}}
 
 /* ===== NAVBAR ===== */
 .navbar{position:fixed;top:var(--ticker-h);left:0;width:100%;z-index:1000;transition:.4s var(--ease);}
-.navbar-main{background:rgba(16,36,27,0.88);backdrop-filter:blur(14px);padding:14px 0;transition:.4s var(--ease);border-bottom:2px solid rgba(46,158,91,0.2);}
-.navbar.scrolled .navbar-main{padding:9px 0;background:rgba(16,36,27,0.97);}
+.navbar-main{background:rgba(11,40,24,0.9);backdrop-filter:blur(16px);padding:15px 0;transition:.4s var(--ease);
+  border-bottom:1px solid rgba(201,162,39,0.18);}
+.navbar.scrolled .navbar-main{padding:9px 0;background:rgba(11,40,24,0.98);}
 .navbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .brand{display:flex;align-items:center;gap:12px;}
-.brand-logo{width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,var(--green-2),var(--green));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.brand-logo i{color:#fff;font-size:1.3rem;}
+.brand-logo{height:48px;width:48px;object-fit:contain;flex-shrink:0;}
 .brand-text{font-weight:900;font-size:1.02rem;color:#fff;line-height:1.25;}
-.brand-text span{display:block;font-size:.64rem;color:var(--green-2);font-weight:700;letter-spacing:.5px;}
+.brand-text span{display:block;font-size:.64rem;color:var(--emerald-2);font-weight:700;letter-spacing:.6px;}
 .nav-links{display:flex;gap:24px;align-items:center;}
-.nav-links a{font-weight:700;font-size:.84rem;color:rgba(255,255,255,0.85);position:relative;transition:.3s;}
-.nav-links a::after{content:'';position:absolute;bottom:-8px;right:0;width:0;height:3px;background:var(--gold);transition:.3s var(--ease);}
+.nav-links a{font-weight:700;font-size:.84rem;color:rgba(255,255,255,0.82);position:relative;transition:.3s;}
+.nav-links a::after{content:'';position:absolute;bottom:-8px;right:0;width:0;height:2px;background:var(--gold);transition:.3s var(--ease);}
 .nav-links a:hover{color:#fff;}
 .nav-links a:hover::after{width:100%;}
-.nav-cta{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:800;padding:11px 24px;
-  border-radius:8px;font-size:.83rem;box-shadow:var(--shadow-green);border:none;border-bottom:3px solid #0f3d25;transition:.25s var(--ease);}
+.nav-cta{background:linear-gradient(135deg,var(--emerald-2),var(--emerald));color:#fff;font-weight:800;padding:11px 24px;
+  border-radius:9px;font-size:.83rem;box-shadow:0 12px 30px rgba(31,122,77,0.35);border:none;border-bottom:3px solid #0d3d24;transition:.25s var(--ease);}
 .nav-cta:hover{transform:translateY(-3px);}
 .nav-cta:active{transform:translateY(0);border-bottom-width:1px;}
 .menu-toggle{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#fff;}
@@ -76,258 +74,225 @@ main{position:relative;z-index:1;}
 }
 
 /* ===== HERO ===== */
-.hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:var(--ink);
-  padding:calc(var(--ticker-h) + var(--nav-h) + 60px) 0 70px;}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85;}
+.hero{position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden;background:var(--ink);
+  padding:calc(var(--ticker-h) + var(--nav-h) + 50px) 0 70px;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.82;}
 .hero-overlay{position:absolute;inset:0;
-  background:linear-gradient(100deg,rgba(16,36,27,0.9) 0%,rgba(16,36,27,0.6) 45%,rgba(16,36,27,0.4) 70%,rgba(16,36,27,0.78) 100%);}
+  background:linear-gradient(105deg,rgba(11,40,24,0.92) 0%,rgba(11,40,24,0.6) 42%,rgba(11,40,24,0.32) 68%,rgba(11,40,24,0.7) 100%);}
 .hero-grid{position:relative;z-index:3;display:grid;grid-template-columns:1.35fr 0.65fr;gap:50px;align-items:center;width:100%;}
 .hero-content{color:#fff;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(46,158,91,0.18);border:1px solid rgba(46,158,91,0.5);
-  padding:9px 22px;border-radius:8px;font-size:.8rem;font-weight:800;color:var(--green-2);margin-bottom:22px;
-  opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
-.hero-content h1{font-size:3.1rem;font-weight:900;line-height:1.28;margin-bottom:24px;max-width:640px;opacity:0;animation:fadeUp .8s .22s var(--ease) forwards;
-  text-shadow:0 6px 30px rgba(0,0,0,0.6);}
-.hero-content h1 .g{color:var(--green-2);}
-.hero-text-panel{background:rgba(16,36,27,0.4);backdrop-filter:blur(10px);border-right:3px solid var(--green-2);
-  border-radius:0 12px 12px 0;padding:18px 22px;max-width:540px;margin-bottom:32px;
+.hero-kicker{display:flex;align-items:center;gap:10px;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
+.hero-kicker .line{width:36px;height:2px;background:var(--gold);}
+.hero-kicker span{font-weight:800;font-size:.82rem;color:var(--gold-light);letter-spacing:.6px;text-transform:uppercase;}
+.hero-content h1{font-size:3.15rem;font-weight:900;line-height:1.25;margin-bottom:20px;max-width:620px;opacity:0;animation:fadeUp .8s .22s var(--ease) forwards;}
+.hero-content h1 .g{color:var(--emerald-2);}
+.hero-content > p{font-size:1.04rem;color:rgba(255,255,255,0.78);max-width:520px;margin-bottom:32px;line-height:1.95;
   opacity:0;animation:fadeUp .8s .35s var(--ease) forwards;}
-.hero-text-panel p{font-size:1.02rem;color:rgba(255,255,255,0.92);line-height:1.9;}
 .hero-buttons{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .48s var(--ease) forwards;}
-.btn-green{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;font-weight:800;padding:16px 34px;
-  border-radius:8px;border:none;border-bottom:4px solid #0f3d25;box-shadow:var(--shadow-green);font-size:.94rem;
+.btn-green{background:linear-gradient(135deg,var(--emerald-2),var(--emerald));color:#fff;font-weight:800;padding:16px 34px;
+  border-radius:9px;border:none;border-bottom:4px solid #0d3d24;box-shadow:0 15px 40px rgba(31,122,77,0.35);font-size:.94rem;
   display:inline-flex;align-items:center;gap:10px;transition:.2s var(--ease);}
 .btn-green:hover{transform:translateY(-3px);}
 .btn-green:active{transform:translateY(0);border-bottom-width:1px;}
-.btn-outline-w{background:rgba(255,255,255,0.06);color:#fff;border:1.5px solid rgba(255,255,255,0.4);padding:15px 32px;
-  border-radius:8px;font-weight:700;font-size:.94rem;transition:.3s var(--ease);backdrop-filter:blur(6px);}
+.btn-outline-w{background:rgba(255,255,255,0.06);color:#fff;border:1.5px solid rgba(255,255,255,0.35);padding:15px 32px;
+  border-radius:9px;font-weight:700;font-size:.94rem;transition:.3s var(--ease);backdrop-filter:blur(6px);}
 .btn-outline-w:hover{background:#fff;color:var(--ink);border-color:#fff;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
-.hero-side{display:flex;flex-direction:column;gap:16px;opacity:0;animation:fadeUp .8s .6s var(--ease) forwards;}
-.hero-highlight{background:rgba(255,255,255,0.06);border:1px solid rgba(201,162,39,0.28);backdrop-filter:blur(14px);
-  border-radius:16px;padding:20px 22px;display:flex;align-items:center;gap:16px;transition:.35s var(--ease);}
-.hero-highlight:hover{border-color:var(--green-2);background:rgba(46,158,91,0.1);transform:translateX(-4px);}
-.hero-highlight-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--green-2),var(--green));
+.hero-side{display:flex;flex-direction:column;gap:14px;opacity:0;animation:fadeUp .8s .6s var(--ease) forwards;}
+.hero-highlight{background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,39,0.25);backdrop-filter:blur(14px);
+  border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;transition:.35s var(--ease);}
+.hero-highlight:hover{border-color:var(--emerald-2);background:rgba(31,122,77,0.12);transform:translateX(-4px);}
+.hero-highlight-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--emerald-2),var(--emerald));
   display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.hero-highlight-icon i{color:#fff;font-size:1.2rem;}
-.hero-highlight .t1{color:#fff;font-weight:800;font-size:.92rem;}
-.hero-highlight .t2{color:rgba(255,255,255,0.6);font-size:.76rem;margin-top:2px;}
+.hero-highlight-icon i{color:#fff;font-size:1.05rem;}
+.hero-highlight .t1{color:#fff;font-weight:800;font-size:.88rem;}
+.hero-highlight .t2{color:rgba(255,255,255,0.55);font-size:.73rem;margin-top:2px;}
 @media(max-width:960px){.hero-grid{grid-template-columns:1fr;} .hero-side{flex-direction:row;overflow-x:auto;}}
 @media(max-width:768px){.hero-content h1{font-size:2rem;} .hero-side{flex-direction:column;}}
 
 /* ===== SECTION GENERIC ===== */
-section{padding:100px 0;position:relative;}
-.section-tag{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-weight:900;font-size:.8rem;
-  letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
-.section-tag::before{content:'';width:30px;height:3px;background:var(--gold);}
+section{padding:110px 0;position:relative;}
+.section-dark{background:var(--ink);color:#fff;}
+.kicker{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.kicker .line{width:32px;height:2px;background:var(--gold);}
+.kicker span{font-weight:800;font-size:.8rem;letter-spacing:.6px;text-transform:uppercase;color:var(--emerald);}
+.section-dark .kicker span{color:var(--gold-light);}
 .section-title{font-size:2.5rem;font-weight:900;color:var(--text);margin-bottom:16px;line-height:1.3;}
-.section-title span{color:var(--green);}
-.section-sub{color:var(--text-2);font-size:1.03rem;max-width:640px;line-height:1.85;margin-bottom:50px;}
+.section-dark .section-title{color:#fff;}
+.section-title span{color:var(--emerald);}
+.section-dark .section-title span{color:var(--gold-light);}
+.section-sub{color:var(--text-2);font-size:1.02rem;max-width:640px;line-height:1.85;margin-bottom:50px;}
+.section-dark .section-sub{color:rgba(255,255,255,0.6);}
 .center{text-align:center;margin-left:auto;margin-right:auto;}
-.reveal{opacity:0;transform:translateX(30px);transition:.7s var(--ease);}
-.reveal.in{opacity:1;transform:translateX(0);}
+.reveal{opacity:0;transform:translateY(28px);transition:.7s var(--ease);}
+.reveal.in{opacity:1;transform:translateY(0);}
 
 /* ===== ABOUT ===== */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
-.about-stat{background:var(--ink);border-radius:var(--radius);padding:22px;text-align:center;position:relative;overflow:hidden;}
-.about-stat::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green-2),var(--gold));}
-.about-stat .n{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--green-2);}
-.about-stat .l{color:rgba(255,255,255,0.65);font-size:.78rem;font-weight:600;}
-.about-text p{color:var(--text-2);line-height:2;margin-bottom:16px;font-size:1rem;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px;}
+.about-stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;text-align:center;position:relative;overflow:hidden;}
+.about-stat::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--emerald-2),var(--gold));}
+.about-stat .n{font-family:'Barlow Condensed',sans-serif;font-size:2.3rem;font-weight:800;color:var(--emerald);}
+.about-stat .l{color:var(--text-2);font-size:.78rem;font-weight:700;}
+.about-text p{color:var(--text-2);line-height:2;margin-bottom:16px;}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px;}}
 
 /* ===== LAZY VIDEO ===== */
 .lazy-video-wrap{position:relative;background:var(--ink);overflow:hidden;}
 .lazy-video-wrap video{width:100%;display:block;background:#000;}
 .lazy-poster{position:absolute;inset:0;z-index:5;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,rgba(16,36,27,0.55),rgba(16,36,27,0.85));transition:.3s;}
-.lazy-poster:hover{background:linear-gradient(160deg,rgba(27,94,58,0.6),rgba(16,36,27,0.9));}
-.lazy-poster-play{width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.14);border:2px solid rgba(255,255,255,0.4);
+  background:linear-gradient(160deg,rgba(11,40,24,0.5),rgba(11,40,24,0.88));transition:.3s;}
+.lazy-poster:hover{background:linear-gradient(160deg,rgba(31,122,77,0.55),rgba(11,40,24,0.9));}
+.lazy-poster-play{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.35);
   backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:.3s var(--ease);}
-.lazy-poster:hover .lazy-poster-play{transform:scale(1.1);background:var(--green-2);border-color:var(--green-2);}
-.lazy-poster-play i{color:#fff;font-size:1.6rem;margin-right:-4px;}
+.lazy-poster:hover .lazy-poster-play{transform:scale(1.1);background:var(--emerald-2);border-color:var(--emerald-2);}
+.lazy-poster-play i{color:#fff;font-size:1.5rem;margin-right:-4px;}
 .lazy-poster-label{position:absolute;bottom:16px;right:18px;left:18px;color:#fff;font-weight:800;font-size:.85rem;
   text-shadow:0 2px 10px rgba(0,0,0,0.5);text-align:center;}
 
-/* ===== COACH ===== */
-.coach-card{display:grid;grid-template-columns:0.85fr 1.15fr;gap:0;background:var(--ink);border-radius:24px;overflow:hidden;
-  box-shadow:0 35px 90px rgba(16,36,27,0.35);}
-.coach-photo-wrap{position:relative;min-height:460px;}
-.coach-photo-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.coach-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(16,36,27,0.9));}
-.coach-info{padding:50px 46px;color:#fff;display:flex;flex-direction:column;justify-content:center;}
-.coach-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,162,39,0.18);border:1px solid rgba(201,162,39,0.5);
-  padding:8px 20px;border-radius:8px;font-size:.76rem;font-weight:800;color:var(--gold);margin-bottom:18px;width:fit-content;}
-.coach-info h3{font-size:2rem;font-weight:900;margin-bottom:8px;}
-.coach-info .role{color:var(--green-2);font-weight:700;font-size:.95rem;margin-bottom:20px;}
-.coach-info p{color:rgba(255,255,255,0.72);line-height:1.95;margin-bottom:24px;}
-.coach-tags{display:flex;flex-wrap:wrap;gap:10px;}
-.coach-tag{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);padding:9px 18px;border-radius:8px;
-  font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:8px;}
-.coach-tag i{color:var(--green-2);}
-@media(max-width:900px){.coach-card{grid-template-columns:1fr;}.coach-photo-wrap{min-height:320px;}}
+/* ===== TOURNAMENT ===== */
+.tournament-showcase{max-width:900px;margin:0 auto;background:var(--ink-2);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(201,162,39,0.15);}
+.tournament-body{padding:26px 28px;color:#fff;}
+.tournament-body h4{font-size:1.25rem;font-weight:800;margin-bottom:8px;}
+.tournament-body p{color:rgba(255,255,255,0.55);font-size:.88rem;line-height:1.8;}
 
-/* ===== CATEGORIES ===== */
-.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;}
-.cat-card{background:var(--ink);border-radius:18px;overflow:hidden;position:relative;padding:30px 22px;text-align:center;
-  color:#fff;transition:.4s var(--ease);cursor:pointer;}
-.cat-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:4px;background:linear-gradient(90deg,var(--green-2),var(--gold));
-  transform:scaleX(0);transform-origin:right;transition:.4s var(--ease);}
-.cat-card:hover{transform:translateY(-8px);box-shadow:0 25px 60px rgba(16,36,27,0.3);}
-.cat-card:hover::before{transform:scaleX(1);}
-.cat-badge{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:800;color:var(--green-2);margin-bottom:10px;}
-.cat-card h4{font-size:.95rem;font-weight:800;margin-bottom:6px;}
-.cat-card p{font-size:.75rem;color:rgba(255,255,255,0.55);margin-bottom:16px;}
-.cat-link{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-weight:700;font-size:.78rem;}
-@media(max-width:960px){.cat-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:560px){.cat-grid{grid-template-columns:1fr;}}
+/* ===== COACH ===== */
+.coach-card{display:grid;grid-template-columns:0.85fr 1.15fr;background:var(--ink);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);}
+.coach-photo-wrap{position:relative;min-height:440px;}
+.coach-photo-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.coach-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(11,40,24,0.92));}
+.coach-info{padding:48px 44px;color:#fff;display:flex;flex-direction:column;justify-content:center;}
+.coach-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,162,39,0.16);border:1px solid rgba(201,162,39,0.45);
+  padding:8px 18px;border-radius:8px;font-size:.75rem;font-weight:800;color:var(--gold-light);margin-bottom:16px;width:fit-content;}
+.coach-info h3{font-size:1.9rem;font-weight:900;margin-bottom:6px;}
+.coach-info .role{color:var(--emerald-2);font-weight:700;font-size:.92rem;margin-bottom:18px;}
+.coach-info p{color:rgba(255,255,255,0.68);line-height:1.95;margin-bottom:22px;}
+.coach-tags{display:flex;flex-wrap:wrap;gap:9px;}
+.coach-tag{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);padding:8px 16px;border-radius:8px;
+  font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:7px;}
+.coach-tag i{color:var(--emerald-2);}
+@media(max-width:900px){.coach-card{grid-template-columns:1fr;}.coach-photo-wrap{min-height:300px;}}
+
+/* ===== CATEGORIES HUB — premium cards ===== */
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
+.cat-card{background:var(--ink);border-radius:20px;position:relative;overflow:hidden;padding:0;color:#fff;
+  transition:.4s var(--ease);cursor:pointer;border:1px solid rgba(201,162,39,0.15);}
+.cat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(31,122,77,0.35),transparent 60%);}
+.cat-card:hover{transform:translateY(-10px);box-shadow:0 30px 65px rgba(11,40,24,0.4);border-color:var(--gold);}
+.cat-card-inner{position:relative;z-index:2;padding:28px 20px;text-align:center;}
+.cat-badge{font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;font-weight:800;color:var(--gold-light);line-height:1;margin-bottom:8px;}
+.cat-card-inner i.cat-icon{font-size:1.3rem;color:var(--emerald-2);margin-bottom:10px;display:block;}
+.cat-card h4{font-size:.85rem;font-weight:800;margin-bottom:6px;}
+.cat-card p{font-size:.72rem;color:rgba(255,255,255,0.5);margin-bottom:16px;line-height:1.6;}
+.cat-link{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-weight:700;font-size:.75rem;
+  border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;width:100%;justify-content:center;}
+@media(max-width:960px){.cat-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:560px){.cat-grid{grid-template-columns:1fr 1fr;}}
 
 /* ===== ARTICLES ===== */
 .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
 .article-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:.4s var(--ease);}
-.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-soft);}
-.article-img{height:190px;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--ink),var(--green));}
+.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);}
+.article-img{height:190px;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--ink),var(--emerald));}
 .article-img img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
 .article-card:hover .article-img img{transform:scale(1.08);}
-.article-tag-chip{position:absolute;top:14px;right:14px;background:rgba(16,36,27,0.85);color:var(--gold);padding:6px 14px;
+.article-tag-chip{position:absolute;top:14px;right:14px;background:rgba(11,40,24,0.85);color:var(--gold-light);padding:6px 14px;
   border-radius:20px;font-size:.7rem;font-weight:800;backdrop-filter:blur(6px);}
 .article-body{padding:22px 20px;}
-.article-body h4{font-size:1.02rem;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.article-body h4{font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.5;}
 .article-body p{color:var(--text-2);font-size:.85rem;line-height:1.8;margin-bottom:14px;}
-.article-link{color:var(--green);font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;}
+.article-link{color:var(--emerald);font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;}
 .no-content-msg{text-align:center;padding:40px;color:var(--text-2);grid-column:1/-1;}
 @media(max-width:960px){.articles-grid{grid-template-columns:1fr;}}
 
 /* ===== GALLERY ===== */
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow-soft);aspect-ratio:4/3;transition:.4s var(--ease);cursor:pointer;}
+.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow);aspect-ratio:4/3;transition:.4s var(--ease);cursor:pointer;}
 .gallery-item:hover{transform:translateY(-8px);}
 .gallery-item img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
 .gallery-item:hover img{transform:scale(1.1);}
-.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(16,36,27,0.8));}
+.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(11,40,24,0.82));}
 .gallery-caption{position:absolute;bottom:14px;right:16px;left:16px;color:#fff;z-index:2;font-weight:700;font-size:.85rem;}
-.gallery-zoom-icon{position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,0.5);
-  display:flex;align-items:center;justify-content:center;color:#fff;z-index:2;opacity:0;transition:.3s;}
-.gallery-item:hover .gallery-zoom-icon{opacity:1;}
 @media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:560px){.gallery-grid{grid-template-columns:1fr;}}
 
-/* ===== TOURNAMENT ===== */
-.tournament-showcase{max-width:900px;margin:0 auto;background:var(--ink);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);}
-.tournament-body{padding:26px 30px;color:#fff;}
-.tournament-body h4{font-size:1.3rem;font-weight:800;margin-bottom:8px;}
-.tournament-body p{color:rgba(255,255,255,0.6);font-size:.9rem;line-height:1.8;}
-
 /* ===== EDU VIDEOS ===== */
 .edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
-.edu-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-soft);transition:.4s var(--ease);}
+.edu-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);transition:.4s var(--ease);}
 .edu-card:hover{transform:translateY(-8px);}
-.edu-number{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:8px;background:var(--gold);
-  color:var(--ink);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;display:flex;align-items:center;
-  justify-content:center;z-index:6;}
-.edu-desc{padding:24px 22px;}
+.edu-number{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:var(--gold);
+  color:var(--ink);font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;display:flex;align-items:center;justify-content:center;z-index:6;}
+.edu-desc{padding:22px 20px;}
 .edu-coach{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.edu-coach-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--green-2),var(--green));
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;}
-.edu-coach-name{font-weight:800;font-size:.85rem;color:var(--text);}
-.edu-desc h4{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:10px;line-height:1.5;}
-.edu-desc p{color:var(--text-2);font-size:.86rem;line-height:1.85;margin-bottom:14px;}
-.edu-topics{display:flex;flex-wrap:wrap;gap:8px;}
-.edu-topic-chip{background:var(--bg);border:1px solid var(--border);color:var(--green);font-weight:700;font-size:.72rem;
-  padding:6px 14px;border-radius:20px;}
+.edu-coach-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--emerald-2),var(--emerald));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;}
+.edu-coach-name{font-weight:800;font-size:.83rem;}
+.edu-desc h4{font-size:1rem;font-weight:800;margin-bottom:9px;line-height:1.5;}
+.edu-desc p{color:var(--text-2);font-size:.85rem;line-height:1.85;margin-bottom:13px;}
+.edu-topics{display:flex;flex-wrap:wrap;gap:7px;}
+.edu-topic-chip{background:var(--bg);border:1px solid var(--border);color:var(--emerald);font-weight:700;font-size:.7rem;padding:5px 13px;border-radius:20px;}
 @media(max-width:960px){.edu-grid{grid-template-columns:1fr;}}
 
 /* ===== STATS ===== */
-.stats-section{background:linear-gradient(135deg,var(--ink),var(--ink-2));}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
-.stat-box .counter{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:800;
-  background:linear-gradient(135deg,var(--gold),var(--green-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.stat-box .label{color:rgba(255,255,255,0.65);font-weight:600;font-size:.88rem;margin-top:6px;}
+.stat-box .counter{font-family:'Barlow Condensed',sans-serif;font-size:2.9rem;font-weight:800;
+  background:linear-gradient(135deg,var(--gold-light),var(--emerald-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-box .label{color:rgba(255,255,255,0.6);font-weight:600;font-size:.86rem;margin-top:5px;}
 @media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr;}}
 
 /* ===== REGISTRATION ===== */
-.reg-wrap{background:var(--ink);border-radius:30px;overflow:hidden;box-shadow:0 40px 100px rgba(16,36,27,0.4);
-  display:grid;grid-template-columns:0.9fr 1.1fr;}
-.reg-side{padding:50px 42px;color:#fff;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,var(--green),#0f3d25);}
-.reg-side::before{content:'';position:absolute;top:-30%;left:-20%;width:280px;height:280px;
-  background:radial-gradient(circle,rgba(201,162,39,0.2),transparent 70%);}
-.reg-side h3{font-size:1.9rem;font-weight:900;margin-bottom:18px;position:relative;line-height:1.4;}
-.reg-side p{color:rgba(255,255,255,0.75);line-height:1.9;margin-bottom:28px;position:relative;}
-.reg-point{display:flex;align-items:center;gap:12px;margin-bottom:16px;position:relative;font-weight:700;font-size:.9rem;}
-.reg-point i{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.12);display:flex;align-items:center;
-  justify-content:center;color:var(--gold);flex-shrink:0;}
-.reg-form{padding:46px 42px;background:#fff;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
+.reg-wrap{background:var(--ink);border-radius:28px;overflow:hidden;box-shadow:0 40px 100px rgba(11,40,24,0.4);display:grid;grid-template-columns:0.9fr 1.1fr;}
+.reg-side{padding:48px 40px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--emerald),#0d3d24);}
+.reg-side::before{content:'';position:absolute;top:-30%;left:-20%;width:280px;height:280px;background:radial-gradient(circle,rgba(201,162,39,0.2),transparent 70%);}
+.reg-side h3{font-size:1.85rem;font-weight:900;margin-bottom:16px;position:relative;line-height:1.4;}
+.reg-side p{color:rgba(255,255,255,0.72);line-height:1.9;margin-bottom:26px;position:relative;}
+.reg-point{display:flex;align-items:center;gap:12px;margin-bottom:15px;position:relative;font-weight:700;font-size:.88rem;}
+.reg-point i{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold-light);flex-shrink:0;}
+.reg-form{padding:44px 40px;background:#fff;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
 .form-group.full{grid-column:1/-1;}
-.form-group label{font-size:.82rem;font-weight:700;color:var(--text);}
-.form-group input,.form-group select,.form-group textarea{
-  border:2px solid var(--border);border-radius:10px;padding:13px 15px;font-family:'Cairo',sans-serif;font-size:.9rem;
-  transition:.3s;background:var(--bg);}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green-2);background:#fff;}
-.form-submit{width:100%;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border:none;
-  padding:16px;border-radius:10px;font-weight:800;font-size:.98rem;border-bottom:4px solid #0f3d25;
-  display:flex;align-items:center;justify-content:center;gap:10px;transition:.2s var(--ease);margin-top:6px;}
-.form-submit:hover{transform:translateY(-2px);}
-.form-submit:active{transform:translateY(0);border-bottom-width:1px;}
-.form-msg{margin-top:14px;padding:12px 16px;border-radius:10px;font-size:.85rem;font-weight:700;display:none;}
+.form-group label{font-size:.8rem;font-weight:700;}
+.form-group input,.form-group select,.form-group textarea{border:2px solid var(--border);border-radius:9px;padding:12px 14px;font-family:'Cairo',sans-serif;font-size:.88rem;background:var(--bg);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--emerald-2);background:#fff;}
+.form-submit{width:100%;background:linear-gradient(135deg,var(--emerald-2),var(--emerald));color:#fff;border:none;padding:15px;border-radius:9px;
+  font-weight:800;font-size:.96rem;border-bottom:4px solid #0d3d24;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:5px;}
+.form-submit:active{border-bottom-width:1px;}
+.form-msg{margin-top:13px;padding:11px 15px;border-radius:9px;font-size:.84rem;font-weight:700;display:none;}
 .form-msg.show{display:block;}
-.form-msg.success{background:#E6F6ED;color:#1B5E3A;}
+.form-msg.success{background:#E5F3EA;color:#1F7A4D;}
 .form-msg.error{background:#FBEAEA;color:#B23A3A;}
 @media(max-width:960px){.reg-wrap{grid-template-columns:1fr;} .form-grid{grid-template-columns:1fr;}}
 
-.wa-float{position:fixed;bottom:26px;left:26px;z-index:999;width:60px;height:60px;border-radius:50%;
-  background:linear-gradient(135deg,#27AE60,#1e8449);display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:1.6rem;box-shadow:0 12px 30px rgba(39,174,96,0.4);transition:.35s var(--ease);}
+.wa-float{position:fixed;bottom:26px;left:26px;z-index:999;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#27AE60,#1e8449);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;box-shadow:0 12px 30px rgba(39,174,96,0.4);transition:.35s var(--ease);}
 .wa-float:hover{transform:translateY(-5px) scale(1.06);}
 
-footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
+footer{background:var(--ink);color:rgba(255,255,255,0.65);padding:70px 0 26px;}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:44px;margin-bottom:50px;}
-.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
-.footer-brand .name{color:#fff;font-weight:900;font-size:1.05rem;}
-.footer-col h5{color:#fff;font-weight:800;margin-bottom:18px;font-size:.9rem;}
-.footer-col a{display:block;color:rgba(255,255,255,0.55);font-size:.85rem;margin-bottom:12px;transition:.3s;}
-.footer-col a:hover{color:var(--green-2);}
-.footer-social{display:flex;gap:12px;margin-top:16px;}
-.footer-social a{width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;
-  justify-content:center;color:var(--gold);transition:.3s;}
-.footer-social a:hover{background:var(--green);color:#fff;}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;text-align:center;font-size:.78rem;color:rgba(255,255,255,0.4);}
-@media(max-width:960px){.footer-grid{grid-template-columns:1fr 1fr;gap:30px;}}
+.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.footer-brand .footer-logo{height:44px;}
+.footer-brand .name{color:#fff;font-weight:900;font-size:1.02rem;}
+.footer-col h5{color:#fff;font-weight:800;margin-bottom:16px;font-size:.88rem;}
+.footer-col a{display:block;color:rgba(255,255,255,0.5);font-size:.84rem;margin-bottom:11px;transition:.3s;}
+.footer-col a:hover{color:var(--emerald-2);}
+.footer-social{display:flex;gap:11px;margin-top:14px;}
+.footer-social a{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:var(--gold-light);}
+.footer-social a:hover{background:var(--emerald);color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:22px;text-align:center;font-size:.76rem;color:rgba(255,255,255,0.35);}
+@media(max-width:960px){.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}}
 @media(max-width:560px){.footer-grid{grid-template-columns:1fr;}}
 
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;}
 .lightbox.active{display:flex;}
 .lightbox img{max-width:92%;max-height:92%;border-radius:12px;}
-.lightbox-close{position:fixed;top:24px;left:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);
-  border:none;color:#fff;font-size:1.3rem;}
+.lightbox-close{position:fixed;top:24px;left:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:1.3rem;}
 
-@media(max-width:960px){
-  .section-title{font-size:1.85rem;}
-  .about-grid{grid-template-columns:1fr;}
-  section{padding:70px 0;}
-}
+@media(max-width:960px){.section-title{font-size:1.8rem;} section{padding:70px 0;}}
 </style>
 </head>
 <body>
-
-<div class="pitch-bg" id="pitchBg">
-  <svg viewBox="0 0 1440 5000" preserveAspectRatio="xMidYMin slice">
-    <line class="dashed" x1="-100" y1="200" x2="600" y2="700"/>
-    <line class="dashed" x1="900" y1="100" x2="1600" y2="600"/>
-    <circle cx="1200" cy="900" r="140"/>
-    <line x1="1200" y1="760" x2="1200" y2="1040"/>
-    <line class="dashed" x1="-100" y1="1600" x2="700" y2="2200"/>
-    <circle cx="250" cy="2200" r="120"/>
-    <line class="dashed" x1="900" y1="2600" x2="1600" y2="3100"/>
-    <circle cx="1100" cy="3400" r="150"/>
-    <line class="dashed" x1="-100" y1="3800" x2="600" y2="4300"/>
-    <circle cx="700" cy="4700" r="130"/>
-  </svg>
-</div>
 
 <div class="top-ticker">
   <div class="ticker-inner">
@@ -340,7 +305,7 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   <div class="navbar-main">
     <div class="container navbar-inner">
       <div class="brand">
-        <div class="brand-logo"><i class="fas fa-shield-halved"></i></div>
+        <img class="brand-logo" id="navLogo" src="" alt="أكاديمية الرائد" />
         <div class="brand-text">أكاديمية الرائد<span>AL-RAED FOOTBALL ACADEMY</span></div>
       </div>
       <ul class="nav-links" id="navLinks">
@@ -366,29 +331,18 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="hero-badge"><i class="fas fa-shield-halved"></i> النادي الرياضي المحترف — تأسست 2018</div>
+        <div class="hero-kicker"><div class="line"></div><span>النادي الرياضي المحترف — تأسست 2018</span></div>
         <h1>نصنع <span class="g">نجوم</span> كرة القدم منذ اليوم الأول</h1>
-        <div class="hero-text-panel">
-          <p>أكاديمية الرائد الرياضية المحترفة — تكوين تقني واحترافي متكامل للاعبي الغد، بإشراف طاقم فني معتمد ومنهج تدريبي عالمي.</p>
-        </div>
+        <p>أكاديمية الرائد الرياضية المحترفة — تكوين تقني واحترافي متكامل للاعبي الغد، بإشراف طاقم فني معتمد ومنهج تدريبي عالمي.</p>
         <div class="hero-buttons">
           <a href="#register" class="btn-green"><i class="fas fa-user-plus"></i> سجّل ابنك الآن</a>
           <a href="#about" class="btn-outline-w"><i class="fas fa-play"></i> اكتشف الأكاديمية</a>
         </div>
       </div>
       <div class="hero-side">
-        <div class="hero-highlight">
-          <div class="hero-highlight-icon"><i class="fas fa-medal"></i></div>
-          <div><div class="t1">تأسست 2018</div><div class="t2">نادٍ رياضي محترف</div></div>
-        </div>
-        <div class="hero-highlight">
-          <div class="hero-highlight-icon"><i class="fas fa-brain"></i></div>
-          <div><div class="t1">منهج معرفي حديث</div><div class="t2">تدريب الدماغ في كرة القدم</div></div>
-        </div>
-        <div class="hero-highlight">
-          <div class="hero-highlight-icon"><i class="fas fa-shield-heart"></i></div>
-          <div><div class="t1">بيئة آمنة ومنظمة</div><div class="t2">إشراف فني معتمد</div></div>
-        </div>
+        <div class="hero-highlight"><div class="hero-highlight-icon"><i class="fas fa-medal"></i></div><div><div class="t1">تأسست 2018</div><div class="t2">نادٍ رياضي محترف</div></div></div>
+        <div class="hero-highlight"><div class="hero-highlight-icon"><i class="fas fa-brain"></i></div><div><div class="t1">منهج معرفي حديث</div><div class="t2">تدريب الدماغ في كرة القدم</div></div></div>
+        <div class="hero-highlight"><div class="hero-highlight-icon"><i class="fas fa-shield-heart"></i></div><div><div class="t1">بيئة آمنة ومنظمة</div><div class="t2">إشراف فني معتمد</div></div></div>
       </div>
     </div>
   </div>
@@ -397,10 +351,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
 <section id="about">
   <div class="container about-grid">
     <div class="about-text reveal">
-      <div class="section-tag">من نحن</div>
+      <div class="kicker"><div class="line"></div><span>من نحن</span></div>
       <h2 class="section-title">فلسفة <span>الريادة والتميز</span></h2>
-      <p>أكاديمية الرائد نادٍ رياضي محترف مؤسَّس منذ 2018، متخصص في اكتشاف وصقل مواهب كرة القدم الشابة، عبر برامج تدريبية علمية مدروسة تجمع بين الجانب التقني والبدني والذهني.</p>
-      <p>نؤمن بأن كل لاعب يحمل بداخله "رائداً" — دورنا أن نوفر له البيئة والأدوات والتوجيه المناسب ليصل إلى أعلى مستوياته.</p>
+      <p style="color:var(--text-2);line-height:2;margin-bottom:18px;">أكاديمية الرائد نادٍ رياضي محترف مؤسَّس منذ 2018، متخصص في اكتشاف وصقل مواهب كرة القدم الشابة، عبر برامج تدريبية علمية مدروسة تجمع بين الجانب التقني والبدني والذهني.</p>
+      <p style="color:var(--text-2);line-height:2;">نؤمن بأن كل لاعب يحمل بداخله "رائداً" — دورنا أن نوفر له البيئة والأدوات والتوجيه المناسب ليصل إلى أعلى مستوياته.</p>
       <div class="about-stats">
         <div class="about-stat"><div class="n num-font">2018</div><div class="l">سنة التأسيس</div></div>
         <div class="about-stat"><div class="n num-font">+300</div><div class="l">لاعب متكوّن</div></div>
@@ -412,10 +366,10 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   </div>
 </section>
 
-<section id="coach" style="background:#fff;">
+<section id="coach" class="section-dark">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:50px;">
-      <div class="section-tag" style="justify-content:center;">الطاقم الفني</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>الطاقم الفني</span></div>
       <h2 class="section-title">المدير <span>الفني للأكاديمية</span></h2>
     </div>
     <div class="coach-card reveal">
@@ -437,53 +391,48 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   </div>
 </section>
 
-<!-- CATEGORIES -->
-<section id="categories" style="background:var(--bg);">
+<section id="categories">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="section-tag" style="justify-content:center;">الفئات العمرية</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>الفئات العمرية</span></div>
       <h2 class="section-title">مسار تكويني <span>لكل مرحلة عمرية</span></h2>
-      <p class="section-sub center">لكل فئة عمرية منهجها وأفكارها التدريبية الخاصة — اضغط على الفئة لاكتشاف تفاصيلها.</p>
+      <p class="section-sub center">لكل فئة ملفها الخاص: التركيز التدريبي، جدول التدريبات، المباريات، والإعلانات.</p>
     </div>
     <div class="cat-grid" id="categoriesGrid"></div>
   </div>
 </section>
 
-<!-- ARTICLES -->
-<section id="articles">
+<section id="articles" style="background:var(--bg);">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="section-tag" style="justify-content:center;">مستجدات الأكاديمية</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>مستجدات الأكاديمية</span></div>
       <h2 class="section-title">آخر <span>المقالات والأخبار</span></h2>
-      <p class="section-sub center">تابعوا كل جديد حول تدريباتنا، دوراتنا، وإنجازات لاعبينا.</p>
     </div>
     <div class="articles-grid" id="articlesGrid"></div>
   </div>
 </section>
 
-<section id="gallery" style="background:var(--bg);">
+<section id="gallery">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="section-tag" style="justify-content:center;">ألبوم الأكاديمية</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>ألبوم الأكاديمية</span></div>
       <h2 class="section-title">لحظات من <span>مسيرتنا</span></h2>
-      <p class="section-sub center">صور من تدريباتنا، مبارياتنا، ومناسباتنا المختلفة.</p>
     </div>
     <div class="gallery-grid" id="galleryGrid"></div>
   </div>
 </section>
 
-<section id="education">
+<section id="education" style="background:var(--bg);">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="section-tag" style="justify-content:center;">أكاديمية المعرفة</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>أكاديمية المعرفة</span></div>
       <h2 class="section-title">فيديوهات <span>تعليمية متخصصة</span></h2>
-      <p class="section-sub center">محتوى تدريبي احترافي يشرح أسس التدريب الحديث بطريقة علمية مبسطة.</p>
     </div>
     <div class="edu-grid" id="eduGrid"></div>
   </div>
 </section>
 
-<section class="stats-section">
+<section class="section-dark">
   <div class="container">
     <div class="stats-grid">
       <div class="stat-box reveal"><div class="counter num-font" data-target="2018" data-static="true">2018</div><div class="label">سنة التأسيس</div></div>
@@ -494,16 +443,16 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   </div>
 </section>
 
-<section id="register" style="background:var(--bg);">
+<section id="register">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:50px;">
-      <div class="section-tag" style="justify-content:center;">انضم إلينا</div>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>انضم إلينا</span></div>
       <h2 class="section-title">سجّل ابنك <span>في أكاديمية الرائد</span></h2>
     </div>
     <div class="reg-wrap reveal">
       <div class="reg-side">
         <h3>ابدأ رحلة ابنك نحو الاحتراف</h3>
-        <p>استمارة التسجيل بسيطة وسريعة — سيتواصل معكم فريقنا الإداري خلال 48 ساعة لتأكيد التسجيل وتحديد موعد الاختبار الفني.</p>
+        <p>استمارة التسجيل بسيطة وسريعة — سيتواصل معكم فريقنا الإداري خلال 48 ساعة.</p>
         <div class="reg-point"><i class="fas fa-user-check"></i> فحص وتقييم فني مجاني</div>
         <div class="reg-point"><i class="fas fa-shield-halved"></i> بيئة تدريبية آمنة ومنظمة</div>
         <div class="reg-point"><i class="fas fa-chalkboard-teacher"></i> مدربون مؤهلون معتمدون</div>
@@ -514,11 +463,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
           <div class="form-group"><label>اسم اللاعب</label><input type="text" id="regFirstName" required /></div>
           <div class="form-group"><label>لقب اللاعب</label><input type="text" id="regLastName" required /></div>
           <div class="form-group"><label>تاريخ الميلاد</label><input type="date" id="regBirthDate" required /></div>
-          <div class="form-group"><label>الفئة العمرية المقترحة</label>
-            <select id="regCategory">
-              <option value="U07">U07</option><option value="U09">U09</option><option value="U11">U11</option>
-              <option value="U13">U13</option><option value="U15">U15</option>
-            </select>
+          <div class="form-group"><label>الفئة العمرية</label>
+            <select id="regCategory"><option value="U07">U07</option><option value="U09">U09</option><option value="U11">U11</option><option value="U13">U13</option><option value="U15">U15</option></select>
           </div>
           <div class="form-group"><label>اسم ولي الأمر</label><input type="text" id="regGuardianName" required /></div>
           <div class="form-group"><label>هاتف ولي الأمر</label><input type="tel" id="regGuardianPhone" required /></div>
@@ -538,8 +484,8 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand"><div class="brand-logo"><i class="fas fa-shield-halved"></i></div><div class="name">أكاديمية الرائد لكرة القدم</div></div>
-        <p style="font-size:.85rem;line-height:1.9;color:rgba(255,255,255,0.5);">النادي الرياضي المحترف — نصنع نجوم كرة القدم منذ 2018.</p>
+        <div class="footer-brand"><img class="footer-logo" id="footerLogo" src="" alt="أكاديمية الرائد" /><div class="name">أكاديمية الرائد لكرة القدم</div></div>
+        <p style="font-size:.84rem;line-height:1.9;color:rgba(255,255,255,0.45);">النادي الرياضي المحترف — نصنع نجوم كرة القدم منذ 2018.</p>
         <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
       </div>
       <div class="footer-col"><h5>روابط سريعة</h5><a href="#about">عن الأكاديمية</a><a href="#coach">المدير الفني</a><a href="#categories">الفئات العمرية</a><a href="#articles">المقالات</a></div>
@@ -550,12 +496,23 @@ footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:70px 0 26px;}
   </div>
 </footer>
 
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
-  <img id="lightboxImg" src="" alt="" />
-</div>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button><img id="lightboxImg" src="" alt="" /></div>
 
 <script>
+/* ===================================================================
+   LOGO_URL — ضع هنا رابط شعار الأكاديمية الحقيقي (GitHub raw) فور توفره
+   سيظهر تلقائياً في الناف بار والفوتر بمجرد وضعه هنا
+   =================================================================== */
+const LOGO_URL = "";
+if(LOGO_URL){
+  document.getElementById('navLogo').src = LOGO_URL;
+  document.getElementById('footerLogo').src = LOGO_URL;
+} else {
+  document.querySelectorAll('#navLogo,#footerLogo').forEach(el => {
+    el.outerHTML = `<div style="width:${el.id==='navLogo'?'48px':'44px'};height:${el.id==='navLogo'?'48px':'44px'};border-radius:9px;background:linear-gradient(135deg,#2FAE6B,#1F7A4D);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-shield-halved" style="color:#fff;"></i></div>`;
+  });
+}
+
 const firebaseConfig = {
   apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
   authDomain: "academy-raed-new.firebaseapp.com",
@@ -573,8 +530,7 @@ const defaultNewsTicker = [
   "🏆 فتح باب التسجيل لموسم 2025/2026 لجميع الفئات العمرية",
   "⚽ تكريم المدرب صهيب بن أحمد كأفضل مدرب في الدورة الأخيرة",
   "📅 انطلاق الحصص التدريبية الأسبوعية بداية الأسبوع القادم",
-  "🎓 دروس تعليمية جديدة حول تطوير القدرات المعرفية للاعب",
-  "🤝 شراكات جديدة قيد الإعداد لتطوير البنية التحتية للأكاديمية"
+  "🎓 دروس تعليمية جديدة حول تطوير القدرات المعرفية للاعب"
 ];
 const defaultGallery = [
   { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781876420019.jpg`, caption:"تدريبات الأكاديمية" },
@@ -585,18 +541,12 @@ const defaultGallery = [
   { url:`${GITHUB_RAW}/3d67c17c589fbe2ae9ce875c9199d21981740058/1781869815626.jpg`, caption:"نجوم الغد يتدربون هنا" }
 ];
 const defaultEduVideos = [
-  { url:`${GITHUB_RAW}/ad2eb055fdbbee628ab6667af6909f6f4c65bb43/%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D8%BA%20%D9%81%D9%8A%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85%20%F0%9F%A7%A0%E2%9A%BD%20%D9%87%D9%88%20%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%D8%A9%20%D9%84%D9%84%D8%A7%D8%B9%D8%A8%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A%D8%B2%D8%8C%20%D8%A7%D9%84%D9%85%D8%B3%D8%AD%20%D8%A7%D9%84%D8%A8%D8%B5.mp4`, title:"تدريب الدماغ في كرة القدم", coach:"الطاقم الفني",
-    description:"هو تطوير القدرات المعرفية للاعب مثل التركيز، المسح البصري، واتخاذ القرار السريع.", topics:["التركيز الذهني","المسح البصري","اتخاذ القرار"] },
-  { url:`${GITHUB_RAW}/7494d81a6458ab38cc54a9ce7f0cba75244042ad/%F0%9F%A7%A0%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%20%D9%81%D9%8A%20%D8%B7%D8%B1%D9%8A%D9%82%D8%A9%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9(720P_HD).mp4`, title:"التدريب المعرفي بطريقة الرائد التعليمية", coach:"الطاقم الفني",
-    description:"منهجية تدريبية خاصة بأكاديمية الرائد تدمج الجانب المعرفي مع التمارين التقنية.", topics:["منهج الرائد","تطوير الإدراك","تمارين تطبيقية"] },
-  { url:`${GITHUB_RAW}/185e54fe2fb088b72fda7b680f2cc6b2d25ab8c6/_RaedFootballLearning%20_CoachKamelMerad%20_FootballEducation%20_PositionalRondo%20_YouthDevelopment%20_CSPRaed(720P_HD).mp4`, title:"الروندو الوضعي (Positional Rondo)", coach:"الأستاذ كامل مراد",
-    description:"تمرين يُستخدم لتطوير الحس التكتيكي والتموضع الصحيح للاعبين الشباب.", topics:["الحس التكتيكي","التموضع","تطوير الفئات الشابة"] }
+  { url:`${GITHUB_RAW}/ad2eb055fdbbee628ab6667af6909f6f4c65bb43/%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D8%BA%20%D9%81%D9%8A%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85%20%F0%9F%A7%A0%E2%9A%BD%20%D9%87%D9%88%20%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%D8%A9%20%D9%84%D9%84%D8%A7%D8%B9%D8%A8%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A%D8%B2%D8%8C%20%D8%A7%D9%84%D9%85%D8%B3%D8%AD%20%D8%A7%D9%84%D8%A8%D8%B5.mp4`, title:"تدريب الدماغ في كرة القدم", coach:"الطاقم الفني", description:"تطوير القدرات المعرفية للاعب مثل التركيز، المسح البصري، واتخاذ القرار السريع.", topics:["التركيز الذهني","المسح البصري","اتخاذ القرار"] },
+  { url:`${GITHUB_RAW}/7494d81a6458ab38cc54a9ce7f0cba75244042ad/%F0%9F%A7%A0%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%20%D9%81%D9%8A%20%D8%B7%D8%B1%D9%8A%D9%82%D8%A9%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9(720P_HD).mp4`, title:"التدريب المعرفي بطريقة الرائد التعليمية", coach:"الطاقم الفني", description:"منهجية تدمج الجانب المعرفي مع التمارين التقنية لتكوين لاعب يفكر بسرعة بقدر ما يتحرك بسرعة.", topics:["منهج الرائد","تطوير الإدراك","تمارين تطبيقية"] },
+  { url:`${GITHUB_RAW}/185e54fe2fb088b72fda7b680f2cc6b2d25ab8c6/_RaedFootballLearning%20_CoachKamelMerad%20_FootballEducation%20_PositionalRondo%20_YouthDevelopment%20_CSPRaed(720P_HD).mp4`, title:"الروندو الوضعي (Positional Rondo)", coach:"الأستاذ كامل مراد", description:"تمرين لتطوير الحس التكتيكي والتموضع الصحيح للاعبين الشباب.", topics:["الحس التكتيكي","التموضع","تطوير الفئات الشابة"] }
 ];
-const tournamentVideo = {
-  url:`${GITHUB_RAW}/fe735c7adacdbd6dcb27d461e12a8aa770d41f43/%D8%B5%D9%87%D9%8A%D8%A8%20Sohaib%20Ben%20Ahmed%20%D8%A3%D8%AD%D8%B3%D9%86%20%D9%85%D8%AF%D8%B1%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20%F0%9F%92%9A%F0%9F%92%AA(720P_HD).mp4`,
-  title:"صهيب بن أحمد — أحسن مدرب في الدورة",
-  description:"تكريم يعكس جهود طاقمنا الفني المتفاني في تطوير مهارات لاعبينا داخل الدورات التي تنظمها الأكاديمية."
-};
+const tournamentVideo = { url:`${GITHUB_RAW}/fe735c7adacdbd6dcb27d461e12a8aa770d41f43/%D8%B5%D9%87%D9%8A%D8%A8%20Sohaib%20Ben%20Ahmed%20%D8%A3%D8%AD%D8%B3%D9%86%20%D9%85%D8%AF%D8%B1%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AF%D9%88%D8%B1%D8%A9%20%F0%9F%92%9A%F0%9F%92%AA(720P_HD).mp4`, title:"صهيب بن أحمد — أحسن مدرب في الدورة", description:"تكريم يعكس جهود طاقمنا الفني المتفاني في تطوير مهارات لاعبينا داخل الدورات." };
+
 const defaultCategories = {
   U07:{ageRange:"5 - 7 سنوات",focus:"المتعة والتعرف على الكرة",keyIdeas:["ألعاب حركية ممتعة","التنسيق الحركي الأساسي","غرس حب اللعبة"],icon:"fa-child-reaching"},
   U09:{ageRange:"8 - 9 سنوات",focus:"بناء المهارات الفردية",keyIdeas:["التحكم الأساسي بالكرة","المراوغة البسيطة","التمرير القصير الدقيق"],icon:"fa-shoe-prints"},
@@ -606,82 +556,61 @@ const defaultCategories = {
 };
 
 function lazyVideoHtml(url, label, id){
-  return `<div class="lazy-video-wrap" id="${id}">
-      <div class="lazy-poster" onclick="loadLazyVideo('${id}')">
-        <div class="lazy-poster-play"><i class="fas fa-play"></i></div>
-        <div class="lazy-poster-label">${label}</div>
-      </div>
-      <video playsinline preload="none" data-src="${url}"></video>
-    </div>`;
+  return `<div class="lazy-video-wrap" id="${id}"><div class="lazy-poster" onclick="loadLazyVideo('${id}')"><div class="lazy-poster-play"><i class="fas fa-play"></i></div><div class="lazy-poster-label">${label}</div></div><video playsinline preload="none" data-src="${url}"></video></div>`;
 }
 function loadLazyVideo(wrapId){
   const wrap = document.getElementById(wrapId);
   const video = wrap.querySelector('video');
-  const poster = wrap.querySelector('.lazy-poster');
   video.src = video.dataset.src; video.controls = true; video.load(); video.play().catch(()=>{});
-  poster.remove();
+  wrap.querySelector('.lazy-poster').remove();
 }
 
-document.getElementById('tournamentCard1').innerHTML = `
-  ${lazyVideoHtml(tournamentVideo.url, 'اضغط للتشغيل — أفضل مدرب في الدورة', 'lazyTournament')}
-  <div class="tournament-body"><h4>${tournamentVideo.title}</h4><p>${tournamentVideo.description}</p></div>`;
+document.getElementById('tournamentCard1').innerHTML = `${lazyVideoHtml(tournamentVideo.url,'اضغط للتشغيل — أفضل مدرب في الدورة','lazyTournament')}<div class="tournament-body"><h4>${tournamentVideo.title}</h4><p>${tournamentVideo.description}</p></div>`;
 
 function renderTicker(items){
-  const track = document.getElementById('tickerTrack');
   const doubled = [...items, ...items];
-  track.innerHTML = doubled.map(t => `<div class="ticker-item"><i class="fas fa-circle"></i> ${t}</div>`).join('');
+  document.getElementById('tickerTrack').innerHTML = doubled.map(t => `<div class="ticker-item"><i class="fas fa-circle"></i> ${t}</div>`).join('');
 }
 db.ref('academy/newsTicker').once('value').then(snap => {
   const data = snap.val();
-  if(data && Array.isArray(data) && data.length){ renderTicker(data); }
-  else { renderTicker(defaultNewsTicker); db.ref('academy/newsTicker').set(defaultNewsTicker); }
+  if(data && Array.isArray(data) && data.length){ renderTicker(data); } else { renderTicker(defaultNewsTicker); db.ref('academy/newsTicker').set(defaultNewsTicker); }
 }).catch(() => renderTicker(defaultNewsTicker));
 
 function renderGallery(items){
-  document.getElementById('galleryGrid').innerHTML = items.map(g => `
-    <div class="gallery-item reveal in" onclick="openLightbox('${g.url}')">
-      <img src="${g.url}" alt="${g.caption}" loading="lazy" decoding="async" />
-      <div class="gallery-zoom-icon"><i class="fas fa-expand"></i></div>
-      <div class="gallery-caption">${g.caption}</div>
-    </div>`).join('');
+  document.getElementById('galleryGrid').innerHTML = items.map(g => `<div class="gallery-item reveal in"><img src="${g.url}" alt="${g.caption}" loading="lazy" decoding="async" /><div class="gallery-caption">${g.caption}</div></div>`).join('');
 }
 db.ref('academy/gallery').once('value').then(snap => {
   const data = snap.val();
-  if(data && Array.isArray(data) && data.length){ renderGallery(data); }
-  else { renderGallery(defaultGallery); db.ref('academy/gallery').set(defaultGallery); }
+  if(data && Array.isArray(data) && data.length){ renderGallery(data); } else { renderGallery(defaultGallery); db.ref('academy/gallery').set(defaultGallery); }
 }).catch(() => renderGallery(defaultGallery));
 
 function renderEduVideos(items){
   document.getElementById('eduGrid').innerHTML = items.map((v,i) => `
     <div class="edu-card reveal in">
       <div style="position:relative;"><span class="edu-number num-font">${i+1}</span>${lazyVideoHtml(v.url,'اضغط للمشاهدة','lazyEdu'+i)}</div>
-      <div class="edu-desc">
-        <div class="edu-coach"><div class="edu-coach-avatar"><i class="fas fa-user-tie"></i></div><div class="edu-coach-name">${v.coach}</div></div>
-        <h4>${v.title}</h4><p>${v.description}</p>
-        <div class="edu-topics">${(v.topics||[]).map(t => `<span class="edu-topic-chip">${t}</span>`).join('')}</div>
-      </div>
+      <div class="edu-desc"><div class="edu-coach"><div class="edu-coach-avatar"><i class="fas fa-user-tie"></i></div><div class="edu-coach-name">${v.coach}</div></div><h4>${v.title}</h4><p>${v.description}</p><div class="edu-topics">${(v.topics||[]).map(t => `<span class="edu-topic-chip">${t}</span>`).join('')}</div></div>
     </div>`).join('');
 }
 db.ref('academy/eduVideos').once('value').then(snap => {
   const data = snap.val();
-  if(data && Array.isArray(data) && data.length){ renderEduVideos(data); }
-  else { renderEduVideos(defaultEduVideos); db.ref('academy/eduVideos').set(defaultEduVideos); }
+  if(data && Array.isArray(data) && data.length){ renderEduVideos(data); } else { renderEduVideos(defaultEduVideos); db.ref('academy/eduVideos').set(defaultEduVideos); }
 }).catch(() => renderEduVideos(defaultEduVideos));
 
 function renderCategories(cats){
-  const grid = document.getElementById('categoriesGrid');
-  grid.innerHTML = Object.entries(cats).map(([key,c]) => `
+  document.getElementById('categoriesGrid').innerHTML = Object.entries(cats).map(([key,c]) => `
     <a href="category.html?cat=${key}" class="cat-card reveal in">
-      <div class="cat-badge num-font">${key}</div>
-      <h4><i class="fas ${c.icon||'fa-futbol'}" style="color:var(--gold);margin-left:6px;"></i>${c.ageRange}</h4>
-      <p>${c.focus}</p>
-      <span class="cat-link">اكتشف الفئة <i class="fas fa-arrow-left"></i></span>
+      <div class="cat-card-inner">
+        <div class="cat-badge num-font">${key}</div>
+        <i class="fas ${c.icon||'fa-futbol'} cat-icon"></i>
+        <h4>${c.ageRange}</h4>
+        <p>${c.focus}</p>
+        <span class="cat-link">فتح ملف الفئة <i class="fas fa-arrow-left"></i></span>
+      </div>
     </a>`).join('');
 }
 db.ref('academy/categories').once('value').then(snap => {
   const data = snap.val();
-  if(data && Object.keys(data).length){ renderCategories(data); }
-  else { renderCategories(defaultCategories); db.ref('academy/categories').set(defaultCategories); }
+  if(data && Object.keys(data).length){ renderCategories(data); } else { renderCategories(defaultCategories); db.ref('academy/categories').set(defaultCategories); }
 }).catch(() => renderCategories(defaultCategories));
 
 function renderArticles(items){
@@ -689,15 +618,8 @@ function renderArticles(items){
   if(!items.length){ grid.innerHTML = `<div class="no-content-msg"><i class="fas fa-newspaper" style="font-size:2rem;display:block;margin-bottom:10px;"></i>لا توجد مقالات منشورة بعد</div>`; return; }
   grid.innerHTML = items.slice(0,6).map(a => `
     <div class="article-card reveal in">
-      <div class="article-img">
-        ${a.image ? `<img src="${a.image}" loading="lazy" decoding="async" />` : ''}
-        ${a.tag ? `<span class="article-tag-chip">${a.tag}</span>` : ''}
-      </div>
-      <div class="article-body">
-        <h4>${a.title}</h4>
-        <p>${a.excerpt || (a.content||'').slice(0,90)+'...'}</p>
-        <a href="article.html?id=${a.id}" class="article-link">قراءة المزيد <i class="fas fa-arrow-left"></i></a>
-      </div>
+      <div class="article-img">${a.image?`<img src="${a.image}" loading="lazy" decoding="async" />`:''}${a.tag?`<span class="article-tag-chip">${a.tag}</span>`:''}</div>
+      <div class="article-body"><h4>${a.title}</h4><p>${a.excerpt || (a.content||'').slice(0,90)+'...'}</p><a href="article.html?id=${a.id}" class="article-link">قراءة المزيد <i class="fas fa-arrow-left"></i></a></div>
     </div>`).join('');
 }
 db.ref('academy/articles').once('value').then(snap => {
@@ -732,16 +654,11 @@ document.getElementById('registerForm').addEventListener('submit', function(e){
     .finally(() => { btn.disabled = false; btn.innerHTML = originalHtml; });
 });
 
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  document.getElementById('pitchBg').style.transform = `translateY(${window.scrollY * 0.03}px)`;
-});
+window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60));
 document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('show'));
 document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('show')));
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); } });
-}, { threshold: 0.15 });
+const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.15 });
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 const counterObserver = new IntersectionObserver((entries) => {
