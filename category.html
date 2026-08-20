@@ -3,43 +3,86 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>الفئة العمرية | أكاديمية الرائد</title>
+<title>ملف الفئة | أكاديمية الرائد</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-:root{--green:#1B5E3A;--green-2:#2E9E5B;--ink:#10241B;--gold:#C9A227;--bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;}
+:root{--ink:#0B2818;--ink-2:#123322;--emerald:#1F7A4D;--emerald-2:#2FAE6B;--gold:#C9A227;--gold-light:#E4C568;
+  --bg:#F3F5F2;--border:#E1E6DE;--text:#16241C;--text-2:#5B6B5F;--shadow:0 22px 55px rgba(11,40,24,0.1);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);}
 .num-font{font-family:'Barlow Condensed',sans-serif;}
-.container{max-width:900px;margin:0 auto;padding:0 20px;}
+.container{max-width:1000px;margin:0 auto;padding:0 20px;}
 a{text-decoration:none;color:inherit;}
+button{font-family:'Cairo',sans-serif;cursor:pointer;}
 
 .topbar{background:var(--ink);padding:16px 0;}
 .topbar .container{display:flex;justify-content:space-between;align-items:center;}
 .topbar .brand{color:#fff;font-weight:800;display:flex;align-items:center;gap:10px;}
-.topbar .brand i{color:var(--green-2);}
-.topbar a.back{color:rgba(255,255,255,0.7);font-size:.85rem;font-weight:600;}
+.topbar .brand i{color:var(--emerald-2);}
+.topbar a.back{color:rgba(255,255,255,0.65);font-size:.85rem;font-weight:600;}
 
-.cat-hero{background:linear-gradient(160deg,var(--ink),#173322);padding:70px 0;text-align:center;color:#fff;}
-.cat-hero .badge{font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:var(--green-2);}
-.cat-hero h1{font-size:2rem;font-weight:900;margin:8px 0;}
-.cat-hero p{color:rgba(255,255,255,0.65);}
+.cat-hero{background:linear-gradient(160deg,var(--ink),var(--ink-2));padding:70px 0 0;text-align:center;color:#fff;position:relative;overflow:hidden;}
+.cat-hero::before{content:'';position:absolute;top:-30%;right:-10%;width:340px;height:340px;background:radial-gradient(circle,rgba(201,162,39,0.18),transparent 70%);}
+.cat-badge{font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:var(--gold-light);position:relative;}
+.cat-hero h1{font-size:2rem;font-weight:900;margin:8px 0;position:relative;}
+.cat-hero p{color:rgba(255,255,255,0.6);position:relative;margin-bottom:36px;}
 
-.content-wrap{padding:60px 0;}
-.focus-panel{background:#fff;border-radius:18px;padding:30px;border:1px solid var(--border);margin-bottom:26px;box-shadow:0 15px 40px rgba(16,36,27,0.06);}
-.focus-panel h3{color:var(--green);font-weight:800;margin-bottom:10px;}
-.focus-panel p{color:var(--text-2);line-height:2;}
-.ideas-grid{display:grid;grid-template-columns:1fr;gap:14px;}
-.idea-item{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;}
-.idea-num{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;
-  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tabs-bar{display:flex;gap:8px;overflow-x:auto;padding:0 0 0;position:relative;z-index:2;}
+.tab-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);
+  padding:14px 26px;font-weight:700;font-size:.88rem;border-radius:12px 12px 0 0;white-space:nowrap;transition:.25s;}
+.tab-btn.active{background:var(--bg);color:var(--ink);border-color:var(--bg);}
+.tab-btn:hover:not(.active){background:rgba(255,255,255,0.12);color:#fff;}
+
+.content-wrap{padding:50px 0 70px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+.panel-card{background:#fff;border-radius:18px;padding:30px;border:1px solid var(--border);margin-bottom:22px;box-shadow:var(--shadow);}
+.panel-card h3{color:var(--emerald);font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.panel-card h3 i{color:var(--gold);}
+.panel-card p{color:var(--text-2);line-height:2;}
+
+.ideas-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.idea-item{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 20px;}
+.idea-num{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--emerald-2),var(--emerald));color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .idea-item span{font-weight:700;}
-.other-cats{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;}
-.other-cat-link{background:#fff;border:2px solid var(--border);padding:10px 20px;border-radius:30px;font-weight:800;font-size:.85rem;transition:.3s;}
-.other-cat-link:hover,.other-cat-link.active{background:var(--green);color:#fff;border-color:var(--green);}
+
+/* MATCHES */
+.match-card{background:linear-gradient(135deg,var(--ink),var(--ink-2));border-radius:16px;padding:22px 24px;color:#fff;margin-bottom:14px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;border:1px solid rgba(201,162,39,0.15);}
+.match-teams{display:flex;align-items:center;gap:16px;font-weight:800;}
+.match-teams .vs{color:var(--gold-light);font-size:.8rem;}
+.match-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,0.6);}
+.match-meta span{display:flex;align-items:center;gap:6px;}
+.match-status{padding:6px 16px;border-radius:20px;font-size:.72rem;font-weight:800;}
+.match-status.upcoming{background:rgba(201,162,39,0.2);color:var(--gold-light);}
+.match-status.done{background:rgba(47,174,107,0.2);color:var(--emerald-2);}
+.no-data{text-align:center;padding:50px 20px;color:var(--text-2);}
+.no-data i{font-size:2.2rem;display:block;margin-bottom:12px;color:var(--border);}
+
+/* TRAINING SCHEDULE */
+.schedule-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+.schedule-table th{background:var(--ink);color:#fff;padding:14px;font-size:.82rem;font-weight:700;}
+.schedule-table td{padding:14px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;font-size:.88rem;}
+.schedule-table tr:last-child td{border-bottom:none;}
+.day-badge{color:var(--emerald);}
+
+/* ANNOUNCEMENTS */
+.announce-card{background:#fff;border-right:5px solid var(--gold);border-radius:14px;padding:22px 24px;margin-bottom:14px;box-shadow:var(--shadow);}
+.announce-card .date{font-size:.75rem;color:var(--text-2);margin-bottom:6px;}
+.announce-card h4{font-weight:800;margin-bottom:8px;color:var(--ink);}
+.announce-card p{color:var(--text-2);line-height:1.9;font-size:.9rem;}
+
+.other-cats{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px;}
+.other-cat-link{background:#fff;border:2px solid var(--border);padding:10px 22px;border-radius:30px;font-weight:800;font-size:.85rem;transition:.3s;}
+.other-cat-link:hover,.other-cat-link.active{background:var(--emerald);color:#fff;border-color:var(--emerald);}
 .not-found{text-align:center;padding:100px 20px;}
+@media(max-width:768px){.cat-hero h1{font-size:1.5rem;}}
 </style>
 </head>
 <body>
@@ -72,28 +115,70 @@ const body = document.getElementById('pageBody');
 if(!catId || !allCats.includes(catId)){
   body.innerHTML = `<div class="not-found"><h2>الفئة غير موجودة</h2></div>`;
 } else {
-  db.ref('academy/categories/'+catId).once('value').then(snap => {
-    const c = snap.val();
+  Promise.all([
+    db.ref('academy/categories/'+catId).once('value'),
+    db.ref('academy/categoryMatches/'+catId).once('value'),
+    db.ref('academy/categorySchedule/'+catId).once('value'),
+    db.ref('academy/categoryAnnouncements/'+catId).once('value')
+  ]).then(([catSnap, matchesSnap, scheduleSnap, announceSnap]) => {
+    const c = catSnap.val();
     if(!c){ body.innerHTML = `<div class="not-found"><h2>لا توجد بيانات لهذه الفئة بعد</h2></div>`; return; }
     document.title = `فئة ${catId} | أكاديمية الرائد`;
+
+    const matches = matchesSnap.val() ? Object.values(matchesSnap.val()) : [];
+    const schedule = scheduleSnap.val() ? Object.values(scheduleSnap.val()) : [];
+    const announcements = announceSnap.val() ? Object.values(announceSnap.val()) : [];
+
+    const matchesHtml = matches.length ? matches.map(m => `
+      <div class="match-card">
+        <div class="match-teams">أكاديمية الرائد <span class="vs">VS</span> ${m.opponent||'—'}</div>
+        <div class="match-meta"><span><i class="fas fa-calendar"></i> ${m.date||'-'}</span><span><i class="fas fa-map-marker-alt"></i> ${m.venue||'-'}</span></div>
+        <span class="match-status ${m.status==='done'?'done':'upcoming'}">${m.status==='done'?('النتيجة: '+(m.result||'-')):'قادمة'}</span>
+      </div>`).join('') : `<div class="no-data"><i class="fas fa-futbol"></i>لا توجد مباريات مسجّلة لهذه الفئة بعد</div>`;
+
+    const scheduleHtml = schedule.length ? `
+      <table class="schedule-table">
+        <thead><tr><th>اليوم</th><th>التوقيت</th><th>الملعب</th><th>نوع الحصة</th></tr></thead>
+        <tbody>${schedule.map(s => `<tr><td class="day-badge">${s.day||'-'}</td><td>${s.time||'-'}</td><td>${s.field||'-'}</td><td>${s.type||'-'}</td></tr>`).join('')}</tbody>
+      </table>` : `<div class="no-data"><i class="fas fa-calendar-days"></i>لم يتم إضافة جدول تدريبات لهذه الفئة بعد</div>`;
+
+    const announceHtml = announcements.length ? announcements.map(a => `
+      <div class="announce-card"><div class="date">${a.date||''}</div><h4>${a.title||''}</h4><p>${a.text||''}</p></div>`).join('') :
+      `<div class="no-data"><i class="fas fa-bullhorn"></i>لا توجد إعلانات حالياً لهذه الفئة</div>`;
+
     body.innerHTML = `
       <section class="cat-hero">
-        <div class="badge num-font">${catId}</div>
-        <h1>${c.ageRange}</h1>
-        <p>${c.focus}</p>
+        <div class="container">
+          <div class="cat-badge num-font">${catId}</div>
+          <h1>${c.ageRange}</h1>
+          <p>${c.focus}</p>
+          <div class="tabs-bar">
+            <button class="tab-btn active" data-tab="overview">نظرة عامة</button>
+            <button class="tab-btn" data-tab="matches">المباريات</button>
+            <button class="tab-btn" data-tab="schedule">جدول التدريبات</button>
+            <button class="tab-btn" data-tab="announcements">الإعلانات</button>
+          </div>
+        </div>
       </section>
       <div class="container content-wrap">
-        <div class="focus-panel">
-          <h3><i class="fas fa-bullseye"></i> التركيز التدريبي لهذه الفئة</h3>
-          <p>${c.focus}</p>
+        <div class="tab-panel active" id="tab-overview">
+          <div class="panel-card"><h3><i class="fas fa-bullseye"></i> التركيز التدريبي لهذه الفئة</h3><p>${c.focus}</p></div>
+          <div class="ideas-grid">${(c.keyIdeas||[]).map((idea,i) => `<div class="idea-item"><div class="idea-num num-font">${i+1}</div><span>${idea}</span></div>`).join('')}</div>
         </div>
-        <div class="ideas-grid">
-          ${(c.keyIdeas||[]).map((idea,i) => `<div class="idea-item"><div class="idea-num num-font">${i+1}</div><span>${idea}</span></div>`).join('')}
-        </div>
-        <div class="other-cats">
-          ${allCats.map(k => `<a href="category.html?cat=${k}" class="other-cat-link ${k===catId?'active':''}">${k}</a>`).join('')}
-        </div>
+        <div class="tab-panel" id="tab-matches">${matchesHtml}</div>
+        <div class="tab-panel" id="tab-schedule">${scheduleHtml}</div>
+        <div class="tab-panel" id="tab-announcements">${announceHtml}</div>
+        <div class="other-cats">${allCats.map(k => `<a href="category.html?cat=${k}" class="other-cat-link ${k===catId?'active':''}">${k}</a>`).join('')}</div>
       </div>`;
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+      });
+    });
   });
 }
 </script>
