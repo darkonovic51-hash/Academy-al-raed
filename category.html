@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الفئة العمرية | أكاديمية الرائد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{--green:#1B5E3A;--green-2:#2E9E5B;--ink:#10241B;--gold:#C9A227;--bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);}
+.num-font{font-family:'Barlow Condensed',sans-serif;}
+.container{max-width:900px;margin:0 auto;padding:0 20px;}
+a{text-decoration:none;color:inherit;}
+
+.topbar{background:var(--ink);padding:16px 0;}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;}
+.topbar .brand{color:#fff;font-weight:800;display:flex;align-items:center;gap:10px;}
+.topbar .brand i{color:var(--green-2);}
+.topbar a.back{color:rgba(255,255,255,0.7);font-size:.85rem;font-weight:600;}
+
+.cat-hero{background:linear-gradient(160deg,var(--ink),#173322);padding:70px 0;text-align:center;color:#fff;}
+.cat-hero .badge{font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:var(--green-2);}
+.cat-hero h1{font-size:2rem;font-weight:900;margin:8px 0;}
+.cat-hero p{color:rgba(255,255,255,0.65);}
+
+.content-wrap{padding:60px 0;}
+.focus-panel{background:#fff;border-radius:18px;padding:30px;border:1px solid var(--border);margin-bottom:26px;box-shadow:0 15px 40px rgba(16,36,27,0.06);}
+.focus-panel h3{color:var(--green);font-weight:800;margin-bottom:10px;}
+.focus-panel p{color:var(--text-2);line-height:2;}
+.ideas-grid{display:grid;grid-template-columns:1fr;gap:14px;}
+.idea-item{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 22px;}
+.idea-num{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.idea-item span{font-weight:700;}
+.other-cats{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;}
+.other-cat-link{background:#fff;border:2px solid var(--border);padding:10px 20px;border-radius:30px;font-weight:800;font-size:.85rem;transition:.3s;}
+.other-cat-link:hover,.other-cat-link.active{background:var(--green);color:#fff;border-color:var(--green);}
+.not-found{text-align:center;padding:100px 20px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="container">
+    <div class="brand"><i class="fas fa-shield-halved"></i> أكاديمية الرائد</div>
+    <a href="index.html#categories" class="back"><i class="fas fa-arrow-right"></i> رجوع لكل الفئات</a>
+  </div>
+</div>
+<div id="pageBody"></div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
+  authDomain: "academy-raed-new.firebaseapp.com",
+  projectId: "academy-raed-new",
+  storageBucket: "academy-raed-new.firebasestorage.app",
+  messagingSenderId: "408030922593",
+  appId: "1:408030922593:web:190a2a671fca9cb297a720",
+  measurementId: "G-8ZCCBF7HRK"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+const allCats = ['U07','U09','U11','U13','U15'];
+const params = new URLSearchParams(window.location.search);
+const catId = params.get('cat');
+const body = document.getElementById('pageBody');
+
+if(!catId || !allCats.includes(catId)){
+  body.innerHTML = `<div class="not-found"><h2>الفئة غير موجودة</h2></div>`;
+} else {
+  db.ref('academy/categories/'+catId).once('value').then(snap => {
+    const c = snap.val();
+    if(!c){ body.innerHTML = `<div class="not-found"><h2>لا توجد بيانات لهذه الفئة بعد</h2></div>`; return; }
+    document.title = `فئة ${catId} | أكاديمية الرائد`;
+    body.innerHTML = `
+      <section class="cat-hero">
+        <div class="badge num-font">${catId}</div>
+        <h1>${c.ageRange}</h1>
+        <p>${c.focus}</p>
+      </section>
+      <div class="container content-wrap">
+        <div class="focus-panel">
+          <h3><i class="fas fa-bullseye"></i> التركيز التدريبي لهذه الفئة</h3>
+          <p>${c.focus}</p>
+        </div>
+        <div class="ideas-grid">
+          ${(c.keyIdeas||[]).map((idea,i) => `<div class="idea-item"><div class="idea-num num-font">${i+1}</div><span>${idea}</span></div>`).join('')}
+        </div>
+        <div class="other-cats">
+          ${allCats.map(k => `<a href="category.html?cat=${k}" class="other-cat-link ${k===catId?'active':''}">${k}</a>`).join('')}
+        </div>
+      </div>`;
+  });
+}
+</script>
+</body>
+</html>
