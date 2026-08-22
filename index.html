@@ -12,13 +12,13 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{
-  /* ===== identity derived strictly from the real crest: black + green + white, no gold ===== */
-  --black:#000000; --black-2:#0D0D0D;
-  --green:#1F7A45; --green-dark:#124D2C; --green-light:#3FA968;
-  --white:#FFFFFF; --bg:#F5F7F5; --border:#E3E9E4;
-  --text:#12160F; --text-2:#5C6660;
-  --radius:14px; --shadow:0 22px 55px rgba(0,0,0,0.14);
-  --shadow-green:0 15px 38px rgba(31,122,69,0.35);
+  /* ===== pure green identity — NO black anywhere ===== */
+  --pitch:#0F3D24; --pitch-2:#144A2C;
+  --green:#1F7A45; --green-dark:#155C34; --green-light:#4CC382;
+  --white:#FFFFFF; --bg:#FBFCFA; --border:#E4EAE4;
+  --text:#12160F; --text-2:#5C665F;
+  --radius:16px; --shadow:0 22px 55px rgba(15,61,36,0.12);
+  --shadow-green:0 15px 38px rgba(31,122,69,0.32);
   --ease:cubic-bezier(0.16,1,0.3,1); --ticker-h:56px; --nav-h:78px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -32,11 +32,17 @@ button{font-family:'Cairo',sans-serif;cursor:pointer;}
 .num-font{font-family:'Barlow Condensed',sans-serif;}
 main{position:relative;z-index:1;}
 
-/* ===== TOP TICKER — white/light, distinctive ===== */
+/* ===== SIGNATURE TEXTURE: Pitch Stripe (replaces black) ===== */
+.pitch-dark{
+  background-color:var(--pitch);
+  background-image:repeating-linear-gradient(115deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 34px, transparent 34px, transparent 70px);
+}
+
+/* ===== TOP TICKER ===== */
 .top-ticker{position:fixed;top:0;left:0;width:100%;z-index:1002;background:#fff;
-  border-bottom:2px solid var(--green);height:var(--ticker-h);box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+  border-bottom:2px solid var(--green);height:var(--ticker-h);box-shadow:0 4px 20px rgba(15,61,36,0.06);}
 .ticker-inner{display:flex;align-items:stretch;height:100%;}
-.ticker-label{background:var(--black);color:#fff;font-weight:900;font-size:.92rem;
+.ticker-label{background:var(--pitch);color:#fff;font-weight:900;font-size:.92rem;
   padding:0 24px 0 44px;display:flex;align-items:center;gap:9px;flex-shrink:0;white-space:nowrap;position:relative;z-index:2;
   clip-path:polygon(0 0,100% 0,84% 100%,0% 100%);}
 .ticker-label i{color:var(--green-light);}
@@ -48,9 +54,8 @@ main{position:relative;z-index:1;}
 
 /* ===== NAVBAR ===== */
 .navbar{position:fixed;top:var(--ticker-h);left:0;width:100%;z-index:1000;transition:.4s var(--ease);}
-.navbar-main{background:rgba(0,0,0,0.92);backdrop-filter:blur(16px);padding:15px 0;transition:.4s var(--ease);
-  border-bottom:1px solid rgba(31,122,69,0.3);}
-.navbar.scrolled .navbar-main{padding:9px 0;background:rgba(0,0,0,0.98);}
+.navbar-main{background:rgba(15,61,36,0.92);backdrop-filter:blur(16px);padding:15px 0;transition:.4s var(--ease);border-bottom:1px solid rgba(76,195,130,0.25);}
+.navbar.scrolled .navbar-main{padding:9px 0;background:rgba(15,61,36,0.99);}
 .navbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-logo{height:52px;width:52px;object-fit:contain;flex-shrink:0;}
@@ -61,23 +66,23 @@ main{position:relative;z-index:1;}
 .nav-links a::after{content:'';position:absolute;bottom:-8px;right:0;width:0;height:2px;background:var(--green-light);transition:.3s var(--ease);}
 .nav-links a:hover{color:#fff;}
 .nav-links a:hover::after{width:100%;}
-.nav-cta{background:var(--green);color:#fff;font-weight:800;padding:11px 24px;
-  border-radius:8px;font-size:.83rem;box-shadow:var(--shadow-green);border:none;border-bottom:3px solid var(--green-dark);transition:.25s var(--ease);}
+.nav-cta{background:var(--green);color:#fff;font-weight:800;padding:11px 24px;border-radius:8px;font-size:.83rem;
+  box-shadow:var(--shadow-green);border:none;border-bottom:3px solid var(--green-dark);transition:.25s var(--ease);}
 .nav-cta:hover{transform:translateY(-3px);background:var(--green-light);}
 .nav-cta:active{transform:translateY(0);border-bottom-width:1px;}
 .menu-toggle{display:none;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#fff;}
 @media(max-width:1080px){
-  .nav-links{position:fixed;top:0;right:-100%;width:78%;height:100vh;background:var(--black);flex-direction:column;justify-content:center;gap:26px;transition:.5s var(--ease);box-shadow:-10px 0 40px rgba(0,0,0,0.5);}
+  .nav-links{position:fixed;top:0;right:-100%;width:78%;height:100vh;background:var(--pitch);flex-direction:column;justify-content:center;gap:26px;transition:.5s var(--ease);box-shadow:-10px 0 40px rgba(0,0,0,0.25);}
   .nav-links.show{right:0;}
   .menu-toggle{display:block;}
 }
 
 /* ===== HERO ===== */
-.hero{position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden;background:var(--black);
+.hero{position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden;
   padding:calc(var(--ticker-h) + var(--nav-h) + 50px) 0 70px;}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.78;}
 .hero-overlay{position:absolute;inset:0;
-  background:linear-gradient(105deg,rgba(0,0,0,0.94) 0%,rgba(0,0,0,0.62) 42%,rgba(0,0,0,0.32) 68%,rgba(0,0,0,0.72) 100%);}
+  background:linear-gradient(105deg,rgba(15,61,36,0.93) 0%,rgba(15,61,36,0.6) 42%,rgba(15,61,36,0.3) 68%,rgba(15,61,36,0.72) 100%);}
 .hero-grid{position:relative;z-index:3;display:grid;grid-template-columns:1.35fr 0.65fr;gap:50px;align-items:center;width:100%;}
 .hero-content{color:#fff;}
 .hero-kicker{display:flex;align-items:center;gap:10px;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s var(--ease) forwards;}
@@ -85,34 +90,42 @@ main{position:relative;z-index:1;}
 .hero-kicker span{font-weight:800;font-size:.82rem;color:var(--green-light);letter-spacing:.6px;text-transform:uppercase;}
 .hero-content h1{font-size:3.15rem;font-weight:900;line-height:1.25;margin-bottom:20px;max-width:620px;opacity:0;animation:fadeUp .8s .22s var(--ease) forwards;}
 .hero-content h1 .g{color:var(--green-light);}
-.hero-content > p{font-size:1.04rem;color:rgba(255,255,255,0.75);max-width:520px;margin-bottom:32px;line-height:1.95;
-  opacity:0;animation:fadeUp .8s .35s var(--ease) forwards;}
+.hero-content > p{font-size:1.04rem;color:rgba(255,255,255,0.78);max-width:520px;margin-bottom:32px;line-height:1.95;opacity:0;animation:fadeUp .8s .35s var(--ease) forwards;}
 .hero-buttons{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .48s var(--ease) forwards;}
-.btn-green{background:var(--green);color:#fff;font-weight:800;padding:16px 34px;
-  border-radius:9px;border:none;border-bottom:4px solid var(--green-dark);box-shadow:var(--shadow-green);font-size:.94rem;
-  display:inline-flex;align-items:center;gap:10px;transition:.2s var(--ease);}
+.btn-green{background:var(--green);color:#fff;font-weight:800;padding:16px 34px;border-radius:9px;border:none;
+  border-bottom:4px solid var(--green-dark);box-shadow:var(--shadow-green);font-size:.94rem;display:inline-flex;align-items:center;gap:10px;transition:.2s var(--ease);}
 .btn-green:hover{transform:translateY(-3px);background:var(--green-light);}
 .btn-green:active{transform:translateY(0);border-bottom-width:1px;}
 .btn-outline-w{background:rgba(255,255,255,0.06);color:#fff;border:1.5px solid rgba(255,255,255,0.35);padding:15px 32px;
   border-radius:9px;font-weight:700;font-size:.94rem;transition:.3s var(--ease);backdrop-filter:blur(6px);}
-.btn-outline-w:hover{background:#fff;color:var(--black);border-color:#fff;}
+.btn-outline-w:hover{background:#fff;color:var(--pitch);border-color:#fff;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
 .hero-side{display:flex;flex-direction:column;gap:14px;opacity:0;animation:fadeUp .8s .6s var(--ease) forwards;}
-.hero-highlight{background:rgba(255,255,255,0.05);border:1px solid rgba(63,169,104,0.35);backdrop-filter:blur(14px);
+.hero-highlight{background:rgba(255,255,255,0.05);border:1px solid rgba(76,195,130,0.35);backdrop-filter:blur(14px);
   border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:14px;transition:.35s var(--ease);}
 .hero-highlight:hover{border-color:var(--green-light);background:rgba(31,122,69,0.14);transform:translateX(-4px);}
-.hero-highlight-icon{width:44px;height:44px;border-radius:10px;background:var(--green);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hero-highlight-icon{width:44px;height:44px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .hero-highlight-icon i{color:#fff;font-size:1.05rem;}
 .hero-highlight .t1{color:#fff;font-weight:800;font-size:.88rem;}
 .hero-highlight .t2{color:rgba(255,255,255,0.5);font-size:.73rem;margin-top:2px;}
 @media(max-width:960px){.hero-grid{grid-template-columns:1fr;} .hero-side{flex-direction:row;overflow-x:auto;}}
 @media(max-width:768px){.hero-content h1{font-size:2rem;} .hero-side{flex-direction:column;}}
 
+/* ===== TRUST STATS STRIP (right after hero) ===== */
+.trust-strip{padding:50px 0;}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.trust-box{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 20px;text-align:center;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.3s;}
+.trust-box::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:var(--green);}
+.trust-box:hover{transform:translateY(-6px);}
+.trust-box .n{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--green);}
+.trust-box .l{color:var(--text-2);font-size:.82rem;font-weight:700;}
+@media(max-width:768px){.trust-grid{grid-template-columns:1fr 1fr;}}
+
 /* ===== SECTION GENERIC ===== */
-section{padding:110px 0;position:relative;}
-.section-dark{background:var(--black);color:#fff;}
+section{padding:100px 0;position:relative;}
+.section-dark{color:#fff;}
 .kicker{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
 .kicker .line{width:32px;height:2px;background:var(--green);}
 .kicker span{font-weight:800;font-size:.8rem;letter-spacing:.6px;text-transform:uppercase;color:var(--green);}
@@ -130,103 +143,65 @@ section{padding:110px 0;position:relative;}
 
 /* ===== ABOUT ===== */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px;}
-.about-stat{background:var(--black);border-radius:var(--radius);padding:22px;text-align:center;position:relative;overflow:hidden;}
-.about-stat::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:var(--green);}
-.about-stat .n{font-family:'Barlow Condensed',sans-serif;font-size:2.3rem;font-weight:800;color:var(--green-light);}
-.about-stat .l{color:rgba(255,255,255,0.6);font-size:.78rem;font-weight:700;}
 .about-text p{color:var(--text-2);line-height:2;margin-bottom:16px;}
+.tournament-showcase{background:var(--pitch-2);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);}
+.tournament-body{padding:26px 28px;color:#fff;}
+.tournament-body h4{font-size:1.25rem;font-weight:800;margin-bottom:8px;}
+.tournament-body p{color:rgba(255,255,255,0.5);font-size:.88rem;line-height:1.8;}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:40px;}}
 
 /* ===== LAZY VIDEO ===== */
-.lazy-video-wrap{position:relative;background:var(--black);overflow:hidden;}
+.lazy-video-wrap{position:relative;background:var(--pitch);overflow:hidden;}
 .lazy-video-wrap video{width:100%;display:block;background:#000;}
 .lazy-poster{position:absolute;inset:0;z-index:5;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,rgba(0,0,0,0.5),rgba(0,0,0,0.88));transition:.3s;}
-.lazy-poster:hover{background:linear-gradient(160deg,rgba(31,122,69,0.55),rgba(0,0,0,0.9));}
+  background:linear-gradient(160deg,rgba(15,61,36,0.5),rgba(15,61,36,0.88));transition:.3s;}
+.lazy-poster:hover{background:linear-gradient(160deg,rgba(31,122,69,0.55),rgba(15,61,36,0.9));}
 .lazy-poster-play{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.12);border:2px solid rgba(255,255,255,0.35);
   backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:.3s var(--ease);}
 .lazy-poster:hover .lazy-poster-play{transform:scale(1.1);background:var(--green);border-color:var(--green);}
 .lazy-poster-play i{color:#fff;font-size:1.5rem;margin-right:-4px;}
-.lazy-poster-label{position:absolute;bottom:16px;right:18px;left:18px;color:#fff;font-weight:800;font-size:.85rem;
-  text-shadow:0 2px 10px rgba(0,0,0,0.5);text-align:center;}
+.lazy-poster-label{position:absolute;bottom:16px;right:18px;left:18px;color:#fff;font-weight:800;font-size:.85rem;text-shadow:0 2px 10px rgba(0,0,0,0.5);text-align:center;}
 
-/* ===== TOURNAMENT ===== */
-.tournament-showcase{max-width:900px;margin:0 auto;background:var(--black-2);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(31,122,69,0.25);}
-.tournament-body{padding:26px 28px;color:#fff;}
-.tournament-body h4{font-size:1.25rem;font-weight:800;margin-bottom:8px;}
-.tournament-body p{color:rgba(255,255,255,0.5);font-size:.88rem;line-height:1.8;}
+/* ===== CATEGORIES HUB ===== */
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
+.cat-card{border-radius:20px;position:relative;overflow:hidden;color:#fff;transition:.4s var(--ease);cursor:pointer;border:1px solid rgba(76,195,130,0.3);}
+.cat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(76,195,130,0.3),transparent 60%);}
+.cat-card:hover{transform:translateY(-10px);box-shadow:0 30px 65px rgba(15,61,36,0.35);border-color:var(--green-light);}
+.cat-card-inner{position:relative;z-index:2;padding:28px 20px;text-align:center;}
+.cat-badge{font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;font-weight:800;color:var(--green-light);line-height:1;margin-bottom:8px;}
+.cat-card-inner i.cat-icon{font-size:1.3rem;color:var(--green-light);margin-bottom:10px;display:block;}
+.cat-card h4{font-size:.85rem;font-weight:800;margin-bottom:6px;}
+.cat-card p{font-size:.72rem;color:rgba(255,255,255,0.5);margin-bottom:16px;line-height:1.6;}
+.cat-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-light);font-weight:700;font-size:.75rem;
+  border-top:1px solid rgba(255,255,255,0.12);padding-top:12px;width:100%;justify-content:center;}
+@media(max-width:960px){.cat-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:560px){.cat-grid{grid-template-columns:1fr 1fr;}}
 
 /* ===== COACH ===== */
-.coach-card{display:grid;grid-template-columns:0.85fr 1.15fr;background:var(--black);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);}
+.coach-card{display:grid;grid-template-columns:0.85fr 1.15fr;background:var(--pitch-2);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);}
 .coach-photo-wrap{position:relative;min-height:440px;}
 .coach-photo-wrap img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
-.coach-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(0,0,0,0.94));}
+.coach-photo-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(15,61,36,0.94));}
 .coach-info{padding:48px 44px;color:#fff;display:flex;flex-direction:column;justify-content:center;}
-.coach-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(31,122,69,0.18);border:1px solid rgba(63,169,104,0.45);
+.coach-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(76,195,130,0.16);border:1px solid rgba(76,195,130,0.4);
   padding:8px 18px;border-radius:8px;font-size:.75rem;font-weight:800;color:var(--green-light);margin-bottom:16px;width:fit-content;}
 .coach-info h3{font-size:1.9rem;font-weight:900;margin-bottom:6px;}
 .coach-info .role{color:var(--green-light);font-weight:700;font-size:.92rem;margin-bottom:18px;}
 .coach-info p{color:rgba(255,255,255,0.65);line-height:1.95;margin-bottom:22px;}
 .coach-tags{display:flex;flex-wrap:wrap;gap:9px;}
-.coach-tag{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);padding:8px 16px;border-radius:8px;
-  font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:7px;}
+.coach-tag{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);padding:8px 16px;border-radius:8px;font-size:.78rem;font-weight:700;display:flex;align-items:center;gap:7px;}
 .coach-tag i{color:var(--green-light);}
 @media(max-width:900px){.coach-card{grid-template-columns:1fr;}.coach-photo-wrap{min-height:300px;}}
-
-/* ===== CATEGORIES HUB ===== */
-.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
-.cat-card{background:var(--black);border-radius:20px;position:relative;overflow:hidden;color:#fff;
-  transition:.4s var(--ease);cursor:pointer;border:1px solid rgba(31,122,69,0.25);}
-.cat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 0%,rgba(31,122,69,0.35),transparent 60%);}
-.cat-card:hover{transform:translateY(-10px);box-shadow:0 30px 65px rgba(0,0,0,0.5);border-color:var(--green-light);}
-.cat-card-inner{position:relative;z-index:2;padding:28px 20px;text-align:center;}
-.cat-badge{font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;font-weight:800;color:var(--green-light);line-height:1;margin-bottom:8px;}
-.cat-card-inner i.cat-icon{font-size:1.3rem;color:var(--green-light);margin-bottom:10px;display:block;}
-.cat-card h4{font-size:.85rem;font-weight:800;margin-bottom:6px;}
-.cat-card p{font-size:.72rem;color:rgba(255,255,255,0.45);margin-bottom:16px;line-height:1.6;}
-.cat-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-light);font-weight:700;font-size:.75rem;
-  border-top:1px solid rgba(255,255,255,0.1);padding-top:12px;width:100%;justify-content:center;}
-@media(max-width:960px){.cat-grid{grid-template-columns:1fr 1fr 1fr;}}
-@media(max-width:560px){.cat-grid{grid-template-columns:1fr 1fr;}}
-
-/* ===== ARTICLES ===== */
-.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
-.article-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:.4s var(--ease);}
-.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);}
-.article-img{height:190px;position:relative;overflow:hidden;background:var(--black);}
-.article-img img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
-.article-card:hover .article-img img{transform:scale(1.08);}
-.article-tag-chip{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.85);color:var(--green-light);padding:6px 14px;
-  border-radius:20px;font-size:.7rem;font-weight:800;backdrop-filter:blur(6px);}
-.article-body{padding:22px 20px;}
-.article-body h4{font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.5;}
-.article-body p{color:var(--text-2);font-size:.85rem;line-height:1.8;margin-bottom:14px;}
-.article-link{color:var(--green);font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;}
-.no-content-msg{text-align:center;padding:40px;color:var(--text-2);grid-column:1/-1;}
-@media(max-width:960px){.articles-grid{grid-template-columns:1fr;}}
-
-/* ===== GALLERY ===== */
-.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow);aspect-ratio:4/3;transition:.4s var(--ease);cursor:pointer;}
-.gallery-item:hover{transform:translateY(-8px);}
-.gallery-item img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
-.gallery-item:hover img{transform:scale(1.1);}
-.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,0.85));}
-.gallery-caption{position:absolute;bottom:14px;right:16px;left:16px;color:#fff;z-index:2;font-weight:700;font-size:.85rem;}
-@media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:560px){.gallery-grid{grid-template-columns:1fr;}}
 
 /* ===== EDU VIDEOS ===== */
 .edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
 .edu-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);transition:.4s var(--ease);}
 .edu-card:hover{transform:translateY(-8px);}
-.edu-number{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:var(--green);
-  color:#fff;font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;display:flex;align-items:center;justify-content:center;z-index:6;}
+.edu-number{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;background:var(--green);color:#fff;
+  font-weight:900;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;display:flex;align-items:center;justify-content:center;z-index:6;}
 .edu-desc{padding:22px 20px;}
 .edu-coach{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-.edu-coach-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;}
+.edu-coach-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;}
 .edu-coach-name{font-weight:800;font-size:.83rem;}
 .edu-desc h4{font-size:1rem;font-weight:800;margin-bottom:9px;line-height:1.5;}
 .edu-desc p{color:var(--text-2);font-size:.85rem;line-height:1.85;margin-bottom:13px;}
@@ -234,20 +209,40 @@ section{padding:110px 0;position:relative;}
 .edu-topic-chip{background:var(--bg);border:1px solid var(--border);color:var(--green);font-weight:700;font-size:.7rem;padding:5px 13px;border-radius:20px;}
 @media(max-width:960px){.edu-grid{grid-template-columns:1fr;}}
 
-/* ===== STATS ===== */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
-.stat-box .counter{font-family:'Barlow Condensed',sans-serif;font-size:2.9rem;font-weight:800;color:var(--green-light);}
-.stat-box .label{color:rgba(255,255,255,0.6);font-weight:600;font-size:.86rem;margin-top:5px;}
-@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr;}}
+/* ===== GALLERY ===== */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:var(--shadow);aspect-ratio:4/3;transition:.4s var(--ease);cursor:pointer;}
+.gallery-item:hover{transform:translateY(-8px);}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
+.gallery-item:hover img{transform:scale(1.1);}
+.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(15,61,36,0.82));}
+.gallery-caption{position:absolute;bottom:14px;right:16px;left:16px;color:#fff;z-index:2;font-weight:700;font-size:.85rem;}
+@media(max-width:900px){.gallery-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.gallery-grid{grid-template-columns:1fr;}}
+
+/* ===== ARTICLES ===== */
+.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+.article-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:.4s var(--ease);}
+.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);}
+.article-img{height:190px;position:relative;overflow:hidden;background:var(--pitch);}
+.article-img img{width:100%;height:100%;object-fit:cover;transition:.6s var(--ease);}
+.article-card:hover .article-img img{transform:scale(1.08);}
+.article-tag-chip{position:absolute;top:14px;right:14px;background:rgba(15,61,36,0.85);color:var(--green-light);padding:6px 14px;border-radius:20px;font-size:.7rem;font-weight:800;backdrop-filter:blur(6px);}
+.article-body{padding:22px 20px;}
+.article-body h4{font-size:1rem;font-weight:800;margin-bottom:10px;line-height:1.5;}
+.article-body p{color:var(--text-2);font-size:.85rem;line-height:1.8;margin-bottom:14px;}
+.article-link{color:var(--green);font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:6px;}
+.no-content-msg{text-align:center;padding:40px;color:var(--text-2);grid-column:1/-1;}
+@media(max-width:960px){.articles-grid{grid-template-columns:1fr;}}
 
 /* ===== REGISTRATION ===== */
-.reg-wrap{background:var(--black);border-radius:28px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5);display:grid;grid-template-columns:0.9fr 1.1fr;}
+.reg-wrap{border-radius:28px;overflow:hidden;box-shadow:0 40px 100px rgba(15,61,36,0.35);display:grid;grid-template-columns:0.9fr 1.1fr;}
 .reg-side{padding:48px 40px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--green),var(--green-dark));}
-.reg-side::before{content:'';position:absolute;top:-30%;left:-20%;width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 70%);}
+.reg-side::before{content:'';position:absolute;top:-30%;left:-20%;width:280px;height:280px;background:radial-gradient(circle,rgba(255,255,255,0.14),transparent 70%);}
 .reg-side h3{font-size:1.85rem;font-weight:900;margin-bottom:16px;position:relative;line-height:1.4;}
-.reg-side p{color:rgba(255,255,255,0.8);line-height:1.9;margin-bottom:26px;position:relative;}
+.reg-side p{color:rgba(255,255,255,0.82);line-height:1.9;margin-bottom:26px;position:relative;}
 .reg-point{display:flex;align-items:center;gap:12px;margin-bottom:15px;position:relative;font-weight:700;font-size:.88rem;}
-.reg-point i{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.reg-point i{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
 .reg-form{padding:44px 40px;background:#fff;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
 .form-group{display:flex;flex-direction:column;gap:5px;}
@@ -255,8 +250,8 @@ section{padding:110px 0;position:relative;}
 .form-group label{font-size:.8rem;font-weight:700;}
 .form-group input,.form-group select,.form-group textarea{border:2px solid var(--border);border-radius:9px;padding:12px 14px;font-family:'Cairo',sans-serif;font-size:.88rem;background:var(--bg);}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--green);background:#fff;}
-.form-submit{width:100%;background:var(--green);color:#fff;border:none;padding:15px;border-radius:9px;
-  font-weight:800;font-size:.96rem;border-bottom:4px solid var(--green-dark);display:flex;align-items:center;justify-content:center;gap:9px;margin-top:5px;}
+.form-submit{width:100%;background:var(--green);color:#fff;border:none;padding:15px;border-radius:9px;font-weight:800;font-size:.96rem;
+  border-bottom:4px solid var(--green-dark);display:flex;align-items:center;justify-content:center;gap:9px;margin-top:5px;}
 .form-submit:hover{background:var(--green-light);}
 .form-submit:active{border-bottom-width:1px;}
 .form-msg{margin-top:13px;padding:11px 15px;border-radius:9px;font-size:.84rem;font-weight:700;display:none;}
@@ -269,7 +264,7 @@ section{padding:110px 0;position:relative;}
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.5rem;box-shadow:0 12px 30px rgba(39,174,96,0.4);transition:.35s var(--ease);}
 .wa-float:hover{transform:translateY(-5px) scale(1.06);}
 
-footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
+footer{color:rgba(255,255,255,0.6);padding:70px 0 26px;}
 .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:44px;margin-bottom:50px;}
 .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .footer-brand .footer-logo{height:44px;}
@@ -278,13 +273,13 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
 .footer-col a{display:block;color:rgba(255,255,255,0.48);font-size:.84rem;margin-bottom:11px;transition:.3s;}
 .footer-col a:hover{color:var(--green-light);}
 .footer-social{display:flex;gap:11px;margin-top:14px;}
-.footer-social a{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:var(--green-light);}
+.footer-social a{width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;color:var(--green-light);}
 .footer-social a:hover{background:var(--green);color:#fff;}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:22px;text-align:center;font-size:.76rem;color:rgba(255,255,255,0.32);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:22px;text-align:center;font-size:.76rem;color:rgba(255,255,255,0.35);}
 @media(max-width:960px){.footer-grid{grid-template-columns:1fr 1fr;gap:28px;}}
 @media(max-width:560px){.footer-grid{grid-template-columns:1fr;}}
 
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;padding:20px;}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(15,61,36,0.94);z-index:9999;align-items:center;justify-content:center;padding:20px;}
 .lightbox.active{display:flex;}
 .lightbox img{max-width:92%;max-height:92%;border-radius:12px;}
 .lightbox-close{position:fixed;top:24px;left:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;color:#fff;font-size:1.3rem;}
@@ -310,11 +305,11 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
       </div>
       <ul class="nav-links" id="navLinks">
         <li><a href="#about">عن الأكاديمية</a></li>
-        <li><a href="#coach">المدير الفني</a></li>
         <li><a href="#categories">الفئات العمرية</a></li>
-        <li><a href="#articles">المقالات</a></li>
-        <li><a href="#gallery">الألبوم</a></li>
+        <li><a href="#coach">المدير الفني</a></li>
         <li><a href="#education">فيديوهات تعليمية</a></li>
+        <li><a href="#gallery">الألبوم</a></li>
+        <li><a href="#articles">المقالات</a></li>
         <li><a href="#register" class="nav-cta">سجّل الآن</a></li>
       </ul>
       <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
@@ -323,7 +318,7 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
 </nav>
 
 <main>
-<section class="hero" id="home">
+<section class="hero pitch-dark" id="home">
   <video class="hero-video" autoplay muted loop playsinline preload="auto">
     <source src="https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/3d67c17c589fbe2ae9ce875c9199d21981740058/_%D9%85%D9%88%D8%B3%D9%85%20_25%20_26%20_%20Raed%20Foot%20Ball%20Academy(720P_HD).mp4" type="video/mp4">
   </video>
@@ -348,25 +343,40 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
   </div>
 </section>
 
-<section id="about">
+<!-- TRUST STRIP -->
+<section class="trust-strip">
+  <div class="container trust-grid">
+    <div class="trust-box reveal"><div class="n num-font" data-static="true">2018</div><div class="l">سنة التأسيس</div></div>
+    <div class="trust-box reveal"><div class="n num-font counter" data-target="300">0</div><div class="l">لاعب متكوّن</div></div>
+    <div class="trust-box reveal"><div class="n num-font counter" data-target="15">0</div><div class="l">مدرب مؤهل</div></div>
+    <div class="trust-box reveal"><div class="n num-font counter" data-target="40">0</div><div class="l">بطولة ودورة</div></div>
+  </div>
+</section>
+
+<section id="about" style="background:#fff;">
   <div class="container about-grid">
     <div class="about-text reveal">
       <div class="kicker"><div class="line"></div><span>من نحن</span></div>
       <h2 class="section-title">فلسفة <span>الريادة والتميز</span></h2>
-      <p style="color:var(--text-2);line-height:2;margin-bottom:18px;">أكاديمية الرائد نادٍ رياضي محترف مؤسَّس منذ 2018، متخصص في اكتشاف وصقل مواهب كرة القدم الشابة، عبر برامج تدريبية علمية مدروسة تجمع بين الجانب التقني والبدني والذهني.</p>
-      <p style="color:var(--text-2);line-height:2;">نؤمن بأن كل لاعب يحمل بداخله "رائداً" — دورنا أن نوفر له البيئة والأدوات والتوجيه المناسب ليصل إلى أعلى مستوياته.</p>
-      <div class="about-stats">
-        <div class="about-stat"><div class="n num-font">2018</div><div class="l">سنة التأسيس</div></div>
-        <div class="about-stat"><div class="n num-font">+300</div><div class="l">لاعب متكوّن</div></div>
-        <div class="about-stat"><div class="n num-font">+15</div><div class="l">مدرب مؤهل</div></div>
-        <div class="about-stat"><div class="n num-font">+40</div><div class="l">بطولة ودورة</div></div>
-      </div>
+      <p>أكاديمية الرائد نادٍ رياضي محترف مؤسَّس منذ 2018، متخصص في اكتشاف وصقل مواهب كرة القدم الشابة، عبر برامج تدريبية علمية مدروسة تجمع بين الجانب التقني والبدني والذهني.</p>
+      <p>نؤمن بأن كل لاعب يحمل بداخله "رائداً" — دورنا أن نوفر له البيئة والأدوات والتوجيه المناسب ليصل إلى أعلى مستوياته.</p>
     </div>
     <div class="reveal"><div class="tournament-showcase" id="tournamentCard1"></div></div>
   </div>
 </section>
 
-<section id="coach" class="section-dark">
+<section id="categories" class="pitch-dark section-dark">
+  <div class="container">
+    <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>الفئات العمرية</span></div>
+      <h2 class="section-title">مسار تكويني <span>لكل مرحلة عمرية</span></h2>
+      <p class="section-sub center">لكل فئة ملفها الخاص: التركيز التدريبي، جدول التدريبات، المباريات، والإعلانات.</p>
+    </div>
+    <div class="cat-grid" id="categoriesGrid"></div>
+  </div>
+</section>
+
+<section id="coach">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:50px;">
       <div class="kicker" style="justify-content:center;"><div class="line"></div><span>الطاقم الفني</span></div>
@@ -391,24 +401,13 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
   </div>
 </section>
 
-<section id="categories">
+<section id="education" style="background:var(--bg);">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>الفئات العمرية</span></div>
-      <h2 class="section-title">مسار تكويني <span>لكل مرحلة عمرية</span></h2>
-      <p class="section-sub center">لكل فئة ملفها الخاص: التركيز التدريبي، جدول التدريبات، المباريات، والإعلانات.</p>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>أكاديمية المعرفة</span></div>
+      <h2 class="section-title">فيديوهات <span>تعليمية متخصصة</span></h2>
     </div>
-    <div class="cat-grid" id="categoriesGrid"></div>
-  </div>
-</section>
-
-<section id="articles" style="background:var(--bg);">
-  <div class="container">
-    <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>مستجدات الأكاديمية</span></div>
-      <h2 class="section-title">آخر <span>المقالات والأخبار</span></h2>
-    </div>
-    <div class="articles-grid" id="articlesGrid"></div>
+    <div class="edu-grid" id="eduGrid"></div>
   </div>
 </section>
 
@@ -422,24 +421,13 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
   </div>
 </section>
 
-<section id="education" style="background:var(--bg);">
+<section id="articles" style="background:var(--bg);">
   <div class="container">
     <div class="reveal center" style="max-width:680px;margin-bottom:56px;">
-      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>أكاديمية المعرفة</span></div>
-      <h2 class="section-title">فيديوهات <span>تعليمية متخصصة</span></h2>
+      <div class="kicker" style="justify-content:center;"><div class="line"></div><span>مستجدات الأكاديمية</span></div>
+      <h2 class="section-title">آخر <span>المقالات والأخبار</span></h2>
     </div>
-    <div class="edu-grid" id="eduGrid"></div>
-  </div>
-</section>
-
-<section class="section-dark">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-box reveal"><div class="counter num-font" data-target="2018" data-static="true">2018</div><div class="label">سنة التأسيس</div></div>
-      <div class="stat-box reveal"><div class="counter num-font" data-target="300">0</div><div class="label">لاعب متكوّن</div></div>
-      <div class="stat-box reveal"><div class="counter num-font" data-target="40">0</div><div class="label">بطولة ودورة</div></div>
-      <div class="stat-box reveal"><div class="counter num-font" data-target="15">0</div><div class="label">مدرب مؤهل</div></div>
-    </div>
+    <div class="articles-grid" id="articlesGrid"></div>
   </div>
 </section>
 
@@ -480,15 +468,15 @@ footer{background:var(--black);color:rgba(255,255,255,0.6);padding:70px 0 26px;}
 
 <a href="#" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<footer>
+<footer class="pitch-dark">
   <div class="container">
     <div class="footer-grid">
       <div>
         <div class="footer-brand"><img class="footer-logo" id="footerLogo" src="" alt="أكاديمية الرائد" /><div class="name">أكاديمية الرائد لكرة القدم</div></div>
-        <p style="font-size:.84rem;line-height:1.9;color:rgba(255,255,255,0.4);">النادي الرياضي المحترف — نصنع نجوم كرة القدم منذ 2018.</p>
+        <p style="font-size:.84rem;line-height:1.9;color:rgba(255,255,255,0.42);">النادي الرياضي المحترف — نصنع نجوم كرة القدم منذ 2018.</p>
         <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-tiktok"></i></a></div>
       </div>
-      <div class="footer-col"><h5>روابط سريعة</h5><a href="#about">عن الأكاديمية</a><a href="#coach">المدير الفني</a><a href="#categories">الفئات العمرية</a><a href="#articles">المقالات</a></div>
+      <div class="footer-col"><h5>روابط سريعة</h5><a href="#about">عن الأكاديمية</a><a href="#categories">الفئات العمرية</a><a href="#coach">المدير الفني</a><a href="#articles">المقالات</a></div>
       <div class="footer-col"><h5>الفئات العمرية</h5><a href="category.html?cat=U07">U07</a><a href="category.html?cat=U09">U09</a><a href="category.html?cat=U11">U11</a><a href="category.html?cat=U13">U13</a></div>
       <div class="footer-col"><h5>تواصل معنا</h5><a href="#"><i class="fas fa-phone"></i> اتصل بنا</a><a href="#"><i class="fas fa-map-marker-alt"></i> ملعب الأكاديمية</a></div>
     </div>
@@ -553,7 +541,6 @@ function loadLazyVideo(wrapId){
   video.src = video.dataset.src; video.controls = true; video.load(); video.play().catch(()=>{});
   wrap.querySelector('.lazy-poster').remove();
 }
-
 document.getElementById('tournamentCard1').innerHTML = `${lazyVideoHtml(tournamentVideo.url,'اضغط للتشغيل — أفضل مدرب في الدورة','lazyTournament')}<div class="tournament-body"><h4>${tournamentVideo.title}</h4><p>${tournamentVideo.description}</p></div>`;
 
 function renderTicker(items){
