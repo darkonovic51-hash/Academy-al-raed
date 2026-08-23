@@ -35,7 +35,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .section-title.center{display:block;text-align:center;}
 .section-title.center::after{right:50%;transform:translateX(50%);}
 
-/* ===== reveal: right-to-left slide-in per section ===== */
 .reveal{opacity:0;transform:translateX(70px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1);}
 .reveal.visible{opacity:1;transform:translateX(0);}
 .reveal-delay-1{transition-delay:.1s;} .reveal-delay-2{transition-delay:.2s;} .reveal-delay-3{transition-delay:.3s;}
@@ -71,13 +70,13 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .nav-phone i{color:var(--accent-light);font-size:1.15rem;}
 .nav-cta{background:#fff;color:var(--deep);padding:8px 22px;border-radius:60px;font-weight:800;font-size:.88rem;border:none;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:8px;}
 .nav-cta:hover{background:var(--accent);color:#fff;transform:scale(1.04);}
-.nav-links{display:none;flex:1;justify-content:center;gap:24px;margin:0 20px;flex-wrap:wrap;}
-.nav-links a{color:rgba(255,255,255,.85);font-weight:600;font-size:.9rem;transition:.3s;padding-bottom:4px;border-bottom:2px solid transparent;white-space:nowrap;}
+.nav-links{display:none;flex:1;justify-content:center;gap:22px;margin:0 20px;flex-wrap:wrap;}
+.nav-links a{color:rgba(255,255,255,.85);font-weight:600;font-size:.87rem;transition:.3s;padding-bottom:4px;border-bottom:2px solid transparent;white-space:nowrap;}
 .nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:var(--accent);}
 .nav-toggle{display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;}
 .nav-toggle span{width:28px;height:2.5px;background:#fff;border-radius:4px;}
-@media(min-width:1025px){.nav-toggle{display:none;}.nav-links{display:flex;}}
-@media(max-width:1024px){
+@media(min-width:1150px){.nav-toggle{display:none;}.nav-links{display:flex;}}
+@media(max-width:1149px){
   .nav-links{display:none;}
   .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(27,107,63,.97);backdrop-filter:blur(16px);padding:20px 24px;gap:12px;border-bottom:2px solid var(--accent);}
   .nav-links.open a{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);}
@@ -119,7 +118,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .article-card.featured .body{display:flex;flex-direction:column;justify-content:center;padding:30px 34px;}
 .article-card.featured h4{font-size:1.7rem;}
 .article-card.featured .featured-tag{display:inline-block;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;width:fit-content;}
-.no-content-msg{text-align:center;padding:40px;color:#5c6660;grid-column:1/-1;}
 @media(max-width:700px){.article-card.featured{grid-template-columns:1fr;}}
 
 /* ABOUT */
@@ -186,6 +184,32 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .kit-card img{max-height:300px;margin:0 auto;object-fit:contain;filter:drop-shadow(0 15px 30px rgba(0,0,0,.4));}
 .kit-card h4{font-size:1.7rem;color:#fff;margin-top:20px;}
 
+/* EDUCATIONAL VIDEOS — قسم مميز بصرياً */
+.education{padding:80px 0;background:linear-gradient(180deg,#f2f8f4 0%,#fff 100%);position:relative;}
+.edu-intro{max-width:680px;margin:0 auto 50px;text-align:center;}
+.edu-intro p{color:#5c6660;font-size:1.02rem;line-height:1.9;}
+.edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.edu-card{background:#fff;border-radius:24px;overflow:hidden;border:1px solid #e8f0ea;box-shadow:var(--shadow-soft);transition:.4s cubic-bezier(.16,1,.3,1);}
+.edu-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-heavy);}
+.edu-video-wrap{position:relative;background:var(--deep);aspect-ratio:16/10;}
+.edu-video-wrap video{width:100%;height:100%;display:block;background:#000;object-fit:cover;}
+.edu-number{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;background:var(--accent);color:#fff;font-family:'Bebas Neue';font-weight:700;font-size:1.15rem;display:flex;align-items:center;justify-content:center;z-index:6;box-shadow:0 6px 16px rgba(232,135,30,.4);}
+.edu-poster{position:absolute;inset:0;z-index:5;cursor:pointer;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,rgba(27,107,63,.55),rgba(27,107,63,.9));transition:.35s;}
+.edu-poster:hover{background:linear-gradient(160deg,rgba(232,135,30,.55),rgba(27,107,63,.92));}
+.edu-poster-play{width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;transition:.35s cubic-bezier(.16,1,.3,1);}
+.edu-poster:hover .edu-poster-play{transform:scale(1.12);background:var(--accent);border-color:var(--accent);}
+.edu-poster-play i{color:#fff;font-size:1.4rem;margin-right:-4px;}
+.edu-poster-label{position:absolute;bottom:16px;right:18px;left:18px;color:#fff;font-weight:800;font-size:.82rem;text-shadow:0 2px 10px rgba(0,0,0,.5);text-align:center;}
+.edu-desc{padding:24px 22px;}
+.edu-coach{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.edu-coach-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--mid),var(--deep));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;flex-shrink:0;}
+.edu-coach-name{font-weight:800;font-size:.85rem;color:var(--deep);}
+.edu-desc h4{font-size:1.08rem;font-weight:800;color:var(--deep);margin-bottom:10px;line-height:1.5;}
+.edu-desc p{color:#5c6660;font-size:.86rem;line-height:1.9;margin-bottom:15px;}
+.edu-topics{display:flex;flex-wrap:wrap;gap:8px;}
+.edu-topic-chip{background:#f2f8f4;border:1px solid #dcece2;color:var(--mid);font-weight:700;font-size:.72rem;padding:6px 14px;border-radius:20px;}
+@media(max-width:960px){.edu-grid{grid-template-columns:1fr;}}
+
 /* AGE GROUPS */
 .age-groups{padding:80px 0;background:linear-gradient(135deg,var(--deep) 0%,var(--mid) 100%);position:relative;overflow:hidden;}
 .age-groups .section-title{color:#fff;}
@@ -238,7 +262,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .testi-card .avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
 .testi-card .name{color:#fff;font-weight:700;font-size:.9rem;}
 .testi-card .role{color:var(--accent-light);font-size:.74rem;font-weight:700;}
-.testi-cta{text-align:center;margin-top:36px;}
 
 /* DOCUMENTS */
 .docs-sec{padding:70px 0;background:#f2f8f4;}
@@ -293,6 +316,7 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
       <a href="#players">اللاعبون</a>
       <a href="#staff">الطاقم الفني</a>
       <a href="#kits">الأطقم</a>
+      <a href="#education">تعليمية</a>
       <a href="#ageGroups">الفئات</a>
       <a href="#register">التسجيل</a>
       <a href="#documents">المستندات</a>
@@ -366,6 +390,17 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
   <div class="container">
     <h2 class="section-title center reveal">أطقم الأكاديمية</h2>
     <div class="kit-grid" id="kitGrid"></div>
+  </div>
+</section>
+
+<!-- ===== EDUCATIONAL VIDEOS ===== -->
+<section class="education" id="education">
+  <div class="container">
+    <h2 class="section-title center reveal">فيديوهات تعليمية</h2>
+    <div class="edu-intro reveal">
+      <p>محتوى تدريبي احترافي يشرح أسس التدريب الحديث والتدريب المعرفي بطريقة علمية مبسطة، بإشراف طاقمنا الفني المتخصص.</p>
+    </div>
+    <div class="edu-grid" id="eduGrid"></div>
   </div>
 </section>
 
@@ -491,6 +526,11 @@ const defaultCategories = {
   U13:{ageRange:"12 - 13 سنة",focus:"التطور التقني والتكتيكي",order:3},
   U15:{ageRange:"14 - 15 سنة",focus:"الجاهزية شبه الاحترافية",order:4}
 };
+const defaultEduVideos = [
+  { url:`${GITHUB_RAW}/ad2eb055fdbbee628ab6667af6909f6f4c65bb43/%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D8%AF%D9%85%D8%A7%D8%BA%20%D9%81%D9%8A%20%D9%83%D8%B1%D8%A9%20%D8%A7%D9%84%D9%82%D8%AF%D9%85%20%F0%9F%A7%A0%E2%9A%BD%20%D9%87%D9%88%20%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1%D8%A7%D8%AA%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%D8%A9%20%D9%84%D9%84%D8%A7%D8%B9%D8%A8%20%D9%85%D8%AB%D9%84%20%D8%A7%D9%84%D8%AA%D8%B1%D9%83%D9%8A%D8%B2%D8%8C%20%D8%A7%D9%84%D9%85%D8%B3%D8%AD%20%D8%A7%D9%84%D8%A8%D8%B5.mp4`, title:"تدريب الدماغ في كرة القدم", coach:"الطاقم الفني", description:"تطوير القدرات المعرفية للاعب مثل التركيز، المسح البصري، واتخاذ القرار السريع.", topics:["التركيز الذهني","المسح البصري","اتخاذ القرار"] },
+  { url:`${GITHUB_RAW}/7494d81a6458ab38cc54a9ce7f0cba75244042ad/%F0%9F%A7%A0%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%20%D8%A7%D9%84%D9%85%D8%B9%D8%B1%D9%81%D9%8A%20%D9%81%D9%8A%20%D8%B7%D8%B1%D9%8A%D9%82%D8%A9%20%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%AF%20%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%8A%D9%85%D9%8A%D8%A9(720P_HD).mp4`, title:"التدريب المعرفي بطريقة الرائد التعليمية", coach:"الطاقم الفني", description:"منهجية تدمج الجانب المعرفي مع التمارين التقنية لتكوين لاعب يفكر بسرعة بقدر ما يتحرك بسرعة.", topics:["منهج الرائد","تطوير الإدراك","تمارين تطبيقية"] },
+  { url:`${GITHUB_RAW}/185e54fe2fb088b72fda7b680f2cc6b2d25ab8c6/_RaedFootballLearning%20_CoachKamelMerad%20_FootballEducation%20_PositionalRondo%20_YouthDevelopment%20_CSPRaed(720P_HD).mp4`, title:"الروندو الوضعي (Positional Rondo)", coach:"الأستاذ كامل مراد", description:"تمرين لتطوير الحس التكتيكي والتموضع الصحيح للاعبين الشباب.", topics:["الحس التكتيكي","التموضع","تطوير الفئات الشابة"] }
+];
 
 async function fetchOnce(path, fallback){
   try{ const snap = await db.ref(path).once('value'); const v = snap.val(); return v || fallback; }
@@ -537,6 +577,39 @@ function renderKits(kits){
   const k = kits[0];
   grid.innerHTML = `<div class="kit-card"><span class="badge">طقم الموسم الرسمي</span><img src="${k.photoUrl}" onerror="this.style.display='none'" /><h4>${k.name}</h4></div>`;
 }
+
+/* ===== EDUCATIONAL VIDEOS — lazy-load poster/play pattern ===== */
+function lazyEduVideoHtml(url,label,id){
+  return `<div class="edu-video-wrap" id="${id}">
+      <div class="edu-poster" onclick="loadLazyEdu('${id}')">
+        <div class="edu-poster-play"><i class="fas fa-play"></i></div>
+        <div class="edu-poster-label">${label}</div>
+      </div>
+      <video playsinline preload="none" data-src="${url}"></video>
+    </div>`;
+}
+function loadLazyEdu(wrapId){
+  const wrap = document.getElementById(wrapId);
+  const video = wrap.querySelector('video');
+  video.src = video.dataset.src; video.controls = true; video.load(); video.play().catch(()=>{});
+  wrap.querySelector('.edu-poster').remove();
+}
+function renderEduVideos(items){
+  document.getElementById('eduGrid').innerHTML = items.map((v,i) => `
+    <div class="edu-card reveal visible">
+      <div style="position:relative;">
+        <span class="edu-number">${i+1}</span>
+        ${lazyEduVideoHtml(v.url,'اضغط للمشاهدة','lazyEdu'+i)}
+      </div>
+      <div class="edu-desc">
+        <div class="edu-coach"><div class="edu-coach-avatar"><i class="fas fa-user-tie"></i></div><div class="edu-coach-name">${v.coach}</div></div>
+        <h4>${v.title}</h4>
+        <p>${v.description}</p>
+        <div class="edu-topics">${(v.topics||[]).map(t => `<span class="edu-topic-chip">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
 function renderAgeGroups(cats){
   const entries = Object.entries(cats).sort((a,b)=>(a[1].order??0)-(b[1].order??0));
   document.getElementById('ageGrid').innerHTML = entries.map(([key,c]) => `
@@ -668,7 +741,7 @@ function initCounters(){
 }
 
 (async function init(){
-  const [ticker, gallery, staff, categories, players, articles, testi, docs, kits] = await Promise.all([
+  const [ticker, gallery, staff, categories, players, articles, testi, docs, kits, eduVideos] = await Promise.all([
     fetchOnce('academy/newsTicker', defaultNewsTicker),
     fetchOnce('academy/gallery', defaultGallery),
     fetchOnce('academy/staff', defaultStaff),
@@ -677,7 +750,8 @@ function initCounters(){
     fetchOnce('academy/articles', {}),
     fetchOnce('academy/testimonials', {}),
     fetchOnce('academy/documents', {}),
-    fetchOnce('academy/kits', {})
+    fetchOnce('academy/kits', {}),
+    fetchOnce('academy/eduVideos', defaultEduVideos)
   ]);
   renderTicker(Array.isArray(ticker)?ticker:defaultNewsTicker);
   renderGallery(Array.isArray(gallery)?gallery:defaultGallery);
@@ -688,12 +762,14 @@ function initCounters(){
   renderTesti(toArr(testi));
   renderDocs(toArr(docs));
   renderKits(toArr(kits));
+  renderEduVideos(Array.isArray(eduVideos)?eduVideos:defaultEduVideos);
   initReveal(); initCounters();
 
   db.ref('academy/newsTicker').once('value').then(s => { if(!s.exists()) db.ref('academy/newsTicker').set(defaultNewsTicker); });
   db.ref('academy/gallery').once('value').then(s => { if(!s.exists()) db.ref('academy/gallery').set(defaultGallery); });
   db.ref('academy/staff').once('value').then(s => { if(!s.exists()) db.ref('academy/staff').set(defaultStaff); });
   db.ref('academy/categories').once('value').then(s => { if(!s.exists()) db.ref('academy/categories').set(defaultCategories); });
+  db.ref('academy/eduVideos').once('value').then(s => { if(!s.exists()) db.ref('academy/eduVideos').set(defaultEduVideos); });
 })();
 </script>
 </body>
