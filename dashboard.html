@@ -2,87 +2,94 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>لوحة تحكم أكاديمية الرائد</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{
-  --green:#1B5E3A;--green-2:#2E9E5B;--black:#0A0A0A;--gold:#C9A227;--white:#FFFFFF;
-  --bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;--radius:14px;
-  --shadow:0 15px 40px rgba(10,10,10,0.08);--ease:cubic-bezier(0.16,1,0.3,1);
+  --green:#1B6B3F; --green2:#219653; --green-dark:#155C34; --green-light:#3DC57D;
+  --accent:#E8871E; --accent-dark:#C56A0F;
+  --bg:#F4F9F6; --border:#DCEBE1; --text:#14201A; --text-2:#5C665F;
+  --shadow:0 15px 40px rgba(27,107,63,0.1); --radius:14px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);}
 .num-font{font-family:'Barlow Condensed',sans-serif;}
 button{font-family:'Cairo',sans-serif;cursor:pointer;}
 img{max-width:100%;}
+::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
 /* LOGIN */
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--black),#0f2818);padding:20px;}
-.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.4);text-align:center;}
-.login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green-2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
+.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
+.login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
 .login-box .icon i{font-size:1.8rem;color:#fff;}
 .login-box h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;}
 .login-box p{color:var(--text-2);font-size:.85rem;margin-bottom:28px;}
 .login-box input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;margin-bottom:14px;text-align:center;}
-.login-box input:focus{outline:none;border-color:var(--green-2);}
-.login-box button{width:100%;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;border-bottom:4px solid #0f3d25;}
+.login-box input:focus{outline:none;border-color:var(--green2);}
+.login-box button{width:100%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;border-bottom:4px solid var(--green-dark);}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
+.login-loading{display:none;margin-top:16px;color:var(--green2);font-size:.85rem;}
 
 /* SHELL */
 .shell{display:none;min-height:100vh;}
 .shell.active{display:flex;}
-.sidebar{width:260px;background:var(--black);color:#fff;flex-shrink:0;padding:24px 0;height:100vh;position:sticky;top:0;overflow-y:auto;}
-.sidebar .logo{text-align:center;padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:14px;}
-.sidebar .logo .box{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--green-2),var(--green));margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
-.sidebar .logo .box i{font-size:1.5rem;color:#fff;}
+.sidebar{width:270px;background:var(--green);color:#fff;flex-shrink:0;padding:22px 0;height:100vh;position:sticky;top:0;overflow-y:auto;}
+.sidebar .logo{text-align:center;padding:0 20px 18px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:10px;}
+.sidebar .logo img{width:56px;height:56px;border-radius:50%;background:#fff;padding:3px;object-fit:cover;margin:0 auto 8px;}
 .sidebar .logo h3{font-size:1rem;font-weight:800;}
-.sidebar .logo span{font-size:.7rem;color:rgba(255,255,255,0.5);}
-.menu-item{display:flex;align-items:center;gap:12px;padding:13px 24px;color:rgba(255,255,255,0.65);font-weight:600;font-size:.88rem;
-  cursor:pointer;border-right:3px solid transparent;transition:.25s;}
-.menu-item i{width:20px;text-align:center;}
-.menu-item:hover,.menu-item.active{background:rgba(46,158,91,0.12);color:#fff;border-right-color:var(--green-2);}
-.logout-btn{margin:20px 24px 0;width:calc(100% - 48px);background:rgba(192,57,43,0.15);color:#e57373;border:none;padding:11px;border-radius:8px;font-weight:700;font-size:.85rem;}
+.sidebar .logo span{font-size:.68rem;color:rgba(255,255,255,0.6);}
+.menu-item{display:flex;align-items:center;gap:11px;padding:11px 22px;color:rgba(255,255,255,0.75);font-weight:600;font-size:.84rem;
+  cursor:pointer;border-right:3px solid transparent;transition:.2s;}
+.menu-item i{width:18px;text-align:center;flex-shrink:0;}
+.menu-item:hover,.menu-item.active{background:rgba(255,255,255,0.1);color:#fff;border-right-color:var(--accent);}
+.logout-btn{margin:18px 22px 0;width:calc(100% - 44px);background:rgba(0,0,0,0.15);color:#ffb4b4;border:none;padding:10px;border-radius:8px;font-weight:700;font-size:.82rem;}
 
-.content{flex:1;padding:28px 34px;overflow-y:auto;}
-.page-title{font-size:1.6rem;font-weight:900;margin-bottom:4px;}
-.page-sub{color:var(--text-2);font-size:.88rem;margin-bottom:26px;}
+.content{flex:1;padding:26px 32px;overflow-y:auto;height:100vh;}
+.page-title{font-size:1.5rem;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+.page-title i{color:var(--green2);}
+.page-sub{color:var(--text-2);font-size:.85rem;margin-bottom:24px;}
 
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px;}
-.stat-card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;}
-.stat-card .n{font-size:2rem;font-weight:800;color:var(--green);}
-.stat-card .l{font-size:.8rem;color:var(--text-2);font-weight:600;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;}
+.stat-card .n{font-size:1.8rem;font-weight:800;color:var(--green);font-family:'Barlow Condensed',sans-serif;}
+.stat-card .l{font-size:.76rem;color:var(--text-2);font-weight:600;}
 
-.panel{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:22px;}
-.panel h3{font-size:1.05rem;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
-.panel h3 i{color:var(--green-2);}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px;}
+.panel h3{font-size:1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.panel h3 i{color:var(--accent);}
 
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.form-grid .full{grid-column:1/-1;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px;}
 .fg{display:flex;flex-direction:column;gap:5px;}
-.fg label{font-size:.8rem;font-weight:700;}
-.fg input,.fg select,.fg textarea{border:2px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Cairo',sans-serif;font-size:.88rem;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--green-2);}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:8px;border:none;font-weight:700;font-size:.83rem;transition:.2s;}
-.btn-primary{background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;}
+.fg.full{grid-column:1/-1;}
+.fg label{font-size:.78rem;font-weight:700;}
+.fg input,.fg select,.fg textarea{border:2px solid var(--border);border-radius:8px;padding:9px 11px;font-family:'Cairo',sans-serif;font-size:.85rem;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--green2);}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;border:none;font-weight:700;font-size:.8rem;transition:.2s;}
+.btn-primary{background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border-bottom:3px solid var(--green-dark);}
+.btn-primary:hover{transform:translateY(-2px);}
 .btn-danger{background:#FBEAEA;color:#B23A3A;}
 .btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);}
-.btn:hover{transform:translateY(-2px);}
+.btn:hover{opacity:.9;}
 
-.list-item{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;}
-.list-item img{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0;}
-.list-item .thumb-icon{width:50px;height:50px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;}
+.list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;}
 .list-item .body{flex:1;min-width:0;}
-.list-item .t{font-weight:700;font-size:.88rem;}
-.list-item .s{font-size:.76rem;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.list-item .t{font-weight:700;font-size:.86rem;}
 .list-item .actions{display:flex;gap:6px;flex-shrink:0;}
 .badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;}
-.badge.pending{background:#FFF3CD;color:#856404;}
+.badge.pending{background:#FFF3D6;color:#B8860B;}
 .badge.accepted{background:#D4EDDA;color:#155724;}
 .badge.rejected{background:#F8D7DA;color:#721C24;}
+.empty-msg{color:#999;text-align:center;padding:20px;font-size:.85rem;}
+.cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.cat-tab{padding:7px 16px;border-radius:20px;border:2px solid var(--border);background:#fff;font-weight:700;font-size:.78rem;cursor:pointer;}
+.cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
+.cat-card-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
+.cat-card-box h4{font-size:.95rem;margin-bottom:10px;color:var(--green);}
 
 @media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;}}
 </style>
@@ -93,26 +100,36 @@ img{max-width:100%;}
   <div class="login-box">
     <div class="icon"><i class="fas fa-shield-halved"></i></div>
     <h2>لوحة تحكم أكاديمية الرائد</h2>
-    <p>أدخل كلمة السر للوصول إلى لوحة التحكم</p>
-    <input type="password" id="loginPassword" placeholder="كلمة السر" />
+    <p>أدخل كود الدخول للوصول إلى لوحة التحكم</p>
+    <input type="password" id="loginPassword" placeholder="كود الدخول" />
     <button onclick="tryLogin()"><i class="fas fa-unlock"></i> دخول</button>
-    <div class="login-error" id="loginError">❌ كلمة السر غير صحيحة</div>
+    <div class="login-error" id="loginError">❌ كود الدخول غير صحيح</div>
+    <div class="login-loading" id="loginLoading"><i class="fas fa-spinner fa-spin"></i> جارٍ تحميل البيانات...</div>
   </div>
 </div>
 
 <div class="shell" id="shell">
   <aside class="sidebar">
     <div class="logo">
-      <div class="box"><i class="fas fa-shield-halved"></i></div>
+      <img id="sideLogo" src="" alt="" />
       <h3>أكاديمية الرائد</h3>
       <span>لوحة التحكم</span>
     </div>
     <div class="menu-item active" data-page="home"><i class="fas fa-chart-pie"></i> الرئيسية</div>
     <div class="menu-item" data-page="ticker"><i class="fas fa-bullhorn"></i> شريط الأخبار</div>
-    <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الأكاديمية</div>
-    <div class="menu-item" data-page="edu"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
-    <div class="menu-item" data-page="players"><i class="fas fa-users"></i> اللاعبون</div>
-    <div class="menu-item" data-page="articles"><i class="fas fa-newspaper"></i> المقالات والأخبار</div>
+    <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الصور</div>
+    <div class="menu-item" data-page="eduVideos"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
+    <div class="menu-item" data-page="players"><i class="fas fa-user"></i> اللاعبون</div>
+    <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني</div>
+    <div class="menu-item" data-page="kits"><i class="fas fa-tshirt"></i> الأطقم</div>
+    <div class="menu-item" data-page="categories"><i class="fas fa-layer-group"></i> الفئات العمرية</div>
+    <div class="menu-item" data-page="sessions"><i class="fas fa-dumbbell"></i> الحصص التدريبية</div>
+    <div class="menu-item" data-page="matches"><i class="fas fa-futbol"></i> المباريات</div>
+    <div class="menu-item" data-page="tournaments"><i class="fas fa-trophy"></i> البطولات</div>
+    <div class="menu-item" data-page="messages"><i class="fas fa-envelope"></i> رسائل الفئات</div>
+    <div class="menu-item" data-page="articles"><i class="fas fa-newspaper"></i> المقالات</div>
+    <div class="menu-item" data-page="testimonials"><i class="fas fa-comment-dots"></i> آراء المتابعين</div>
+    <div class="menu-item" data-page="documents"><i class="fas fa-file-alt"></i> المستندات</div>
     <div class="menu-item" data-page="registrations"><i class="fas fa-inbox"></i> طلبات التسجيل</div>
     <div class="menu-item" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</div>
     <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
@@ -132,55 +149,153 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const DEFAULT_PASSWORD = "Raed@2026#";
+const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
+document.getElementById('sideLogo').src = LOGO_URL;
+const DEFAULT_PASSWORD = "raed2627";
+const CATS = ["U07","U09","U11","U13","U15"];
 
-let newsTicker = [], gallery = [], eduVideos = [], players = [], articles = [], registrations = [];
-
-/* ===== LOGIN ===== */
-function tryLogin(){
-  const input = document.getElementById('loginPassword').value.trim();
-  db.ref('academy/adminSettings/password').once('value').then(snap => {
-    const stored = snap.val();
-    if(!stored){
-      db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD);
-      if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError();
-    } else {
-      if(input === stored) grantAccess(); else showLoginError();
-    }
-  }).catch(() => { if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError(); });
-}
-function showLoginError(){ document.getElementById('loginError').style.display = 'block'; }
-function grantAccess(){
-  sessionStorage.setItem('raed_admin_auth','1');
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('shell').classList.add('active');
-  loadAllData();
-}
-function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
-if(sessionStorage.getItem('raed_admin_auth') === '1'){ grantAccess(); }
-document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
-
-/* ===== LOAD ALL DATA ===== */
-function loadAllData(){
-  Promise.all([
-    db.ref('academy/newsTicker').once('value'),
-    db.ref('academy/gallery').once('value'),
-    db.ref('academy/eduVideos').once('value'),
-    db.ref('academy/players').once('value'),
-    db.ref('academy/articles').once('value'),
-    db.ref('academy/registrations').once('value')
-  ]).then(([t,g,e,p,a,r]) => {
-    newsTicker = t.val() || [];
-    gallery = g.val() || [];
-    eduVideos = e.val() || [];
-    players = p.val() ? Object.entries(p.val()).map(([id,v])=>({id,...v})) : [];
-    articles = a.val() ? Object.entries(a.val()).map(([id,v])=>({id,...v})) : [];
-    registrations = r.val() ? Object.entries(r.val()).map(([id,v])=>({id,...v})) : [];
-    showPage('home');
+function escapeHtml(s){ s=(s===undefined||s===null)?'':String(s); return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fileToBase64(file, maxDim=1200, quality=.75){
+  return new Promise((resolve,reject)=>{
+    if(file.type==='application/pdf'){ const r=new FileReader(); r.onload=e=>resolve(e.target.result); r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file); return; }
+    const r=new FileReader();
+    r.onload=e=>{ const img=new Image(); img.onload=()=>{
+      let{width,height}=img; if(width>maxDim||height>maxDim){ const ratio=Math.min(maxDim/width,maxDim/height); width=Math.round(width*ratio); height=Math.round(height*ratio); }
+      const c=document.createElement('canvas'); c.width=width; c.height=height; c.getContext('2d').drawImage(img,0,0,width,height);
+      resolve(c.toDataURL('image/jpeg',quality));
+    }; img.onerror=()=>reject(new Error('img fail')); img.src=e.target.result; };
+    r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file);
   });
 }
 
-/* ===== NAVIGATION ===== */
+/* ============ SECTION CONFIGS ============ */
+const arraySections = {
+  ticker:{path:'academy/newsTicker',title:'شريط الأخبار',icon:'fa-bullhorn',simple:true,itemLabel:'نص الخبر'},
+  gallery:{path:'academy/gallery',title:'ألبوم الصور',icon:'fa-images',fields:[
+    {key:'url',label:'رابط الصورة',type:'text',required:true},{key:'caption',label:'الوصف',type:'text'}
+  ],display:i=>i.caption||i.url},
+  eduVideos:{path:'academy/eduVideos',title:'الفيديوهات التعليمية',icon:'fa-graduation-cap',fields:[
+    {key:'url',label:'رابط الفيديو',type:'text',required:true},{key:'title',label:'العنوان',type:'text',required:true},
+    {key:'coach',label:'المدرب',type:'text'},{key:'description',label:'الوصف',type:'textarea'},
+    {key:'topics',label:'الكلمات المفتاحية (افصل بفاصلة)',type:'text'}
+  ],transform:d=>({...d,topics:d.topics?d.topics.split(',').map(s=>s.trim()).filter(Boolean):[]}),
+  hydrate:i=>({...i,topics:(i.topics||[]).join(', ')}),display:i=>i.title},
+  staff:{path:'academy/staff',title:'الطاقم الفني',icon:'fa-user-tie',fields:[
+    {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'المنصب',type:'text',required:true},
+    {key:'bio',label:'نبذة',type:'textarea'},{key:'photoUrl',label:'رابط الصورة',type:'text'}
+  ],display:i=>`${i.name} - ${i.role}`},
+  kits:{path:'academy/kits',title:'الأطقم',icon:'fa-tshirt',fields:[
+    {key:'name',label:'اسم الطقم',type:'text',required:true},{key:'photoUrl',label:'رابط صورة الطقم',type:'text',required:true}
+  ],display:i=>i.name},
+  testimonials:{path:'academy/testimonials',title:'آراء المتابعين',icon:'fa-comment-dots',fields:[
+    {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'الصفة',type:'text'},
+    {key:'opinion',label:'الرأي',type:'textarea',required:true}
+  ],display:i=>i.name},
+  documents:{path:'academy/documents',title:'المستندات',icon:'fa-file-alt',fields:[
+    {key:'title',label:'عنوان المستند',type:'text',required:true},{key:'description',label:'الوصف',type:'text'},
+    {key:'fileData',label:'الملف (صورة أو PDF)',type:'file'}
+  ],display:i=>i.title},
+  sessions:{path:'academy/sessions',title:'الحصص التدريبية',icon:'fa-dumbbell',categoryFiltered:true,fields:[
+    {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'name',label:'اسم الحصة',type:'text'},
+    {key:'sessionType',label:'نوع الحصة',type:'text'},{key:'day',label:'اليوم',type:'text'},{key:'date',label:'التاريخ',type:'date'},
+    {key:'time',label:'وقت البداية',type:'time'},{key:'endTime',label:'وقت النهاية',type:'time'},
+    {key:'coach',label:'المدرب',type:'text'},{key:'field',label:'الملعب',type:'text'},
+    {key:'status',label:'الحالة',type:'select',options:['scheduled','ongoing','finished','canceled'],optionLabels:['مجدولة','جارية','منتهية','ملغاة']},
+    {key:'description',label:'وصف الحصة',type:'textarea'},{key:'goals',label:'أهداف الحصة',type:'textarea'},
+    {key:'coachNotes',label:'ملاحظات المدرب',type:'textarea'}
+  ],display:i=>`${i.category} — ${i.name||'حصة'} (${i.date||'بدون تاريخ'})`},
+  matches:{path:'academy/matches',title:'المباريات',icon:'fa-futbol',categoryFiltered:true,fields:[
+    {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'opponent',label:'الفريق المنافس',type:'text',required:true},
+    {key:'opponentLogo',label:'رابط شعار المنافس',type:'text'},{key:'tournament',label:'البطولة/الدوري',type:'text'},
+    {key:'round',label:'الجولة',type:'text'},{key:'date',label:'التاريخ',type:'date'},{key:'time',label:'التوقيت',type:'time'},
+    {key:'field',label:'الملعب',type:'text'},{key:'type',label:'نوع المباراة',type:'text'},
+    {key:'status',label:'الحالة',type:'select',options:['upcoming','live','finished','canceled'],optionLabels:['قادمة','جارية الآن','انتهت','ملغاة']},
+    {key:'homeScore',label:'أهداف الأكاديمية',type:'number'},{key:'awayScore',label:'أهداف المنافس',type:'number'},
+    {key:'goalscorers',label:'الأهداف (اسم - دقيقة - فريق) كل سطر',type:'textarea'},
+    {key:'lineup',label:'التشكيلة (مركز - اسم) كل سطر',type:'textarea'},
+    {key:'callUpsText',label:'اللاعبون المستدعون (اسم في كل سطر)',type:'textarea'},
+    {key:'details',label:'تفاصيل إضافية',type:'textarea'}
+  ],transform:d=>{const {callUpsText,...rest}=d; return {...rest, callUps: callUpsText? JSON.stringify(callUpsText.split('\n').map(s=>s.trim()).filter(Boolean).map(name=>({name}))) : ''};},
+  hydrate:i=>{let names=[]; try{names=(JSON.parse(i.callUps||'[]')||[]).map(c=>c.name);}catch(e){} return {...i, callUpsText:names.join('\n')};},
+  display:i=>`${i.category} ضد ${i.opponent} (${i.date||'بدون تاريخ'})`},
+  tournaments:{path:'academy/tournaments',title:'البطولات',icon:'fa-trophy',categoryFiltered:true,fields:[
+    {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'name',label:'اسم البطولة',type:'text',required:true},
+    {key:'logo',label:'رابط شعار البطولة',type:'text'},{key:'organizer',label:'المنظم',type:'text'},{key:'place',label:'المكان',type:'text'},
+    {key:'date',label:'التاريخ',type:'text'},{key:'period',label:'المدة',type:'text'},{key:'teamsCount',label:'عدد الفرق',type:'number'},
+    {key:'standings',label:'الترتيب',type:'text'},{key:'files',label:'رابط الملفات المرفقة',type:'text'},
+    {key:'callUpsText',label:'اللاعبون المستدعون (اسم في كل سطر)',type:'textarea'}
+  ],transform:d=>{const {callUpsText,...rest}=d; return {...rest, callUps: callUpsText? JSON.stringify(callUpsText.split('\n').map(s=>s.trim()).filter(Boolean).map(name=>({name}))) : ''};},
+  hydrate:i=>{let names=[]; try{names=(JSON.parse(i.callUps||'[]')||[]).map(c=>c.name);}catch(e){} return {...i, callUpsText:names.join('\n')};},
+  display:i=>`${i.category} — ${i.name}`},
+  messages:{path:'academy/messages',title:'رسائل الفئات',icon:'fa-envelope',categoryFiltered:true,fields:[
+    {key:'category',label:'الفئة',type:'select',options:CATS,required:true},
+    {key:'type',label:'نوع الرسالة',type:'select',options:['إعلان','تنبيه','اجتماع','إشعار','تهنئة','تعليق']},
+    {key:'text',label:'نص الرسالة',type:'textarea',required:true},{key:'date',label:'التاريخ',type:'date'}
+  ],display:i=>`${i.category} — ${i.type||'رسالة'}`}
+};
+const keyedSections = {
+  players:{path:'academy/players',title:'اللاعبون',icon:'fa-user',fields:[
+    {key:'firstName',label:'الاسم',type:'text',required:true},{key:'lastName',label:'اللقب',type:'text',required:true},
+    {key:'category',label:'الفئة',type:'select',options:CATS},{key:'jersey',label:'رقم القميص',type:'number'},
+    {key:'position',label:'المركز',type:'text'},{key:'birthDate',label:'تاريخ الميلاد',type:'date'},
+    {key:'photo',label:'رابط الصورة',type:'text'},{key:'bio',label:'نبذة',type:'textarea'},
+    {key:'goals',label:'الأهداف',type:'number'},{key:'assists',label:'التمريرات الحاسمة',type:'number'},{key:'matches',label:'عدد المباريات',type:'number'}
+  ],display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''}`},
+  articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
+    {key:'title',label:'العنوان',type:'text',required:true},{key:'image',label:'رابط الصورة',type:'text'},
+    {key:'author',label:'الكاتب',type:'text'},{key:'tag',label:'التصنيف',type:'text'},
+    {key:'excerpt',label:'ملخص قصير',type:'textarea'},{key:'content',label:'المحتوى الكامل',type:'textarea',required:true}
+  ],display:i=>i.title}
+};
+
+let STATE = {}; // holds loaded data per section
+
+/* ============ LOGIN ============ */
+function tryLogin(){
+  const input = document.getElementById('loginPassword').value.trim();
+  document.getElementById('loginError').style.display='none';
+  db.ref('academy/adminSettings/password').once('value').then(snap => {
+    const stored = snap.val();
+    const expected = stored || DEFAULT_PASSWORD;
+    if(!stored) db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD);
+    if(input === expected) grantAccess(); else showLoginError();
+  }).catch(() => { if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError(); });
+}
+function showLoginError(){ document.getElementById('loginError').style.display='block'; }
+async function grantAccess(){
+  document.getElementById('loginLoading').style.display='block';
+  sessionStorage.setItem('raed_admin_auth','1');
+  await loadAllData();
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('shell').classList.add('active');
+  showPage('home');
+}
+function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
+if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
+document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+/* ============ LOAD ALL DATA ONCE (fast, no reloads after) ============ */
+async function loadAllData(){
+  const paths = {};
+  Object.keys(arraySections).forEach(k => paths[k]=arraySections[k].path);
+  Object.keys(keyedSections).forEach(k => paths[k]=keyedSections[k].path);
+  paths.categories = 'academy/categories';
+  paths.registrations = 'academy/registrations';
+
+  const entries = Object.entries(paths);
+  const snaps = await Promise.all(entries.map(([,p]) => db.ref(p).once('value')));
+  entries.forEach(([key], i) => {
+    const val = snaps[i].val();
+    if(key==='categories'){ STATE.categories = val || {}; return; }
+    if(keyedSections[key] || key==='registrations'){
+      STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+    } else {
+      STATE[key] = Array.isArray(val) ? val : (val ? Object.values(val) : []);
+    }
+  });
+}
+
+/* ============ NAV ============ */
 document.querySelectorAll('.menu-item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
@@ -188,341 +303,319 @@ document.querySelectorAll('.menu-item').forEach(item => {
     showPage(item.dataset.page);
   });
 });
-
 function showPage(page){
   const c = document.getElementById('content');
-  if(page === 'home') renderHome(c);
-  else if(page === 'ticker') renderTicker(c);
-  else if(page === 'gallery') renderGallery(c);
-  else if(page === 'edu') renderEdu(c);
-  else if(page === 'players') renderPlayers(c);
-  else if(page === 'articles') renderArticles(c);
-  else if(page === 'registrations') renderRegistrations(c);
-  else if(page === 'settings') renderSettings(c);
+  if(page==='home') renderHome(c);
+  else if(page==='categories') renderCategories(c);
+  else if(page==='registrations') renderRegistrations(c);
+  else if(page==='settings') renderSettings(c);
+  else if(arraySections[page]) renderArraySectionPage(c, page);
+  else if(keyedSections[page]) renderKeyedSectionPage(c, page);
 }
 
-/* ===== HOME ===== */
+/* ============ HOME ============ */
 function renderHome(c){
-  const pending = registrations.filter(r => r.status === 'pending').length;
+  const pending = (STATE.registrations||[]).filter(r=>r.status==='pending').length;
   c.innerHTML = `
-    <h2 class="page-title">🏠 نظرة عامة</h2>
+    <h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2>
     <p class="page-sub">إحصائيات سريعة عن محتوى الموقع</p>
     <div class="stats-row">
-      <div class="stat-card"><div class="n num-font">${players.length}</div><div class="l">لاعب مسجّل</div></div>
-      <div class="stat-card"><div class="n num-font">${articles.length}</div><div class="l">مقال منشور</div></div>
-      <div class="stat-card"><div class="n num-font">${gallery.length}</div><div class="l">صورة بالألبوم</div></div>
+      <div class="stat-card"><div class="n num-font">${(STATE.players||[]).length}</div><div class="l">لاعب</div></div>
+      <div class="stat-card"><div class="n num-font">${(STATE.articles||[]).length}</div><div class="l">مقال</div></div>
+      <div class="stat-card"><div class="n num-font">${(STATE.gallery||[]).length}</div><div class="l">صورة بالألبوم</div></div>
       <div class="stat-card"><div class="n num-font">${pending}</div><div class="l">طلب تسجيل معلّق</div></div>
     </div>
-    <div class="panel">
-      <h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
+    <div class="panel"><h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=players]').click()"><i class="fas fa-user-plus"></i> إضافة لاعب</button>
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال جديد</button>
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=registrations]').click()"><i class="fas fa-inbox"></i> مراجعة طلبات التسجيل</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=eduVideos]').click()"><i class="fas fa-video"></i> إضافة فيديو تعليمي</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=sessions]').click()"><i class="fas fa-dumbbell"></i> إضافة حصة تدريبية</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=matches]').click()"><i class="fas fa-futbol"></i> إضافة مباراة</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=registrations]').click()"><i class="fas fa-inbox"></i> طلبات التسجيل</button>
       </div>
     </div>`;
 }
 
-/* ===== NEWS TICKER ===== */
-function renderTicker(c){
+/* ============ GENERIC ARRAY SECTION ============ */
+function fieldInputHTML(f, val){
+  val = val===undefined||val===null ? '' : val;
+  if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
+  if(f.type==='select') return `<select id="f_${f.key}">${f.options.map((o,i)=>`<option value="${o}" ${val===o?'selected':''}>${f.optionLabels?f.optionLabels[i]:o}</option>`).join('')}</select>`;
+  if(f.type==='file') return `<input type="file" id="f_${f.key}" accept="image/*,.pdf" />`;
+  return `<input type="${f.type}" id="f_${f.key}" value="${escapeHtml(val)}" />`;
+}
+function renderArraySectionPage(c, key){
+  const cfg = arraySections[key];
+  let formHtml;
+  let catTabsHtml = '';
+  if(cfg.simple){
+    formHtml = `<div class="fg full"><label>${cfg.itemLabel}</label><input type="text" id="f_value" /></div>`;
+  } else {
+    formHtml = cfg.fields.map(f => `<div class="fg ${f.type==='textarea'?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+  }
+  if(cfg.categoryFiltered){
+    catTabsHtml = `<div class="cat-tabs" id="catTabs-${key}">
+      <div class="cat-tab active" data-cat="all" onclick="filterArrayByCat('${key}','all')">الكل</div>
+      ${CATS.map(cat=>`<div class="cat-tab" data-cat="${cat}" onclick="filterArrayByCat('${key}','${cat}')">${cat}</div>`).join('')}
+    </div>`;
+  }
   c.innerHTML = `
-    <h2 class="page-title">📢 شريط الأخبار</h2>
-    <p class="page-sub">العبارات التي تظهر في الشريط المتحرك أسفل الهيدرو</p>
+    <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
+    <p class="page-sub">إضافة، تعديل، أو حذف عناصر هذا القسم — تظهر مباشرة في الصفحة الرئيسية</p>
     <div class="panel">
-      <h3><i class="fas fa-plus-circle"></i> إضافة خبر جديد</h3>
-      <div class="form-grid">
-        <div class="fg full"><label>نص الخبر</label><input type="text" id="newTickerText" placeholder="مثال: 🏆 فتح باب التسجيل..." /></div>
+      <h3 id="formTitle-${key}"><i class="fas fa-plus-circle"></i> إضافة عنصر جديد</h3>
+      <div class="form-grid">${formHtml}</div>
+      <input type="hidden" id="editIndex-${key}" value="-1" />
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveArrayItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
+        <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelArrayEdit('${key}')">إلغاء التعديل</button>
       </div>
-      <button class="btn btn-primary" onclick="addTickerItem()"><i class="fas fa-check"></i> إضافة للشريط</button>
     </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${newsTicker.length})</h3><div id="tickerList"></div></div>`;
-  renderTickerList();
+    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3>
+      ${catTabsHtml}<div id="list-${key}"></div>
+    </div>`;
+  renderArrayList(key, 'all');
 }
-function renderTickerList(){
-  const el = document.getElementById('tickerList');
-  el.innerHTML = newsTicker.map((t,i) => `
+function renderArrayList(key, catFilter){
+  catFilter = catFilter || 'all';
+  const cfg = arraySections[key];
+  const arr = STATE[key] || [];
+  const rows = arr.map((item,i)=>({item,i})).filter(({item}) => catFilter==='all' || !cfg.categoryFiltered || item.category===catFilter);
+  document.getElementById('list-'+key).innerHTML = rows.length ? rows.map(({item,i}) => `
     <div class="list-item">
-      <div class="thumb-icon"><i class="fas fa-bullhorn"></i></div>
-      <div class="body"><div class="t">${t}</div></div>
-      <div class="actions"><button class="btn btn-danger" onclick="deleteTickerItem(${i})"><i class="fas fa-trash"></i></button></div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد عناصر</p>';
+      <div class="body"><div class="t">${escapeHtml(cfg.simple ? item : (cfg.display ? cfg.display(item) : ''))}</div></div>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="editArrayItem('${key}',${i})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger" onclick="deleteArrayItem('${key}',${i})"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('') : `<div class="empty-msg">لا توجد عناصر ${catFilter!=='all'?'لهذه الفئة':''} بعد</div>`;
 }
-function addTickerItem(){
-  const val = document.getElementById('newTickerText').value.trim();
-  if(!val) return alert('أدخل نص الخبر');
-  newsTicker.push(val);
-  db.ref('academy/newsTicker').set(newsTicker).then(() => { document.getElementById('newTickerText').value=''; renderTickerList(); });
+function filterArrayByCat(key, cat){
+  document.querySelectorAll(`#catTabs-${key} .cat-tab`).forEach(t => t.classList.toggle('active', t.dataset.cat===cat));
+  renderArrayList(key, cat);
 }
-function deleteTickerItem(i){
-  if(!confirm('حذف هذا الخبر؟')) return;
-  newsTicker.splice(i,1);
-  db.ref('academy/newsTicker').set(newsTicker).then(renderTickerList);
+async function collectFields(fields){
+  const data = {};
+  for(const f of fields){
+    const el = document.getElementById('f_'+f.key);
+    if(!el) continue;
+    if(f.type==='file'){ if(el.files[0]) data[f.key] = await fileToBase64(el.files[0]); }
+    else if(f.type==='number'){ data[f.key] = el.value===''?0:Number(el.value); }
+    else { data[f.key] = el.value.trim(); }
+  }
+  return data;
+}
+async function saveArrayItem(key){
+  const cfg = arraySections[key];
+  const btn = event.target.closest('button'); const origHtml = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+  try{
+    let newItem;
+    if(cfg.simple){
+      const v = document.getElementById('f_value').value.trim();
+      if(!v){ alert('أدخل قيمة'); return; }
+      newItem = v;
+    } else {
+      let data = await collectFields(cfg.fields);
+      const missing = cfg.fields.filter(f=>f.required && !data[f.key]);
+      if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); return; }
+      if(cfg.transform) data = cfg.transform(data);
+      newItem = data;
+    }
+    const idx = parseInt(document.getElementById('editIndex-'+key).value);
+    let arr = STATE[key] || [];
+    if(idx>=0) arr[idx] = newItem; else arr.push(newItem);
+    await db.ref(cfg.path).set(arr);
+    STATE[key] = arr;
+    cancelArrayEdit(key);
+    renderArraySectionPage(document.getElementById('content'), key);
+  } catch(err){ console.error(err); alert('حدث خطأ أثناء الحفظ'); }
+  finally { btn.disabled=false; btn.innerHTML=origHtml; }
+}
+function editArrayItem(key, idx){
+  const cfg = arraySections[key];
+  const item = STATE[key][idx];
+  if(cfg.simple){ document.getElementById('f_value').value = item; }
+  else {
+    const hydrated = cfg.hydrate ? cfg.hydrate(item) : item;
+    cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = hydrated[f.key]!==undefined?hydrated[f.key]:''; });
+  }
+  document.getElementById('editIndex-'+key).value = idx;
+  document.getElementById('cancelEdit-'+key).style.display='inline-flex';
+  document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-edit"></i> تعديل العنصر';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelArrayEdit(key){
+  const cfg = arraySections[key];
+  document.getElementById('editIndex-'+key).value = -1;
+  document.getElementById('cancelEdit-'+key).style.display='none';
+  document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-plus-circle"></i> إضافة عنصر جديد';
+  if(cfg.simple){ document.getElementById('f_value').value=''; }
+  else cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value=''; });
+}
+async function deleteArrayItem(key, idx){
+  if(!confirm('حذف هذا العنصر نهائياً؟')) return;
+  const cfg = arraySections[key];
+  let arr = STATE[key] || [];
+  arr.splice(idx,1);
+  await db.ref(cfg.path).set(arr);
+  STATE[key] = arr;
+  renderArrayList(key, document.querySelector(`#catTabs-${key} .cat-tab.active`)?.dataset.cat || 'all');
+  document.querySelector(`.panel h3 i.fa-list`)?.closest('h3') && (document.querySelectorAll('.panel h3')[1].innerHTML = `<i class="fas fa-list"></i> العناصر الحالية (${arr.length})`);
 }
 
-/* ===== GALLERY ===== */
-function renderGallery(c){
+/* ============ GENERIC KEYED SECTION (players/articles) ============ */
+function renderKeyedSectionPage(c, key){
+  const cfg = keyedSections[key];
+  const formHtml = cfg.fields.map(f => `<div class="fg ${f.type==='textarea'?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
   c.innerHTML = `
-    <h2 class="page-title">🖼️ ألبوم الأكاديمية</h2>
-    <p class="page-sub">صور تظهر في قسم "ألبوم الأكاديمية" بالصفحة الرئيسية</p>
+    <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
     <div class="panel">
-      <h3><i class="fas fa-plus-circle"></i> إضافة صورة جديدة</h3>
-      <div class="form-grid">
-        <div class="fg full"><label>رابط الصورة (GitHub raw)</label><input type="text" id="newGalleryUrl" placeholder="https://raw.githubusercontent.com/..." /></div>
-        <div class="fg full"><label>وصف الصورة</label><input type="text" id="newGalleryCaption" placeholder="مثال: تدريبات الأكاديمية" /></div>
+      <h3 id="formTitle-${key}"><i class="fas fa-plus-circle"></i> إضافة جديد</h3>
+      <div class="form-grid">${formHtml}</div>
+      <input type="hidden" id="editId-${key}" value="" />
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveKeyedItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
+        <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelKeyedEdit('${key}')">إلغاء التعديل</button>
       </div>
-      <button class="btn btn-primary" onclick="addGalleryItem()"><i class="fas fa-check"></i> إضافة للألبوم</button>
     </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> الصور الحالية (${gallery.length})</h3><div id="galleryList"></div></div>`;
-  renderGalleryList();
+    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3><div id="list-${key}"></div></div>`;
+  renderKeyedList(key);
 }
-function renderGalleryList(){
-  const el = document.getElementById('galleryList');
-  el.innerHTML = gallery.map((g,i) => `
+function renderKeyedList(key){
+  const cfg = keyedSections[key];
+  const arr = STATE[key] || [];
+  document.getElementById('list-'+key).innerHTML = arr.length ? arr.map(item => `
     <div class="list-item">
-      <img src="${g.url}" onerror="this.style.display='none'" />
-      <div class="body"><div class="t">${g.caption}</div><div class="s">${g.url}</div></div>
-      <div class="actions"><button class="btn btn-danger" onclick="deleteGalleryItem(${i})"><i class="fas fa-trash"></i></button></div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد صور</p>';
+      <div class="body"><div class="t">${escapeHtml(cfg.display(item))}</div></div>
+      <div class="actions">
+        ${key==='players'?`<a class="btn btn-secondary" href="player.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
+        ${key==='articles'?`<a class="btn btn-secondary" href="article.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
+        <button class="btn btn-secondary" onclick="editKeyedItem('${key}','${item.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-danger" onclick="deleteKeyedItem('${key}','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('') : `<div class="empty-msg">لا توجد عناصر بعد</div>`;
 }
-function addGalleryItem(){
-  const url = document.getElementById('newGalleryUrl').value.trim();
-  const caption = document.getElementById('newGalleryCaption').value.trim() || 'صورة من الأكاديمية';
-  if(!url) return alert('أدخل رابط الصورة');
-  gallery.push({url,caption});
-  db.ref('academy/gallery').set(gallery).then(() => { document.getElementById('newGalleryUrl').value=''; document.getElementById('newGalleryCaption').value=''; renderGalleryList(); });
+async function saveKeyedItem(key){
+  const cfg = keyedSections[key];
+  const btn = event.target.closest('button'); const origHtml = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+  try{
+    let data = await collectFields(cfg.fields);
+    const missing = cfg.fields.filter(f=>f.required && !data[f.key]);
+    if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); return; }
+    const id = document.getElementById('editId-'+key).value;
+    if(id){
+      await db.ref(cfg.path+'/'+id).update(data);
+      const idx = STATE[key].findIndex(x=>x.id===id);
+      if(idx>=0) STATE[key][idx] = {...STATE[key][idx], ...data};
+    } else {
+      data.createdAt = new Date().toISOString();
+      const ref = await db.ref(cfg.path).push(data);
+      STATE[key].push({id:ref.key, ...data});
+    }
+    cancelKeyedEdit(key);
+    renderKeyedSectionPage(document.getElementById('content'), key);
+  } catch(err){ console.error(err); alert('حدث خطأ أثناء الحفظ'); }
+  finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
-function deleteGalleryItem(i){
-  if(!confirm('حذف هذه الصورة؟')) return;
-  gallery.splice(i,1);
-  db.ref('academy/gallery').set(gallery).then(renderGalleryList);
+function editKeyedItem(key, id){
+  const cfg = keyedSections[key];
+  const item = STATE[key].find(x=>x.id===id);
+  if(!item) return;
+  cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = item[f.key]!==undefined?item[f.key]:''; });
+  document.getElementById('editId-'+key).value = id;
+  document.getElementById('cancelEdit-'+key).style.display='inline-flex';
+  document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-edit"></i> تعديل العنصر';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function cancelKeyedEdit(key){
+  const cfg = keyedSections[key];
+  document.getElementById('editId-'+key).value = '';
+  document.getElementById('cancelEdit-'+key).style.display='none';
+  document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-plus-circle"></i> إضافة جديد';
+  cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value=''; });
+}
+async function deleteKeyedItem(key, id){
+  if(!confirm('حذف هذا العنصر نهائياً؟')) return;
+  await db.ref(keyedSections[key].path+'/'+id).remove();
+  STATE[key] = STATE[key].filter(x=>x.id!==id);
+  renderKeyedList(key);
+  document.querySelectorAll('.panel h3')[1].innerHTML = `<i class="fas fa-list"></i> العناصر الحالية (${STATE[key].length})`;
 }
 
-/* ===== EDUCATIONAL VIDEOS ===== */
-function renderEdu(c){
-  c.innerHTML = `
-    <h2 class="page-title">🎓 الفيديوهات التعليمية</h2>
-    <p class="page-sub">فيديوهات قسم "أكاديمية المعرفة" مع أوصافها التفصيلية</p>
-    <div class="panel">
-      <h3><i class="fas fa-plus-circle"></i> إضافة فيديو تعليمي جديد</h3>
-      <div class="form-grid">
-        <div class="fg full"><label>رابط الفيديو (GitHub raw)</label><input type="text" id="eduUrl" placeholder="https://raw.githubusercontent.com/..." /></div>
-        <div class="fg"><label>عنوان الفيديو</label><input type="text" id="eduTitle" /></div>
-        <div class="fg"><label>اسم المدرب</label><input type="text" id="eduCoach" /></div>
-        <div class="fg full"><label>الوصف التفصيلي</label><textarea id="eduDesc" rows="3"></textarea></div>
-        <div class="fg full"><label>الكلمات المفتاحية (افصل بفاصلة)</label><input type="text" id="eduTopics" placeholder="التركيز الذهني, المسح البصري" /></div>
-      </div>
-      <button class="btn btn-primary" onclick="addEduVideo()"><i class="fas fa-check"></i> إضافة الفيديو</button>
-    </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> الفيديوهات الحالية (${eduVideos.length})</h3><div id="eduList"></div></div>`;
-  renderEduList();
-}
-function renderEduList(){
-  const el = document.getElementById('eduList');
-  el.innerHTML = eduVideos.map((v,i) => `
-    <div class="list-item">
-      <div class="thumb-icon"><i class="fas fa-video"></i></div>
-      <div class="body"><div class="t">${v.title}</div><div class="s">${v.coach} — ${(v.topics||[]).join('، ')}</div></div>
-      <div class="actions"><button class="btn btn-danger" onclick="deleteEduVideo(${i})"><i class="fas fa-trash"></i></button></div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد فيديوهات</p>';
-}
-function addEduVideo(){
-  const url = document.getElementById('eduUrl').value.trim();
-  const title = document.getElementById('eduTitle').value.trim();
-  const coach = document.getElementById('eduCoach').value.trim() || 'الطاقم الفني';
-  const description = document.getElementById('eduDesc').value.trim();
-  const topics = document.getElementById('eduTopics').value.split(',').map(s=>s.trim()).filter(Boolean);
-  if(!url || !title) return alert('الرابط والعنوان إجباريان');
-  eduVideos.push({url,title,coach,description,topics});
-  db.ref('academy/eduVideos').set(eduVideos).then(() => {
-    ['eduUrl','eduTitle','eduCoach','eduDesc','eduTopics'].forEach(id => document.getElementById(id).value='');
-    renderEduList();
-  });
-}
-function deleteEduVideo(i){
-  if(!confirm('حذف هذا الفيديو؟')) return;
-  eduVideos.splice(i,1);
-  db.ref('academy/eduVideos').set(eduVideos).then(renderEduList);
-}
-
-/* ===== PLAYERS ===== */
-function renderPlayers(c){
-  c.innerHTML = `
-    <h2 class="page-title">👥 اللاعبون</h2>
-    <p class="page-sub">كل لاعب يحصل على صفحة ملف شخصي عامة (player.html)</p>
-    <div class="panel">
-      <h3><i class="fas fa-user-plus"></i> إضافة لاعب جديد</h3>
-      <div class="form-grid">
-        <div class="fg"><label>الاسم الأول</label><input type="text" id="pFirstName" /></div>
-        <div class="fg"><label>اللقب</label><input type="text" id="pLastName" /></div>
-        <div class="fg"><label>الفئة العمرية</label>
-          <select id="pCategory"><option>U07</option><option>U09</option><option>U11</option><option>U13</option><option>U15</option></select>
+/* ============ CATEGORIES ============ */
+function renderCategories(c){
+  const cats = STATE.categories || {};
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-layer-group"></i> الفئات العمرية</h2>
+    <p class="page-sub">تعديل معلومات كل فئة عمرية (تظهر في الصفحة الرئيسية وصفحة الفئة)</p>
+    ${CATS.map(cat => {
+      const c2 = cats[cat] || {ageRange:'',focus:'',keyIdeas:[],order:0};
+      return `<div class="cat-card-box">
+        <h4>فئة ${cat}</h4>
+        <div class="form-grid">
+          <div class="fg"><label>الفئة العمرية</label><input type="text" id="cat_${cat}_ageRange" value="${escapeHtml(c2.ageRange)}" /></div>
+          <div class="fg"><label>الترتيب</label><input type="number" id="cat_${cat}_order" value="${c2.order||0}" /></div>
+          <div class="fg full"><label>التركيز التدريبي</label><input type="text" id="cat_${cat}_focus" value="${escapeHtml(c2.focus)}" /></div>
+          <div class="fg full"><label>أهم الأفكار (كل فكرة في سطر)</label><textarea id="cat_${cat}_keyIdeas" rows="3">${escapeHtml((c2.keyIdeas||[]).join('\n'))}</textarea></div>
         </div>
-        <div class="fg"><label>رقم القميص</label><input type="number" id="pJersey" min="1" /></div>
-        <div class="fg"><label>المركز</label><input type="text" id="pPosition" placeholder="مهاجم / وسط / مدافع..." /></div>
-        <div class="fg"><label>تاريخ الميلاد</label><input type="date" id="pBirthDate" /></div>
-        <div class="fg full"><label>رابط صورة اللاعب</label><input type="text" id="pPhoto" placeholder="https://raw.githubusercontent.com/..." /></div>
-        <div class="fg full"><label>نبذة عن اللاعب</label><textarea id="pBio" rows="3"></textarea></div>
-        <div class="fg"><label>عدد الأهداف</label><input type="number" id="pGoals" value="0" /></div>
-        <div class="fg"><label>عدد التمريرات الحاسمة</label><input type="number" id="pAssists" value="0" /></div>
-        <div class="fg"><label>عدد المباريات</label><input type="number" id="pMatches" value="0" /></div>
-      </div>
-      <button class="btn btn-primary" onclick="addPlayer()"><i class="fas fa-check"></i> حفظ اللاعب</button>
-    </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> اللاعبون الحاليون (${players.length})</h3><div id="playersList"></div></div>`;
-  renderPlayersList();
+        <button class="btn btn-primary" onclick="saveCategory('${cat}')"><i class="fas fa-check"></i> حفظ فئة ${cat}</button>
+      </div>`;
+    }).join('')}`;
 }
-function renderPlayersList(){
-  const el = document.getElementById('playersList');
-  el.innerHTML = players.map(p => `
-    <div class="list-item">
-      ${p.photo ? `<img src="${p.photo}" onerror="this.style.display='none'" />` : `<div class="thumb-icon"><i class="fas fa-user"></i></div>`}
-      <div class="body"><div class="t">#${p.jersey||'-'} ${p.firstName} ${p.lastName}</div><div class="s">${p.category} — ${p.position||'-'}</div></div>
-      <div class="actions">
-        <a class="btn btn-secondary" href="player.html?id=${p.id}" target="_blank"><i class="fas fa-eye"></i></a>
-        <button class="btn btn-danger" onclick="deletePlayer('${p.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا يوجد لاعبون بعد</p>';
-}
-function addPlayer(){
-  const firstName = document.getElementById('pFirstName').value.trim();
-  const lastName = document.getElementById('pLastName').value.trim();
-  if(!firstName || !lastName) return alert('الاسم واللقب إجباريان');
+async function saveCategory(cat){
   const data = {
-    firstName, lastName,
-    category: document.getElementById('pCategory').value,
-    jersey: parseInt(document.getElementById('pJersey').value)||0,
-    position: document.getElementById('pPosition').value.trim(),
-    birthDate: document.getElementById('pBirthDate').value,
-    photo: document.getElementById('pPhoto').value.trim(),
-    bio: document.getElementById('pBio').value.trim(),
-    goals: parseInt(document.getElementById('pGoals').value)||0,
-    assists: parseInt(document.getElementById('pAssists').value)||0,
-    matches: parseInt(document.getElementById('pMatches').value)||0,
-    createdAt: new Date().toISOString()
+    ageRange: document.getElementById(`cat_${cat}_ageRange`).value.trim(),
+    focus: document.getElementById(`cat_${cat}_focus`).value.trim(),
+    order: Number(document.getElementById(`cat_${cat}_order`).value)||0,
+    keyIdeas: document.getElementById(`cat_${cat}_keyIdeas`).value.split('\n').map(s=>s.trim()).filter(Boolean)
   };
-  db.ref('academy/players').push(data).then((snap) => {
-    players.push({id:snap.key,...data});
-    ['pFirstName','pLastName','pJersey','pPosition','pBirthDate','pPhoto','pBio','pGoals','pAssists','pMatches'].forEach(id => document.getElementById(id).value='');
-    renderPlayersList();
-  });
-}
-function deletePlayer(id){
-  if(!confirm('حذف هذا اللاعب نهائياً؟')) return;
-  db.ref('academy/players/'+id).remove().then(() => {
-    players = players.filter(p => p.id !== id);
-    renderPlayersList();
-  });
+  await db.ref('academy/categories/'+cat).update(data);
+  STATE.categories[cat] = {...(STATE.categories[cat]||{}), ...data};
+  alert('✅ تم حفظ فئة '+cat);
 }
 
-/* ===== ARTICLES ===== */
-function renderArticles(c){
-  c.innerHTml = '';
-  c.innerHTML = `
-    <h2 class="page-title">📰 المقالات والأخبار</h2>
-    <p class="page-sub">كل مقال يحصل على صفحة قراءة مستقلة (article.html)</p>
-    <div class="panel">
-      <h3><i class="fas fa-pen"></i> نشر مقال جديد</h3>
-      <div class="form-grid">
-        <div class="fg full"><label>عنوان المقال</label><input type="text" id="aTitle" /></div>
-        <div class="fg full"><label>رابط الصورة الرئيسية</label><input type="text" id="aImage" placeholder="https://raw.githubusercontent.com/..." /></div>
-        <div class="fg"><label>الكاتب</label><input type="text" id="aAuthor" value="إدارة الأكاديمية" /></div>
-        <div class="fg"><label>التصنيف</label><input type="text" id="aTag" placeholder="أخبار / تدريبات / بطولات" /></div>
-        <div class="fg full"><label>ملخص قصير</label><textarea id="aExcerpt" rows="2"></textarea></div>
-        <div class="fg full"><label>محتوى المقال الكامل</label><textarea id="aContent" rows="6"></textarea></div>
-      </div>
-      <button class="btn btn-primary" onclick="addArticle()"><i class="fas fa-check"></i> نشر المقال</button>
-    </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> المقالات المنشورة (${articles.length})</h3><div id="articlesList"></div></div>`;
-  renderArticlesList();
-}
-function renderArticlesList(){
-  const el = document.getElementById('articlesList');
-  el.innerHTML = articles.map(a => `
-    <div class="list-item">
-      ${a.image ? `<img src="${a.image}" onerror="this.style.display='none'" />` : `<div class="thumb-icon"><i class="fas fa-newspaper"></i></div>`}
-      <div class="body"><div class="t">${a.title}</div><div class="s">${a.author} — ${a.tag||''}</div></div>
-      <div class="actions">
-        <a class="btn btn-secondary" href="article.html?id=${a.id}" target="_blank"><i class="fas fa-eye"></i></a>
-        <button class="btn btn-danger" onclick="deleteArticle('${a.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد مقالات بعد</p>';
-}
-function addArticle(){
-  const title = document.getElementById('aTitle').value.trim();
-  const content = document.getElementById('aContent').value.trim();
-  if(!title || !content) return alert('العنوان والمحتوى إجباريان');
-  const data = {
-    title, content,
-    image: document.getElementById('aImage').value.trim(),
-    author: document.getElementById('aAuthor').value.trim() || 'إدارة الأكاديمية',
-    tag: document.getElementById('aTag').value.trim(),
-    excerpt: document.getElementById('aExcerpt').value.trim(),
-    publishedAt: new Date().toISOString()
-  };
-  db.ref('academy/articles').push(data).then((snap) => {
-    articles.push({id:snap.key,...data});
-    ['aTitle','aImage','aTag','aExcerpt','aContent'].forEach(id => document.getElementById(id).value='');
-    renderArticlesList();
-  });
-}
-function deleteArticle(id){
-  if(!confirm('حذف هذا المقال؟')) return;
-  db.ref('academy/articles/'+id).remove().then(() => {
-    articles = articles.filter(a => a.id !== id);
-    renderArticlesList();
-  });
-}
-
-/* ===== REGISTRATIONS ===== */
+/* ============ REGISTRATIONS ============ */
 function renderRegistrations(c){
-  c.innerHTML = `
-    <h2 class="page-title">📥 طلبات التسجيل</h2>
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-inbox"></i> طلبات التسجيل</h2>
     <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية</p>
     <div class="panel"><div id="regList"></div></div>`;
   renderRegList();
 }
 function renderRegList(){
-  const el = document.getElementById('regList');
-  const sorted = [...registrations].sort((a,b) => new Date(b.submittedAt||0) - new Date(a.submittedAt||0));
-  el.innerHTML = sorted.map(r => `
+  const sorted = [...(STATE.registrations||[])].sort((a,b)=>new Date(b.submittedAt||0)-new Date(a.submittedAt||0));
+  document.getElementById('regList').innerHTML = sorted.length ? sorted.map(r => `
     <div class="list-item">
-      <div class="thumb-icon"><i class="fas fa-user"></i></div>
       <div class="body">
-        <div class="t">${r.firstName} ${r.lastName} — ${r.categoryId}</div>
-        <div class="s">ولي الأمر: ${r.guardianName} — ${r.guardianPhone} ${r.notes?'— '+r.notes:''}</div>
+        <div class="t">${escapeHtml(r.firstName||'')} ${escapeHtml(r.lastName||'')} — ${escapeHtml(r.category||'')}</div>
+        <div style="font-size:.78rem;color:var(--text-2);margin-top:4px;">ولي الأمر: ${escapeHtml(r.guardianName||'')} — ${escapeHtml(r.phone||'')}</div>
       </div>
       <span class="badge ${r.status||'pending'}">${r.status==='accepted'?'مقبول':r.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>
       <div class="actions">
         <button class="btn btn-primary" onclick="setRegStatus('${r.id}','accepted')"><i class="fas fa-check"></i></button>
         <button class="btn btn-danger" onclick="setRegStatus('${r.id}','rejected')"><i class="fas fa-times"></i></button>
       </div>
-    </div>`).join('') || '<p style="color:#999;text-align:center;padding:16px;">لا توجد طلبات بعد</p>';
+    </div>`).join('') : `<div class="empty-msg">لا توجد طلبات بعد</div>`;
 }
-function setRegStatus(id,status){
-  db.ref('academy/registrations/'+id).update({status}).then(() => {
-    const r = registrations.find(x => x.id === id);
-    if(r) r.status = status;
-    renderRegList();
-  });
+async function setRegStatus(id, status){
+  await db.ref('academy/registrations/'+id).update({status});
+  const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
+  renderRegList();
 }
 
-/* ===== SETTINGS ===== */
+/* ============ SETTINGS ============ */
 function renderSettings(c){
-  c.innerHTML = `
-    <h2 class="page-title">⚙️ الإعدادات</h2>
-    <p class="page-sub">تغيير كلمة سر لوحة التحكم</p>
-    <div class="panel">
-      <h3><i class="fas fa-key"></i> كلمة السر الجديدة</h3>
-      <div class="form-grid">
-        <div class="fg full"><label>كلمة السر الجديدة</label><input type="text" id="newPassword" placeholder="أدخل كلمة سر جديدة" /></div>
-      </div>
-      <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-check"></i> حفظ كلمة السر</button>
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-gear"></i> الإعدادات</h2>
+    <div class="panel"><h3><i class="fas fa-key"></i> تغيير كود الدخول</h3>
+      <div class="form-grid"><div class="fg full"><label>كود الدخول الجديد</label><input type="text" id="newPassword" /></div></div>
+      <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-check"></i> حفظ</button>
     </div>`;
 }
 function changePassword(){
   const val = document.getElementById('newPassword').value.trim();
-  if(val.length < 6) return alert('كلمة السر يجب أن تكون 6 أحرف على الأقل');
-  db.ref('academy/adminSettings/password').set(val).then(() => alert('✅ تم تحديث كلمة السر بنجاح'));
+  if(val.length < 5) return alert('كود الدخول يجب أن يكون 5 أحرف على الأقل');
+  db.ref('academy/adminSettings/password').set(val).then(() => alert('✅ تم تحديث كود الدخول بنجاح'));
 }
 </script>
 </body>
