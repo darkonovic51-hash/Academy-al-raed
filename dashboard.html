@@ -32,6 +32,7 @@ img{max-width:100%;}
 .login-box input{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:10px;font-family:'Cairo',sans-serif;font-size:.95rem;margin-bottom:14px;text-align:center;}
 .login-box input:focus{outline:none;border-color:var(--green2);}
 .login-box button{width:100%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;border-bottom:4px solid var(--green-dark);}
+.login-box button:disabled{opacity:.6;cursor:not-allowed;}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
 .login-loading{display:none;margin-top:16px;color:var(--green2);font-size:.85rem;}
 
@@ -90,6 +91,7 @@ img{max-width:100%;}
 .cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
 .cat-card-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
 .cat-card-box h4{font-size:.95rem;margin-bottom:10px;color:var(--green);}
+.boot-error{background:#FBEAEA;color:#B23A3A;border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:.85rem;display:none;}
 
 @media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;}}
 </style>
@@ -102,7 +104,7 @@ img{max-width:100%;}
     <h2>لوحة تحكم أكاديمية الرائد</h2>
     <p>أدخل كود الدخول للوصول إلى لوحة التحكم</p>
     <input type="password" id="loginPassword" placeholder="كود الدخول" />
-    <button onclick="tryLogin()"><i class="fas fa-unlock"></i> دخول</button>
+    <button id="loginBtn" onclick="tryLogin()"><i class="fas fa-unlock"></i> دخول</button>
     <div class="login-error" id="loginError">❌ كود الدخول غير صحيح</div>
     <div class="login-loading" id="loginLoading"><i class="fas fa-spinner fa-spin"></i> جارٍ تحميل البيانات...</div>
   </div>
@@ -248,24 +250,35 @@ const keyedSections = {
   ],display:i=>i.title}
 };
 
-let STATE = {}; // holds loaded data per section
+let STATE = {};
 
 /* ============ LOGIN ============ */
 function tryLogin(){
   const input = document.getElementById('loginPassword').value.trim();
+  const loginBtn = document.getElementById('loginBtn');
   document.getElementById('loginError').style.display='none';
-  db.ref('academy/adminSettings/password').once('value').then(snap => {
-    const stored = snap.val();
-    const expected = stored || DEFAULT_PASSWORD;
-    if(!stored) db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD);
-    if(input === expected) grantAccess(); else showLoginError();
-  }).catch(() => { if(input === DEFAULT_PASSWORD) grantAccess(); else showLoginError(); });
+  loginBtn.disabled = true;
+  db.ref('academy/adminSettings/password').once('value')
+    .then(snap => snap.val())
+    .catch(() => null) // لا نوقف العملية إذا فشلت هذه القراءة تحديداً
+    .then(stored => {
+      const expected = stored || DEFAULT_PASSWORD;
+      if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(()=>{}); }
+      if(input === expected){ grantAccess(); }
+      else { showLoginError(); loginBtn.disabled = false; }
+    });
 }
 function showLoginError(){ document.getElementById('loginError').style.display='block'; }
 async function grantAccess(){
   document.getElementById('loginLoading').style.display='block';
+  document.getElementById('loginBtn').disabled = true;
   sessionStorage.setItem('raed_admin_auth','1');
-  await loadAllData();
+  try{
+    await loadAllData();
+  }catch(err){
+    console.error('تعذّر تحميل بعض بيانات لوحة التحكم:', err);
+    // نتابع فتح اللوحة رغم ذلك بالبيانات المتاحة، بدل التعليق للأبد
+  }
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('shell').classList.add('active');
   showPage('home');
@@ -274,7 +287,7 @@ function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
 document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
 
-/* ============ LOAD ALL DATA ONCE (fast, no reloads after) ============ */
+/* ============ LOAD ALL DATA — each path independent, one failure never blocks the rest ============ */
 async function loadAllData(){
   const paths = {};
   Object.keys(arraySections).forEach(k => paths[k]=arraySections[k].path);
@@ -283,9 +296,13 @@ async function loadAllData(){
   paths.registrations = 'academy/registrations';
 
   const entries = Object.entries(paths);
-  const snaps = await Promise.all(entries.map(([,p]) => db.ref(p).once('value')));
+  const results = await Promise.all(entries.map(([, p]) =>
+    db.ref(p).once('value')
+      .then(s => s.val())
+      .catch(err => { console.warn('فشل تحميل المسار:', p, err); return null; })
+  ));
   entries.forEach(([key], i) => {
-    const val = snaps[i].val();
+    const val = results[i];
     if(key==='categories'){ STATE.categories = val || {}; return; }
     if(keyedSections[key] || key==='registrations'){
       STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
@@ -461,8 +478,7 @@ async function deleteArrayItem(key, idx){
   arr.splice(idx,1);
   await db.ref(cfg.path).set(arr);
   STATE[key] = arr;
-  renderArrayList(key, document.querySelector(`#catTabs-${key} .cat-tab.active`)?.dataset.cat || 'all');
-  document.querySelector(`.panel h3 i.fa-list`)?.closest('h3') && (document.querySelectorAll('.panel h3')[1].innerHTML = `<i class="fas fa-list"></i> العناصر الحالية (${arr.length})`);
+  renderArraySectionPage(document.getElementById('content'), key);
 }
 
 /* ============ GENERIC KEYED SECTION (players/articles) ============ */
@@ -541,8 +557,7 @@ async function deleteKeyedItem(key, id){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
   await db.ref(keyedSections[key].path+'/'+id).remove();
   STATE[key] = STATE[key].filter(x=>x.id!==id);
-  renderKeyedList(key);
-  document.querySelectorAll('.panel h3')[1].innerHTML = `<i class="fas fa-list"></i> العناصر الحالية (${STATE[key].length})`;
+  renderKeyedSectionPage(document.getElementById('content'), key);
 }
 
 /* ============ CATEGORIES ============ */
@@ -571,9 +586,11 @@ async function saveCategory(cat){
     order: Number(document.getElementById(`cat_${cat}_order`).value)||0,
     keyIdeas: document.getElementById(`cat_${cat}_keyIdeas`).value.split('\n').map(s=>s.trim()).filter(Boolean)
   };
-  await db.ref('academy/categories/'+cat).update(data);
-  STATE.categories[cat] = {...(STATE.categories[cat]||{}), ...data};
-  alert('✅ تم حفظ فئة '+cat);
+  try{
+    await db.ref('academy/categories/'+cat).update(data);
+    STATE.categories[cat] = {...(STATE.categories[cat]||{}), ...data};
+    alert('✅ تم حفظ فئة '+cat);
+  }catch(err){ console.error(err); alert('❌ تعذّر الحفظ، تحقق من اتصالك أو صلاحيات Firebase'); }
 }
 
 /* ============ REGISTRATIONS ============ */
@@ -599,9 +616,11 @@ function renderRegList(){
     </div>`).join('') : `<div class="empty-msg">لا توجد طلبات بعد</div>`;
 }
 async function setRegStatus(id, status){
-  await db.ref('academy/registrations/'+id).update({status});
-  const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
-  renderRegList();
+  try{
+    await db.ref('academy/registrations/'+id).update({status});
+    const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
+    renderRegList();
+  }catch(err){ console.error(err); alert('❌ تعذّر تحديث الحالة'); }
 }
 
 /* ============ SETTINGS ============ */
@@ -615,7 +634,9 @@ function renderSettings(c){
 function changePassword(){
   const val = document.getElementById('newPassword').value.trim();
   if(val.length < 5) return alert('كود الدخول يجب أن يكون 5 أحرف على الأقل');
-  db.ref('academy/adminSettings/password').set(val).then(() => alert('✅ تم تحديث كود الدخول بنجاح'));
+  db.ref('academy/adminSettings/password').set(val)
+    .then(() => alert('✅ تم تحديث كود الدخول بنجاح'))
+    .catch(err => { console.error(err); alert('❌ تعذّر تحديث كود الدخول'); });
 }
 </script>
 </body>
