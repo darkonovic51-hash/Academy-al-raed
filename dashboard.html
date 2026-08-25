@@ -22,7 +22,6 @@ button{font-family:'Cairo',sans-serif;cursor:pointer;}
 img{max-width:100%;}
 ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
-/* LOGIN */
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
 .login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
 .login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
@@ -34,12 +33,18 @@ img{max-width:100%;}
 .login-box button{width:100%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border:none;padding:15px;border-radius:10px;font-weight:800;border-bottom:4px solid var(--green-dark);}
 .login-box button:disabled{opacity:.6;cursor:not-allowed;}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
-.login-loading{display:none;margin-top:16px;color:var(--green2);font-size:.85rem;}
 
-/* SHELL */
-.shell{display:none;min-height:100vh;}
+.shell{display:none;min-height:100vh;flex-direction:column;}
 .shell.active{display:flex;}
-.sidebar{width:270px;background:var(--green);color:#fff;flex-shrink:0;padding:22px 0;height:100vh;position:sticky;top:0;overflow-y:auto;}
+.shell-body{display:flex;flex:1;min-height:0;}
+.top-banner{display:none;background:#FBEAEA;color:#8B1E1E;padding:12px 24px;font-size:.85rem;font-weight:700;align-items:center;gap:10px;border-bottom:2px solid #E8871E;}
+.top-banner.show{display:flex;}
+.top-banner i{font-size:1.1rem;flex-shrink:0;}
+.top-banner .rules-box{background:#1A1A1A;color:#7CFC9A;font-family:monospace;font-size:.72rem;padding:10px 14px;border-radius:8px;margin-top:8px;white-space:pre;overflow-x:auto;direction:ltr;text-align:left;}
+.top-banner .banner-content{flex:1;}
+.top-banner .close-banner{background:none;border:none;color:#8B1E1E;font-size:1.1rem;cursor:pointer;flex-shrink:0;}
+
+.sidebar{width:270px;background:var(--green);color:#fff;flex-shrink:0;padding:22px 0;overflow-y:auto;}
 .sidebar .logo{text-align:center;padding:0 20px 18px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:10px;}
 .sidebar .logo img{width:56px;height:56px;border-radius:50%;background:#fff;padding:3px;object-fit:cover;margin:0 auto 8px;}
 .sidebar .logo h3{font-size:1rem;font-weight:800;}
@@ -50,7 +55,7 @@ img{max-width:100%;}
 .menu-item:hover,.menu-item.active{background:rgba(255,255,255,0.1);color:#fff;border-right-color:var(--accent);}
 .logout-btn{margin:18px 22px 0;width:calc(100% - 44px);background:rgba(0,0,0,0.15);color:#ffb4b4;border:none;padding:10px;border-radius:8px;font-weight:700;font-size:.82rem;}
 
-.content{flex:1;padding:26px 32px;overflow-y:auto;height:100vh;}
+.content{flex:1;padding:26px 32px;overflow-y:auto;}
 .page-title{font-size:1.5rem;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
 .page-title i{color:var(--green2);}
 .page-sub{color:var(--text-2);font-size:.85rem;margin-bottom:24px;}
@@ -73,6 +78,7 @@ img{max-width:100%;}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;border:none;font-weight:700;font-size:.8rem;transition:.2s;}
 .btn-primary{background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;border-bottom:3px solid var(--green-dark);}
 .btn-primary:hover{transform:translateY(-2px);}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .btn-danger{background:#FBEAEA;color:#B23A3A;}
 .btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);}
 .btn:hover{opacity:.9;}
@@ -86,12 +92,12 @@ img{max-width:100%;}
 .badge.accepted{background:#D4EDDA;color:#155724;}
 .badge.rejected{background:#F8D7DA;color:#721C24;}
 .empty-msg{color:#999;text-align:center;padding:20px;font-size:.85rem;}
+.loading-msg{color:var(--green2);text-align:center;padding:30px;font-size:.9rem;}
 .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
 .cat-tab{padding:7px 16px;border-radius:20px;border:2px solid var(--border);background:#fff;font-weight:700;font-size:.78rem;cursor:pointer;}
 .cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
 .cat-card-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
 .cat-card-box h4{font-size:.95rem;margin-bottom:10px;color:var(--green);}
-.boot-error{background:#FBEAEA;color:#B23A3A;border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:.85rem;display:none;}
 
 @media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;}}
 </style>
@@ -106,37 +112,43 @@ img{max-width:100%;}
     <input type="password" id="loginPassword" placeholder="كود الدخول" />
     <button id="loginBtn" onclick="tryLogin()"><i class="fas fa-unlock"></i> دخول</button>
     <div class="login-error" id="loginError">❌ كود الدخول غير صحيح</div>
-    <div class="login-loading" id="loginLoading"><i class="fas fa-spinner fa-spin"></i> جارٍ تحميل البيانات...</div>
   </div>
 </div>
 
 <div class="shell" id="shell">
-  <aside class="sidebar">
-    <div class="logo">
-      <img id="sideLogo" src="" alt="" />
-      <h3>أكاديمية الرائد</h3>
-      <span>لوحة التحكم</span>
-    </div>
-    <div class="menu-item active" data-page="home"><i class="fas fa-chart-pie"></i> الرئيسية</div>
-    <div class="menu-item" data-page="ticker"><i class="fas fa-bullhorn"></i> شريط الأخبار</div>
-    <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الصور</div>
-    <div class="menu-item" data-page="eduVideos"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
-    <div class="menu-item" data-page="players"><i class="fas fa-user"></i> اللاعبون</div>
-    <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني</div>
-    <div class="menu-item" data-page="kits"><i class="fas fa-tshirt"></i> الأطقم</div>
-    <div class="menu-item" data-page="categories"><i class="fas fa-layer-group"></i> الفئات العمرية</div>
-    <div class="menu-item" data-page="sessions"><i class="fas fa-dumbbell"></i> الحصص التدريبية</div>
-    <div class="menu-item" data-page="matches"><i class="fas fa-futbol"></i> المباريات</div>
-    <div class="menu-item" data-page="tournaments"><i class="fas fa-trophy"></i> البطولات</div>
-    <div class="menu-item" data-page="messages"><i class="fas fa-envelope"></i> رسائل الفئات</div>
-    <div class="menu-item" data-page="articles"><i class="fas fa-newspaper"></i> المقالات</div>
-    <div class="menu-item" data-page="testimonials"><i class="fas fa-comment-dots"></i> آراء المتابعين</div>
-    <div class="menu-item" data-page="documents"><i class="fas fa-file-alt"></i> المستندات</div>
-    <div class="menu-item" data-page="registrations"><i class="fas fa-inbox"></i> طلبات التسجيل</div>
-    <div class="menu-item" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</div>
-    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-  </aside>
-  <main class="content" id="content"></main>
+  <div class="top-banner" id="topBanner">
+    <i class="fas fa-triangle-exclamation"></i>
+    <div class="banner-content" id="bannerContent"></div>
+    <button class="close-banner" onclick="document.getElementById('topBanner').classList.remove('show')"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="shell-body">
+    <aside class="sidebar">
+      <div class="logo">
+        <img id="sideLogo" src="" alt="" />
+        <h3>أكاديمية الرائد</h3>
+        <span>لوحة التحكم</span>
+      </div>
+      <div class="menu-item active" data-page="home"><i class="fas fa-chart-pie"></i> الرئيسية</div>
+      <div class="menu-item" data-page="ticker"><i class="fas fa-bullhorn"></i> شريط الأخبار</div>
+      <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الصور</div>
+      <div class="menu-item" data-page="eduVideos"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
+      <div class="menu-item" data-page="players"><i class="fas fa-user"></i> اللاعبون</div>
+      <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني</div>
+      <div class="menu-item" data-page="kits"><i class="fas fa-tshirt"></i> الأطقم</div>
+      <div class="menu-item" data-page="categories"><i class="fas fa-layer-group"></i> الفئات العمرية</div>
+      <div class="menu-item" data-page="sessions"><i class="fas fa-dumbbell"></i> الحصص التدريبية</div>
+      <div class="menu-item" data-page="matches"><i class="fas fa-futbol"></i> المباريات</div>
+      <div class="menu-item" data-page="tournaments"><i class="fas fa-trophy"></i> البطولات</div>
+      <div class="menu-item" data-page="messages"><i class="fas fa-envelope"></i> رسائل الفئات</div>
+      <div class="menu-item" data-page="articles"><i class="fas fa-newspaper"></i> المقالات</div>
+      <div class="menu-item" data-page="testimonials"><i class="fas fa-comment-dots"></i> آراء المتابعين</div>
+      <div class="menu-item" data-page="documents"><i class="fas fa-file-alt"></i> المستندات</div>
+      <div class="menu-item" data-page="registrations"><i class="fas fa-inbox"></i> طلبات التسجيل</div>
+      <div class="menu-item" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</div>
+      <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+    </aside>
+    <main class="content" id="content"></main>
+  </div>
 </div>
 
 <script>
@@ -155,6 +167,12 @@ const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al
 document.getElementById('sideLogo').src = LOGO_URL;
 const DEFAULT_PASSWORD = "raed2627";
 const CATS = ["U07","U09","U11","U13","U15"];
+const RULES_SNIPPET = `{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}`;
 
 function escapeHtml(s){ s=(s===undefined||s===null)?'':String(s); return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function fileToBase64(file, maxDim=1200, quality=.75){
@@ -168,6 +186,28 @@ function fileToBase64(file, maxDim=1200, quality=.75){
     }; img.onerror=()=>reject(new Error('img fail')); img.src=e.target.result; };
     r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file);
   });
+}
+
+/* ============ ERROR BANNER — shows REAL diagnosis, not a generic message ============ */
+function showError(err, context){
+  console.error(context||'خطأ', err);
+  const code = err && err.code ? err.code : '';
+  const message = err && err.message ? err.message : String(err);
+  let html = `<b>⚠️ ${context ? 'تعذّر: '+context : 'حدث خطأ'}</b><br/><span style="font-size:.78rem;opacity:.85;">${escapeHtml(code)} — ${escapeHtml(message)}</span>`;
+  if(code === 'PERMISSION_DENIED' || /permission/i.test(message)){
+    html += `<div style="margin-top:8px;">السبب: قواعد أمان Firebase Realtime Database تمنع القراءة/الكتابة حالياً.<br/>
+      اذهب إلى Firebase Console ← Realtime Database ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish:</div>
+      <div class="rules-box">${RULES_SNIPPET}</div>`;
+  }
+  document.getElementById('bannerContent').innerHTML = html;
+  document.getElementById('topBanner').classList.add('show');
+}
+function toastOk(msg){
+  const b = document.createElement('div');
+  b.style.cssText = 'position:fixed;bottom:24px;left:24px;background:#1B6B3F;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;font-size:.85rem;z-index:99999;box-shadow:0 10px 30px rgba(0,0,0,.25);';
+  b.textContent = '✅ ' + msg;
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(), 2500);
 }
 
 /* ============ SECTION CONFIGS ============ */
@@ -250,66 +290,73 @@ const keyedSections = {
   ],display:i=>i.title}
 };
 
-let STATE = {};
+let STATE = {}; // section data cache — populated lazily on first visit to each page
 
-/* ============ LOGIN ============ */
+/* ============ LOGIN — instant entry, password check only ============ */
 function tryLogin(){
   const input = document.getElementById('loginPassword').value.trim();
   const loginBtn = document.getElementById('loginBtn');
   document.getElementById('loginError').style.display='none';
-  loginBtn.disabled = true;
+  loginBtn.disabled = true; loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحقق...';
   db.ref('academy/adminSettings/password').once('value')
     .then(snap => snap.val())
-    .catch(() => null) // لا نوقف العملية إذا فشلت هذه القراءة تحديداً
+    .catch(err => { console.warn('تعذّر قراءة كود الدخول المخزّن، سيُستخدم الكود الافتراضي', err); return null; })
     .then(stored => {
       const expected = stored || DEFAULT_PASSWORD;
       if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(()=>{}); }
       if(input === expected){ grantAccess(); }
-      else { showLoginError(); loginBtn.disabled = false; }
+      else { document.getElementById('loginError').style.display='block'; loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول'; }
     });
 }
-function showLoginError(){ document.getElementById('loginError').style.display='block'; }
-async function grantAccess(){
-  document.getElementById('loginLoading').style.display='block';
-  document.getElementById('loginBtn').disabled = true;
+function grantAccess(){
   sessionStorage.setItem('raed_admin_auth','1');
-  try{
-    await loadAllData();
-  }catch(err){
-    console.error('تعذّر تحميل بعض بيانات لوحة التحكم:', err);
-    // نتابع فتح اللوحة رغم ذلك بالبيانات المتاحة، بدل التعليق للأبد
-  }
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('shell').classList.add('active');
-  showPage('home');
+  showPage('home'); // فوري — لا انتظار لأي بيانات
+  runConnectivityCheck(); // فحص صامت بالخلفية دون تعطيل الواجهة
 }
 function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
 document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
 
-/* ============ LOAD ALL DATA — each path independent, one failure never blocks the rest ============ */
-async function loadAllData(){
-  const paths = {};
-  Object.keys(arraySections).forEach(k => paths[k]=arraySections[k].path);
-  Object.keys(keyedSections).forEach(k => paths[k]=keyedSections[k].path);
-  paths.categories = 'academy/categories';
-  paths.registrations = 'academy/registrations';
+/* ============ SILENT CONNECTIVITY/RULES CHECK (runs after entry, non-blocking) ============ */
+function runConnectivityCheck(){
+  db.ref('academy/adminSettings/_connCheck').set({ts:Date.now()})
+    .then(() => db.ref('academy/adminSettings/_connCheck').remove())
+    .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
+}
 
-  const entries = Object.entries(paths);
-  const results = await Promise.all(entries.map(([, p]) =>
-    db.ref(p).once('value')
-      .then(s => s.val())
-      .catch(err => { console.warn('فشل تحميل المسار:', p, err); return null; })
-  ));
-  entries.forEach(([key], i) => {
-    const val = results[i];
-    if(key==='categories'){ STATE.categories = val || {}; return; }
-    if(keyedSections[key] || key==='registrations'){
-      STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
-    } else {
-      STATE[key] = Array.isArray(val) ? val : (val ? Object.values(val) : []);
-    }
-  });
+/* ============ LAZY LOAD — each section fetches its own data once, on first visit ============ */
+async function ensureArrayLoaded(key){
+  if(STATE[key] !== undefined) return;
+  try{
+    const snap = await db.ref(arraySections[key].path).once('value');
+    const val = snap.val();
+    STATE[key] = Array.isArray(val) ? val : (val ? Object.values(val) : []);
+  }catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+arraySections[key].title+'»'); }
+}
+async function ensureKeyedLoaded(key){
+  if(STATE[key] !== undefined) return;
+  try{
+    const snap = await db.ref(keyedSections[key].path).once('value');
+    const val = snap.val();
+    STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+keyedSections[key].title+'»'); }
+}
+async function ensureCategoriesLoaded(){
+  if(STATE.categories !== undefined) return;
+  try{
+    const snap = await db.ref('academy/categories').once('value');
+    STATE.categories = snap.val() || {};
+  }catch(err){ STATE.categories = {}; showError(err, 'تحميل الفئات العمرية'); }
+}
+async function ensureRegistrationsLoaded(){
+  if(STATE.registrations !== undefined) return;
+  try{
+    const snap = await db.ref('academy/registrations').once('value');
+    const val = snap.val();
+    STATE.registrations = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE.registrations = []; showError(err, 'تحميل طلبات التسجيل'); }
 }
 
 /* ============ NAV ============ */
@@ -320,17 +367,20 @@ document.querySelectorAll('.menu-item').forEach(item => {
     showPage(item.dataset.page);
   });
 });
-function showPage(page){
+async function showPage(page){
   const c = document.getElementById('content');
-  if(page==='home') renderHome(c);
-  else if(page==='categories') renderCategories(c);
-  else if(page==='registrations') renderRegistrations(c);
-  else if(page==='settings') renderSettings(c);
-  else if(arraySections[page]) renderArraySectionPage(c, page);
-  else if(keyedSections[page]) renderKeyedSectionPage(c, page);
+  if(page==='home'){ renderHomeSkeleton(c); await ensureKeyedLoaded('players'); await ensureKeyedLoaded('articles'); await ensureArrayLoaded('gallery'); await ensureRegistrationsLoaded(); renderHome(c); }
+  else if(page==='categories'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureCategoriesLoaded(); renderCategories(c); }
+  else if(page==='registrations'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureRegistrationsLoaded(); renderRegistrations(c); }
+  else if(page==='settings'){ renderSettings(c); }
+  else if(arraySections[page]){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureArrayLoaded(page); renderArraySectionPage(c, page); }
+  else if(keyedSections[page]){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded(page); renderKeyedSectionPage(c, page); }
 }
 
 /* ============ HOME ============ */
+function renderHomeSkeleton(c){
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2><p class="page-sub">جارٍ تحميل الإحصائيات...</p>`;
+}
 function renderHome(c){
   const pending = (STATE.registrations||[]).filter(r=>r.status==='pending').length;
   c.innerHTML = `
@@ -385,7 +435,7 @@ function renderArraySectionPage(c, key){
       <div class="form-grid">${formHtml}</div>
       <input type="hidden" id="editIndex-${key}" value="-1" />
       <div style="display:flex;gap:10px;">
-        <button class="btn btn-primary" onclick="saveArrayItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
+        <button class="btn btn-primary" id="saveBtn-${key}" onclick="saveArrayItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
         <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelArrayEdit('${key}')">إلغاء التعديل</button>
       </div>
     </div>
@@ -425,18 +475,18 @@ async function collectFields(fields){
 }
 async function saveArrayItem(key){
   const cfg = arraySections[key];
-  const btn = event.target.closest('button'); const origHtml = btn.innerHTML;
+  const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
     let newItem;
     if(cfg.simple){
       const v = document.getElementById('f_value').value.trim();
-      if(!v){ alert('أدخل قيمة'); return; }
+      if(!v){ alert('أدخل قيمة'); btn.disabled=false; btn.innerHTML=origHtml; return; }
       newItem = v;
     } else {
       let data = await collectFields(cfg.fields);
       const missing = cfg.fields.filter(f=>f.required && !data[f.key]);
-      if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); return; }
+      if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); btn.disabled=false; btn.innerHTML=origHtml; return; }
       if(cfg.transform) data = cfg.transform(data);
       newItem = data;
     }
@@ -447,7 +497,8 @@ async function saveArrayItem(key){
     STATE[key] = arr;
     cancelArrayEdit(key);
     renderArraySectionPage(document.getElementById('content'), key);
-  } catch(err){ console.error(err); alert('حدث خطأ أثناء الحفظ'); }
+    toastOk('تم الحفظ بنجاح');
+  } catch(err){ showError(err, 'حفظ عنصر في «'+cfg.title+'»'); }
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 function editArrayItem(key, idx){
@@ -475,10 +526,14 @@ async function deleteArrayItem(key, idx){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
   const cfg = arraySections[key];
   let arr = STATE[key] || [];
+  const backup = [...arr];
   arr.splice(idx,1);
-  await db.ref(cfg.path).set(arr);
-  STATE[key] = arr;
-  renderArraySectionPage(document.getElementById('content'), key);
+  try{
+    await db.ref(cfg.path).set(arr);
+    STATE[key] = arr;
+    renderArraySectionPage(document.getElementById('content'), key);
+    toastOk('تم الحذف');
+  }catch(err){ STATE[key] = backup; showError(err, 'حذف عنصر من «'+cfg.title+'»'); }
 }
 
 /* ============ GENERIC KEYED SECTION (players/articles) ============ */
@@ -492,7 +547,7 @@ function renderKeyedSectionPage(c, key){
       <div class="form-grid">${formHtml}</div>
       <input type="hidden" id="editId-${key}" value="" />
       <div style="display:flex;gap:10px;">
-        <button class="btn btn-primary" onclick="saveKeyedItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
+        <button class="btn btn-primary" id="saveBtn-${key}" onclick="saveKeyedItem('${key}')"><i class="fas fa-check"></i> حفظ</button>
         <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelKeyedEdit('${key}')">إلغاء التعديل</button>
       </div>
     </div>
@@ -515,12 +570,12 @@ function renderKeyedList(key){
 }
 async function saveKeyedItem(key){
   const cfg = keyedSections[key];
-  const btn = event.target.closest('button'); const origHtml = btn.innerHTML;
+  const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
     let data = await collectFields(cfg.fields);
     const missing = cfg.fields.filter(f=>f.required && !data[f.key]);
-    if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); return; }
+    if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); btn.disabled=false; btn.innerHTML=origHtml; return; }
     const id = document.getElementById('editId-'+key).value;
     if(id){
       await db.ref(cfg.path+'/'+id).update(data);
@@ -533,7 +588,8 @@ async function saveKeyedItem(key){
     }
     cancelKeyedEdit(key);
     renderKeyedSectionPage(document.getElementById('content'), key);
-  } catch(err){ console.error(err); alert('حدث خطأ أثناء الحفظ'); }
+    toastOk('تم الحفظ بنجاح');
+  } catch(err){ showError(err, 'حفظ في «'+cfg.title+'»'); }
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 function editKeyedItem(key, id){
@@ -555,9 +611,12 @@ function cancelKeyedEdit(key){
 }
 async function deleteKeyedItem(key, id){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
-  await db.ref(keyedSections[key].path+'/'+id).remove();
-  STATE[key] = STATE[key].filter(x=>x.id!==id);
-  renderKeyedSectionPage(document.getElementById('content'), key);
+  try{
+    await db.ref(keyedSections[key].path+'/'+id).remove();
+    STATE[key] = STATE[key].filter(x=>x.id!==id);
+    renderKeyedSectionPage(document.getElementById('content'), key);
+    toastOk('تم الحذف');
+  }catch(err){ showError(err, 'حذف من «'+keyedSections[key].title+'»'); }
 }
 
 /* ============ CATEGORIES ============ */
@@ -575,11 +634,13 @@ function renderCategories(c){
           <div class="fg full"><label>التركيز التدريبي</label><input type="text" id="cat_${cat}_focus" value="${escapeHtml(c2.focus)}" /></div>
           <div class="fg full"><label>أهم الأفكار (كل فكرة في سطر)</label><textarea id="cat_${cat}_keyIdeas" rows="3">${escapeHtml((c2.keyIdeas||[]).join('\n'))}</textarea></div>
         </div>
-        <button class="btn btn-primary" onclick="saveCategory('${cat}')"><i class="fas fa-check"></i> حفظ فئة ${cat}</button>
+        <button class="btn btn-primary" id="saveCat-${cat}" onclick="saveCategory('${cat}')"><i class="fas fa-check"></i> حفظ فئة ${cat}</button>
       </div>`;
     }).join('')}`;
 }
 async function saveCategory(cat){
+  const btn = document.getElementById('saveCat-'+cat); const origHtml = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   const data = {
     ageRange: document.getElementById(`cat_${cat}_ageRange`).value.trim(),
     focus: document.getElementById(`cat_${cat}_focus`).value.trim(),
@@ -589,8 +650,9 @@ async function saveCategory(cat){
   try{
     await db.ref('academy/categories/'+cat).update(data);
     STATE.categories[cat] = {...(STATE.categories[cat]||{}), ...data};
-    alert('✅ تم حفظ فئة '+cat);
-  }catch(err){ console.error(err); alert('❌ تعذّر الحفظ، تحقق من اتصالك أو صلاحيات Firebase'); }
+    toastOk('تم حفظ فئة '+cat);
+  }catch(err){ showError(err, 'حفظ فئة '+cat); }
+  finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 
 /* ============ REGISTRATIONS ============ */
@@ -620,7 +682,8 @@ async function setRegStatus(id, status){
     await db.ref('academy/registrations/'+id).update({status});
     const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
     renderRegList();
-  }catch(err){ console.error(err); alert('❌ تعذّر تحديث الحالة'); }
+    toastOk('تم التحديث');
+  }catch(err){ showError(err, 'تحديث حالة طلب التسجيل'); }
 }
 
 /* ============ SETTINGS ============ */
@@ -628,15 +691,18 @@ function renderSettings(c){
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-gear"></i> الإعدادات</h2>
     <div class="panel"><h3><i class="fas fa-key"></i> تغيير كود الدخول</h3>
       <div class="form-grid"><div class="fg full"><label>كود الدخول الجديد</label><input type="text" id="newPassword" /></div></div>
-      <button class="btn btn-primary" onclick="changePassword()"><i class="fas fa-check"></i> حفظ</button>
+      <button class="btn btn-primary" id="savePassBtn" onclick="changePassword()"><i class="fas fa-check"></i> حفظ</button>
     </div>`;
 }
 function changePassword(){
   const val = document.getElementById('newPassword').value.trim();
   if(val.length < 5) return alert('كود الدخول يجب أن يكون 5 أحرف على الأقل');
+  const btn = document.getElementById('savePassBtn'); const orig = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   db.ref('academy/adminSettings/password').set(val)
-    .then(() => alert('✅ تم تحديث كود الدخول بنجاح'))
-    .catch(err => { console.error(err); alert('❌ تعذّر تحديث كود الدخول'); });
+    .then(() => toastOk('تم تحديث كود الدخول بنجاح'))
+    .catch(err => showError(err, 'تحديث كود الدخول'))
+    .finally(() => { btn.disabled=false; btn.innerHTML=orig; });
 }
 </script>
 </body>
