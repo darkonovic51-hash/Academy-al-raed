@@ -22,6 +22,7 @@ button{font-family:'Cairo',sans-serif;cursor:pointer;}
 img{max-width:100%;}
 ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
+/* ============ شاشة تسجيل الدخول ============ */
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
 .login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
 .login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
@@ -34,6 +35,54 @@ img{max-width:100%;}
 .login-box button:disabled{opacity:.6;cursor:not-allowed;}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
 
+/* ============ شاشة التحميل العامة (منقولة) ============ */
+.loading-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;justify-content:center;align-items:center;flex-direction:column;background:rgba(10,20,15,0.82);backdrop-filter:blur(8px);color:#fff;}
+.loading-overlay.active{display:flex;}
+.loading-overlay img.logo{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#fff;padding:4px;animation:pulseLogo 1.2s ease-in-out infinite;}
+.loading-overlay .spinner{margin-top:20px;width:56px;height:56px;border:6px solid rgba(255,255,255,0.15);border-top-color:var(--green-light);border-radius:50%;animation:spin .8s linear infinite;}
+.loading-overlay .msg{margin-top:18px;font-size:1.15rem;font-weight:800;color:var(--green-light);}
+.loading-overlay .sub{font-size:.8rem;color:rgba(255,255,255,0.55);margin-top:4px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes pulseLogo{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+
+/* ============ نظام التنبيهات (Toast) منقول ============ */
+.toast-container{position:fixed;bottom:20px;left:20px;z-index:999999;display:flex;flex-direction:column;gap:8px;}
+.toast{padding:12px 22px;border-radius:10px;color:#fff;font-weight:700;font-size:.85rem;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:slideUp .3s ease;min-width:200px;}
+.toast-success{background:#1B6B3F;}
+.toast-error{background:#C0392B;}
+.toast-info{background:#2E86C1;}
+.toast-warning{background:#E8871E;}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ============ لوحة التصحيح (Debug) منقولة ============ */
+#debugPanel{position:fixed;bottom:80px;left:10px;z-index:999997;background:rgba(10,20,15,0.92);color:#7CFC9A;font-family:monospace;font-size:11px;padding:12px 16px;border-radius:12px;max-width:280px;min-width:200px;max-height:50vh;overflow-y:auto;border:2px solid var(--green2);box-shadow:0 4px 30px rgba(0,0,0,.5);direction:ltr;text-align:left;display:none;}
+#debugPanel.minimized{max-height:44px;overflow:hidden;cursor:pointer;}
+#debugPanel .debug-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
+#debugPanel .debug-header .debug-title{color:var(--green-light);font-weight:700;font-size:12px;}
+#debugPanel .debug-header button{background:none;border:none;color:#888;cursor:pointer;font-size:14px;padding:2px 4px;}
+#debugPanel .debug-header button:hover{color:#fff;}
+#debugPanel .debug-line{padding:2px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;}
+#debugPanel .debug-line .label{color:#888;}
+#debugPanel .debug-line .value{font-weight:700;}
+#debugPanel .debug-log{margin-top:6px;max-height:150px;overflow-y:auto;font-size:9px;color:#aaa;border-top:1px solid rgba(255,255,255,.1);padding-top:4px;}
+#debugPanel .debug-log .log-entry{display:flex;gap:6px;padding:2px 0;}
+#debugPanel .debug-log .log-time{color:#555;min-width:38px;font-size:8px;}
+#debugToggleBtn{position:fixed;bottom:20px;right:20px;z-index:999996;background:rgba(27,107,63,0.9);border:2px solid var(--green2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(27,107,63,.35);}
+#debugToggleBtn.active{background:var(--green-dark);}
+
+/* ============ الترويسة الرسمية منقولة ============ */
+.official-letterhead{background:#fff;border:2px solid var(--green);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.official-letterhead .ol-left{display:flex;align-items:center;gap:14px;}
+.official-letterhead .ol-left img.ol-logo{height:56px;width:56px;border-radius:50%;object-fit:cover;}
+.official-letterhead .ol-left img.ol-flag{height:44px;width:auto;border:1px solid #ddd;}
+.official-letterhead .ol-titles{text-align:center;flex:1;}
+.official-letterhead .ol-line1{font-weight:800;font-size:.92rem;color:var(--text);}
+.official-letterhead .ol-line2{font-weight:700;font-size:.8rem;color:var(--green2);margin-top:2px;}
+.official-letterhead .ol-line3{font-weight:900;font-size:1.05rem;color:var(--accent);margin-top:2px;}
+.official-letterhead .ol-right{text-align:left;font-size:.78rem;color:#333;line-height:1.8;}
+.official-letterhead .ol-right strong{color:var(--text);}
+
+/* ============ الهيكل العام ============ */
 .shell{display:none;min-height:100vh;flex-direction:column;}
 .shell.active{display:flex;}
 .shell-body{display:flex;flex:1;min-height:0;}
@@ -45,7 +94,7 @@ img{max-width:100%;}
 .top-banner .close-banner{background:none;border:none;color:#8B1E1E;font-size:1.1rem;cursor:pointer;flex-shrink:0;}
 
 .sidebar{width:270px;background:var(--green);color:#fff;flex-shrink:0;padding:22px 0;overflow-y:auto;}
-.sidebar .logo{text-align:center;padding:0 20px 18px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:10px;}
+.sidebar .logo{text-align:center;padding:0 20px 18px;border-bottom:1px solid rgba(255,255,255,0.15);margin-bottom:10px;cursor:pointer;}
 .sidebar .logo img{width:56px;height:56px;border-radius:50%;background:#fff;padding:3px;object-fit:cover;margin:0 auto 8px;}
 .sidebar .logo h3{font-size:1rem;font-weight:800;}
 .sidebar .logo span{font-size:.68rem;color:rgba(255,255,255,0.6);}
@@ -56,12 +105,17 @@ img{max-width:100%;}
 .logout-btn{margin:18px 22px 0;width:calc(100% - 44px);background:rgba(0,0,0,0.15);color:#ffb4b4;border:none;padding:10px;border-radius:8px;font-weight:700;font-size:.82rem;}
 
 .content{flex:1;padding:26px 32px;overflow-y:auto;}
+.content.page-anim{animation:pageFadeIn .45s cubic-bezier(.16,1,.3,1);}
+@keyframes pageFadeIn{0%{opacity:0;transform:translateY(14px);}100%{opacity:1;transform:translateY(0);}}
 .page-title{font-size:1.5rem;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
 .page-title i{color:var(--green2);}
 .page-sub{color:var(--text-2);font-size:.85rem;margin-bottom:24px;}
 
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-.stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green2),var(--accent));transform:scaleX(0);transform-origin:right;transition:transform .35s ease;}
+.stat-card:hover::before{transform:scaleX(1);}
+.stat-card:hover{transform:translateY(-4px);}
 .stat-card .n{font-size:1.8rem;font-weight:800;color:var(--green);font-family:'Barlow Condensed',sans-serif;}
 .stat-card .l{font-size:.76rem;color:var(--text-2);font-weight:600;}
 
@@ -81,17 +135,25 @@ img{max-width:100%;}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .btn-danger{background:#FBEAEA;color:#B23A3A;}
 .btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);}
+.btn-success{background:#D4EDDA;color:#155724;}
 .btn:hover{opacity:.9;}
 
-.list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;}
+.list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;animation:cardEnterAnim .4s cubic-bezier(.16,1,.3,1) backwards;}
+@keyframes cardEnterAnim{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .list-item img.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 .list-item .body{flex:1;min-width:0;}
 .list-item .t{font-weight:700;font-size:.86rem;}
-.list-item .actions{display:flex;gap:6px;flex-shrink:0;}
+.list-item .actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
 .badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;}
 .badge.pending{background:#FFF3D6;color:#B8860B;}
 .badge.accepted{background:#D4EDDA;color:#155724;}
 .badge.rejected{background:#F8D7DA;color:#721C24;}
+.badge.healthy{background:#D4EDDA;color:#155724;}
+.badge.injured{background:#F8D7DA;color:#721C24;}
+.badge.recovering{background:#FFF3D6;color:#B8860B;}
+.badge.ready{background:#D6EAF8;color:#154360;}
+.badge.paid{background:#D4EDDA;color:#155724;}
+.badge.unpaid{background:#F8D7DA;color:#721C24;}
 .empty-msg{color:#999;text-align:center;padding:20px;font-size:.85rem;}
 .loading-msg{color:var(--green2);text-align:center;padding:30px;font-size:.9rem;}
 .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
@@ -99,15 +161,25 @@ img{max-width:100%;}
 .cat-tab.active{background:var(--green);color:#fff;border-color:var(--green);}
 .cat-card-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
 .cat-card-box h4{font-size:.95rem;margin-bottom:10px;color:var(--green);}
+.fawj-card{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:16px;margin-bottom:14px;cursor:pointer;transition:.2s;}
+.fawj-card:hover{transform:translateY(-3px);}
+.fawj-card .n{font-size:1.8rem;font-weight:900;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-align:center;}
 
-/* IMAGE UPLOAD FIELD */
+/* ============ الجداول (منقولة) ============ */
+.table-wrap{background:#fff;border-radius:14px;overflow:auto;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px;}
+.table-wrap table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:640px;}
+.table-wrap th{background:var(--green);color:#fff;padding:11px 8px;text-align:center;font-weight:700;white-space:nowrap;font-size:.75rem;}
+.table-wrap td{padding:9px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
+.table-wrap tr:hover td{background:rgba(33,150,83,0.04);}
+
+/* ============ صورة رفع ============ */
 .image-upload-wrap{border:2px dashed var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
 .image-upload-wrap input[type=file]{flex:1;font-size:.78rem;}
 .image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
 .image-preview img{width:100%;height:100%;object-fit:cover;}
 .image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
 
-@media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
+@media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -123,6 +195,35 @@ img{max-width:100%;}
   </div>
 </div>
 
+<!-- ===== شاشة تحميل عامة (منقولة) ===== -->
+<div class="loading-overlay" id="loadingOverlay">
+  <img class="logo" id="loadingLogo" src="" alt="" />
+  <div class="spinner"></div>
+  <div class="msg" id="loadingMsg">جارٍ التنفيذ...</div>
+  <div class="sub">أكاديمية الرائد</div>
+</div>
+
+<!-- ===== التنبيهات (منقولة) ===== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ===== زر ولوحة التصحيح (منقولة) ===== -->
+<button id="debugToggleBtn" onclick="toggleDebugMode()" title="تفعيل/تعطيل وضع التصحيح"><i class="fas fa-bug"></i></button>
+<div id="debugPanel">
+  <div class="debug-header" onclick="toggleDebugPanel()">
+    <span class="debug-title">🔍 DEBUG</span>
+    <div>
+      <button onclick="event.stopPropagation();clearDebugLog()"><i class="fas fa-trash-alt"></i></button>
+      <button onclick="event.stopPropagation();toggleDebugPanel()"><i class="fas fa-chevron-down" id="debugToggleIcon"></i></button>
+    </div>
+  </div>
+  <div id="debugBody">
+    <div class="debug-line"><span class="label">🔥 Firebase:</span><span class="value" id="debugFirebase" style="color:#7CFC9A;">متصل</span></div>
+    <div class="debug-line"><span class="label">⚡ العمليات:</span><span class="value" id="debugOps">0</span></div>
+    <div class="debug-line"><span class="label">📦 لاعبون محملون:</span><span class="value" id="debugDataCount">0</span></div>
+    <div class="debug-log" id="debugLog"><div style="color:#666;text-align:center;padding:4px 0;">🚀 جاهز للتصحيح</div></div>
+  </div>
+</div>
+
 <div class="shell" id="shell">
   <div class="top-banner" id="topBanner">
     <i class="fas fa-triangle-exclamation"></i>
@@ -131,7 +232,7 @@ img{max-width:100%;}
   </div>
   <div class="shell-body">
     <aside class="sidebar">
-      <div class="logo">
+      <div class="logo" id="sidebarLogoWrap">
         <img id="sideLogo" src="" alt="" />
         <h3>أكاديمية الرائد</h3>
         <span>لوحة التحكم</span>
@@ -141,7 +242,10 @@ img{max-width:100%;}
       <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الصور</div>
       <div class="menu-item" data-page="eduVideos"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
       <div class="menu-item" data-page="players"><i class="fas fa-user"></i> اللاعبون</div>
-      <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني</div>
+      <div class="menu-item" data-page="categoryFiles"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</div>
+      <div class="menu-item" data-page="medical"><i class="fas fa-notes-medical"></i> السجلات الطبية</div>
+      <div class="menu-item" data-page="subscriptions"><i class="fas fa-money-check-dollar"></i> متابعة الاشتراكات</div>
+      <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني / الموارد البشرية</div>
       <div class="menu-item" data-page="kits"><i class="fas fa-tshirt"></i> الأطقم</div>
       <div class="menu-item" data-page="categories"><i class="fas fa-layer-group"></i> الفئات العمرية</div>
       <div class="menu-item" data-page="sessions"><i class="fas fa-dumbbell"></i> الحصص التدريبية</div>
@@ -152,6 +256,7 @@ img{max-width:100%;}
       <div class="menu-item" data-page="testimonials"><i class="fas fa-comment-dots"></i> آراء المتابعين</div>
       <div class="menu-item" data-page="documents"><i class="fas fa-file-alt"></i> المستندات</div>
       <div class="menu-item" data-page="registrations"><i class="fas fa-inbox"></i> طلبات التسجيل</div>
+      <div class="menu-item" data-page="logs"><i class="fas fa-clipboard-list"></i> سجل التعديلات</div>
       <div class="menu-item" data-page="settings"><i class="fas fa-gear"></i> الإعدادات</div>
       <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
     </aside>
@@ -173,8 +278,10 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
 document.getElementById('sideLogo').src = LOGO_URL;
+document.getElementById('loadingLogo').src = LOGO_URL;
 const DEFAULT_PASSWORD = "raed2627";
 const CATS = ["U07","U09","U11","U13","U15"];
+const FAWJ_LIST = ["A","B","C"];
 const RULES_SNIPPET = `{
   "rules": {
     ".read": true,
@@ -201,6 +308,94 @@ function previewImageField(key, input){
   reader.onload = e => { const p=document.getElementById('preview_'+key); if(p) p.innerHTML = `<img src="${e.target.result}" />`; };
   reader.readAsDataURL(input.files[0]);
 }
+function genParentCode(){
+  return 'P' + Date.now().toString(36).slice(-4).toUpperCase() + Math.floor(100 + Math.random()*900);
+}
+function currentYearMonth(){
+  const d = new Date();
+  return d.getFullYear() + '_' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+/* ============ نظام التنبيهات (Toast) - منقول ومعمم ============ */
+function showToast(message, type){
+  type = type || 'info';
+  const container = document.getElementById('toastContainer');
+  if(!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast toast-' + type;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(()=>{ toast.style.opacity='0'; toast.style.transition='opacity .3s'; setTimeout(()=>toast.remove(),300); }, 2600);
+}
+function toastOk(msg){ showToast(msg, 'success'); }
+
+/* ============ شاشة التحميل العامة - منقولة ============ */
+function showLoading(msg){
+  const overlay = document.getElementById('loadingOverlay');
+  if(!overlay) return;
+  document.getElementById('loadingMsg').textContent = msg || 'جارٍ التنفيذ...';
+  overlay.classList.add('active');
+}
+function hideLoading(){
+  const overlay = document.getElementById('loadingOverlay');
+  if(overlay) overlay.classList.remove('active');
+}
+
+/* ============ لوحة التصحيح (Debug) - منقولة ============ */
+let DEBUG_MODE = false;
+let debugLogs = [];
+let debugOpCount = 0;
+function addDebugLog(message, type){
+  const time = new Date().toLocaleTimeString('fr-FR',{hour12:false});
+  debugLogs.unshift({time, message, type: type||'info'});
+  if(debugLogs.length>50) debugLogs.pop();
+  debugOpCount++;
+  const logEl = document.getElementById('debugLog');
+  const opsEl = document.getElementById('debugOps');
+  const countEl = document.getElementById('debugDataCount');
+  if(opsEl) opsEl.textContent = debugOpCount;
+  if(countEl) countEl.textContent = (STATE.players||[]).length;
+  if(!logEl) return;
+  logEl.innerHTML = debugLogs.map(l=>`<div class="log-entry"><span class="log-time">${l.time}</span><span>${escapeHtml(l.message)}</span></div>`).join('');
+}
+function clearDebugLog(){ debugLogs=[]; addDebugLog('🗑️ تم مسح السجل'); }
+function toggleDebugPanel(){
+  const panel = document.getElementById('debugPanel');
+  const icon = document.getElementById('debugToggleIcon');
+  panel.classList.toggle('minimized');
+  if(icon) icon.className = panel.classList.contains('minimized') ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+}
+function toggleDebugMode(){
+  DEBUG_MODE = !DEBUG_MODE;
+  const panel = document.getElementById('debugPanel');
+  const btn = document.getElementById('debugToggleBtn');
+  if(DEBUG_MODE){ panel.style.display='block'; btn.classList.add('active'); addDebugLog('🔍 تم تفعيل وضع التصحيح','success'); showToast('تم تفعيل وضع التصحيح','info'); }
+  else { panel.style.display='none'; btn.classList.remove('active'); showToast('تم تعطيل وضع التصحيح','info'); }
+}
+document.addEventListener('keydown', e => { if(e.ctrlKey && e.shiftKey && e.key==='D'){ e.preventDefault(); toggleDebugMode(); } });
+(function(){
+  let clickCount=0, clickTimer=null;
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const logo = document.getElementById('sidebarLogoWrap');
+    if(logo){
+      logo.addEventListener('click', ()=>{
+        clickCount++;
+        if(clickCount===5){ clickCount=0; toggleDebugMode(); }
+        clearTimeout(clickTimer); clickTimer=setTimeout(()=>clickCount=0, 2000);
+      });
+    }
+  });
+})();
+
+/* ============ سجل التعديلات (Logs) - منقول ============ */
+function addLog(action, details){
+  db.ref('academy/logs').push({
+    action: action,
+    details: details,
+    timestamp: Date.now(),
+    timeFormatted: new Date().toLocaleString('ar-DZ',{dateStyle:'medium',timeStyle:'short'})
+  }).catch(()=>{});
+}
 
 /* ============ ERROR BANNER ============ */
 function showError(err, context){
@@ -215,13 +410,33 @@ function showError(err, context){
   }
   document.getElementById('bannerContent').innerHTML = html;
   document.getElementById('topBanner').classList.add('show');
+  showToast(context ? ('تعذّر: '+context) : 'حدث خطأ', 'error');
+  addDebugLog('❌ '+(context||'خطأ')+': '+message, 'error');
 }
-function toastOk(msg){
-  const b = document.createElement('div');
-  b.style.cssText = 'position:fixed;bottom:24px;left:24px;background:#1B6B3F;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;font-size:.85rem;z-index:99999;box-shadow:0 10px 30px rgba(0,0,0,.25);';
-  b.textContent = '✅ ' + msg;
-  document.body.appendChild(b);
-  setTimeout(()=>b.remove(), 2500);
+
+/* ============ الترويسة الرسمية - منقولة ============ */
+function renderOfficialLetterheadHtml(){
+  const lh = STATE.letterhead || {};
+  return `<div class="official-letterhead">
+    <div class="ol-left">
+      <img src="${LOGO_URL}" class="ol-logo" alt="شعار الأكاديمية" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Flag_of_Algeria.svg" class="ol-flag" alt="علم الجزائر" />
+    </div>
+    <div class="ol-titles">
+      <div class="ol-line1">الجمهورية الجزائرية الديمقراطية الشعبية</div>
+      <div class="ol-line2">${escapeHtml(lh.leagueName || 'الرابطة الولائية لكرة القدم')}</div>
+      <div class="ol-line3">أكاديمية <span style="color:var(--accent);">الرائد</span></div>
+    </div>
+    <div class="ol-right">
+      <div><strong>رقم الاعتماد:</strong> ${escapeHtml(lh.approvalNumber || '—')}</div>
+      <div><strong>هاتف المدير:</strong> ${escapeHtml(lh.directorPhone || '—')}</div>
+    </div>
+  </div>`;
+}
+async function ensureLetterheadLoaded(){
+  if(STATE.letterhead !== undefined) return;
+  try{ const snap = await db.ref('academy/adminSettings/letterhead').once('value'); STATE.letterhead = snap.val() || {}; }
+  catch(err){ STATE.letterhead = {}; }
 }
 
 /* ============ SECTION CONFIGS ============ */
@@ -238,6 +453,9 @@ const arraySections = {
   hydrate:i=>({...i,topics:(i.topics||[]).join(', ')}),display:i=>i.title},
   staff:{path:'academy/staff',title:'الطاقم الفني',icon:'fa-user-tie',fields:[
     {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'المنصب',type:'text',required:true},
+    {key:'roleType',label:'نوع العضوية',type:'select',options:['مدرب رئيسي','مدرب مساعد','إداري','طبيب/مسعف','آخر']},
+    {key:'status',label:'الحالة',type:'select',options:['نشط','متوقف'],},
+    {key:'phone',label:'الهاتف',type:'text'},
     {key:'bio',label:'نبذة',type:'textarea'},{key:'photoUrl',label:'الصورة',type:'image',maxDim:800}
   ],display:i=>`${i.name} - ${i.role}`,thumb:i=>i.photoUrl},
   kits:{path:'academy/kits',title:'الأطقم',icon:'fa-tshirt',fields:[
@@ -260,7 +478,7 @@ const arraySections = {
     {key:'description',label:'وصف الحصة',type:'textarea'},{key:'goals',label:'أهداف الحصة',type:'textarea'},
     {key:'coachNotes',label:'ملاحظات المدرب',type:'textarea'}
   ],display:i=>`${i.category} — ${i.name||'حصة'} (${i.date||'بدون تاريخ'})`},
-  matches:{path:'academy/matches',title:'المباريات',icon:'fa-futbol',categoryFiltered:true,fields:[
+  matches:{path:'academy/matches',title:'المباريات',icon:'fa-futbol',categoryFiltered:true,letterhead:true,fields:[
     {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'opponent',label:'الفريق المنافس',type:'text',required:true},
     {key:'opponentLogo',label:'شعار المنافس',type:'image',maxDim:400},{key:'tournament',label:'البطولة/الدوري',type:'text'},
     {key:'round',label:'الجولة',type:'text'},{key:'date',label:'التاريخ',type:'date'},{key:'time',label:'التوقيت',type:'time'},
@@ -274,7 +492,7 @@ const arraySections = {
   ],transform:d=>{const {callUpsText,...rest}=d; return {...rest, callUps: callUpsText? JSON.stringify(callUpsText.split('\n').map(s=>s.trim()).filter(Boolean).map(name=>({name}))) : ''};},
   hydrate:i=>{let names=[]; try{names=(JSON.parse(i.callUps||'[]')||[]).map(c=>c.name);}catch(e){} return {...i, callUpsText:names.join('\n')};},
   display:i=>`${i.category} ضد ${i.opponent} (${i.date||'بدون تاريخ'})`},
-  tournaments:{path:'academy/tournaments',title:'البطولات',icon:'fa-trophy',categoryFiltered:true,fields:[
+  tournaments:{path:'academy/tournaments',title:'البطولات',icon:'fa-trophy',categoryFiltered:true,letterhead:true,fields:[
     {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'name',label:'اسم البطولة',type:'text',required:true},
     {key:'logo',label:'شعار البطولة',type:'image',maxDim:400},{key:'organizer',label:'المنظم',type:'text'},{key:'place',label:'المكان',type:'text'},
     {key:'date',label:'التاريخ',type:'text'},{key:'period',label:'المدة',type:'text'},{key:'teamsCount',label:'عدد الفرق',type:'number'},
@@ -290,13 +508,27 @@ const arraySections = {
   ],display:i=>`${i.category} — ${i.type||'رسالة'}`}
 };
 const keyedSections = {
-  players:{path:'academy/players',title:'اللاعبون',icon:'fa-user',fields:[
+  players:{path:'academy/players',title:'اللاعبون',icon:'fa-user',categoryFiltered:true,fields:[
     {key:'firstName',label:'الاسم',type:'text',required:true},{key:'lastName',label:'اللقب',type:'text',required:true},
-    {key:'category',label:'الفئة',type:'select',options:CATS},{key:'jersey',label:'رقم القميص',type:'number'},
+    {key:'category',label:'الفئة',type:'select',options:CATS},
+    {key:'fawj',label:'الفوج',type:'select',options:FAWJ_LIST},
+    {key:'jersey',label:'رقم القميص',type:'number'},
     {key:'position',label:'المركز',type:'text'},{key:'birthDate',label:'تاريخ الميلاد',type:'date'},
-    {key:'photo',label:'صورة اللاعب',type:'image',maxDim:800},{key:'bio',label:'نبذة',type:'textarea'},
+    {key:'photo',label:'صورة اللاعب',type:'image',maxDim:800},
+    {key:'guardianName',label:'اسم ولي الأمر',type:'text'},
+    {key:'guardianPhone',label:'هاتف ولي الأمر',type:'text'},
+    {key:'status',label:'حالة الملف',type:'select',options:['approved','pending','rejected'],optionLabels:['معتمد','قيد الانتظار','مرفوض']},
+    {key:'rating',label:'التقييم',type:'select',options:['','ممتاز','جيد جدا','جيد','متوسط'],optionLabels:['لم يقيّم','ممتاز','جيد جدا','جيد','متوسط']},
+    {key:'injuryStatus',label:'الحالة الصحية',type:'select',options:['healthy','injured','recovering','ready'],optionLabels:['سليم','مصاب','في التعافي','جاهز']},
+    {key:'bio',label:'نبذة',type:'textarea'},
     {key:'goals',label:'الأهداف',type:'number'},{key:'assists',label:'التمريرات الحاسمة',type:'number'},{key:'matches',label:'عدد المباريات',type:'number'}
-  ],display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''}`,thumb:i=>i.photo},
+  ],
+  beforeSave:(data,isNew)=>{ if(isNew && !data.parentCode) data.parentCode = genParentCode(); return data; },
+  display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''} — ${i.category||''}${i.fawj?'/'+i.fawj:''}`,
+  thumb:i=>i.photo,
+  extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
+  badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
+  },
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
     {key:'title',label:'العنوان',type:'text',required:true},{key:'image',label:'صورة المقال',type:'image',maxDim:1000},
     {key:'author',label:'الكاتب',type:'text'},{key:'tag',label:'التصنيف',type:'text'},
@@ -312,6 +544,7 @@ function tryLogin(){
   const loginBtn = document.getElementById('loginBtn');
   document.getElementById('loginError').style.display='none';
   loginBtn.disabled = true; loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحقق...';
+  showLoading('جارٍ التحقق من الكود...');
   db.ref('academy/adminSettings/password').once('value')
     .then(snap => snap.val())
     .catch(err => { console.warn('تعذّر قراءة كود الدخول المخزّن، سيُستخدم الكود الافتراضي', err); return null; })
@@ -319,13 +552,18 @@ function tryLogin(){
       const expected = stored || DEFAULT_PASSWORD;
       if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(()=>{}); }
       if(input === expected){ grantAccess(); }
-      else { document.getElementById('loginError').style.display='block'; loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول'; }
+      else {
+        hideLoading();
+        document.getElementById('loginError').style.display='block'; loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول';
+      }
     });
 }
 function grantAccess(){
   sessionStorage.setItem('raed_admin_auth','1');
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('shell').classList.add('active');
+  hideLoading();
+  addDebugLog('✅ تسجيل دخول ناجح للمدير','success');
   showPage('home');
   runConnectivityCheck();
 }
@@ -369,6 +607,14 @@ async function ensureRegistrationsLoaded(){
     STATE.registrations = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
   }catch(err){ STATE.registrations = []; showError(err, 'تحميل طلبات التسجيل'); }
 }
+async function ensureLogsLoaded(){
+  if(STATE.logs !== undefined) return;
+  try{
+    const snap = await db.ref('academy/logs').once('value');
+    const val = snap.val();
+    STATE.logs = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE.logs = []; showError(err, 'تحميل سجل التعديلات'); }
+}
 
 /* ============ NAV ============ */
 document.querySelectorAll('.menu-item').forEach(item => {
@@ -380,23 +626,32 @@ document.querySelectorAll('.menu-item').forEach(item => {
 });
 async function showPage(page){
   const c = document.getElementById('content');
+  await ensureLetterheadLoaded();
   if(page==='home'){ renderHomeSkeleton(c); await ensureKeyedLoaded('players'); await ensureKeyedLoaded('articles'); await ensureArrayLoaded('gallery'); await ensureRegistrationsLoaded(); renderHome(c); }
   else if(page==='categories'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureCategoriesLoaded(); renderCategories(c); }
   else if(page==='registrations'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureRegistrationsLoaded(); renderRegistrations(c); }
+  else if(page==='categoryFiles'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderCategoryFiles(c); }
+  else if(page==='medical'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderMedical(c); }
+  else if(page==='subscriptions'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderSubscriptions(c); }
+  else if(page==='logs'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureLogsLoaded(); renderLogs(c); }
   else if(page==='settings'){ renderSettings(c); }
   else if(arraySections[page]){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureArrayLoaded(page); renderArraySectionPage(c, page); }
   else if(keyedSections[page]){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded(page); renderKeyedSectionPage(c, page); }
+  c.classList.remove('page-anim'); void c.offsetWidth; c.classList.add('page-anim');
 }
 
 /* ============ HOME ============ */
 function renderHomeSkeleton(c){ c.innerHTML = `<h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2><p class="page-sub">جارٍ تحميل الإحصائيات...</p>`; }
 function renderHome(c){
   const pending = (STATE.registrations||[]).filter(r=>r.status==='pending').length;
+  const approvedPlayers = (STATE.players||[]).filter(p=>p.status!=='rejected').length;
   c.innerHTML = `
+    ${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2>
     <p class="page-sub">إحصائيات سريعة عن محتوى الموقع</p>
     <div class="stats-row">
       <div class="stat-card"><div class="n num-font">${(STATE.players||[]).length}</div><div class="l">لاعب</div></div>
+      <div class="stat-card"><div class="n num-font">${approvedPlayers}</div><div class="l">لاعب معتمد</div></div>
       <div class="stat-card"><div class="n num-font">${(STATE.articles||[]).length}</div><div class="l">مقال</div></div>
       <div class="stat-card"><div class="n num-font">${(STATE.gallery||[]).length}</div><div class="l">صورة بالألبوم</div></div>
       <div class="stat-card"><div class="n num-font">${pending}</div><div class="l">طلب تسجيل معلّق</div></div>
@@ -404,8 +659,10 @@ function renderHome(c){
     <div class="panel"><h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=players]').click()"><i class="fas fa-user-plus"></i> إضافة لاعب</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=categoryFiles]').click()"><i class="fas fa-folder-tree"></i> ملفات الفئات</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=medical]').click()"><i class="fas fa-notes-medical"></i> السجلات الطبية</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=subscriptions]').click()"><i class="fas fa-money-check-dollar"></i> الاشتراكات</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال</button>
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=eduVideos]').click()"><i class="fas fa-video"></i> إضافة فيديو تعليمي</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=sessions]').click()"><i class="fas fa-dumbbell"></i> إضافة حصة تدريبية</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=matches]').click()"><i class="fas fa-futbol"></i> إضافة مباراة</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=registrations]').click()"><i class="fas fa-inbox"></i> طلبات التسجيل</button>
@@ -413,11 +670,11 @@ function renderHome(c){
     </div>`;
 }
 
-/* ============ FIELD RENDERING (now with image type) ============ */
+/* ============ FIELD RENDERING ============ */
 function fieldInputHTML(f, val){
   val = val===undefined||val===null ? '' : val;
   if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
-  if(f.type==='select') return `<select id="f_${f.key}">${f.options.map((o,i)=>`<option value="${o}" ${val===o?'selected':''}>${f.optionLabels?f.optionLabels[i]:o}</option>`).join('')}</select>`;
+  if(f.type==='select') return `<select id="f_${f.key}">${f.options.map((o,i)=>`<option value="${o}" ${val===o?'selected':''}>${f.optionLabels?f.optionLabels[i]:(o||'—')}</option>`).join('')}</select>`;
   if(f.type==='file') return `<input type="file" id="f_${f.key}" accept="image/*,.pdf" />`;
   if(f.type==='image'){
     return `<div class="image-upload-wrap">
@@ -480,6 +737,7 @@ function renderArraySectionPage(c, key){
     </div>`;
   }
   c.innerHTML = `
+    ${cfg.letterhead ? renderOfficialLetterheadHtml() : ''}
     <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
     <p class="page-sub">إضافة، تعديل، أو حذف عناصر هذا القسم — تظهر مباشرة في الصفحة الرئيسية</p>
     <div class="panel">
@@ -537,6 +795,7 @@ async function saveArrayItem(key){
     if(idx>=0) arr[idx] = newItem; else arr.push(newItem);
     await db.ref(cfg.path).set(arr);
     STATE[key] = arr;
+    addLog(idx>=0?'تعديل':'إضافة', `${cfg.title}: ${cfg.simple?newItem:(cfg.display?cfg.display(newItem):'')}`);
     cancelArrayEdit(key);
     renderArraySectionPage(document.getElementById('content'), key);
     toastOk('تم الحفظ بنجاح');
@@ -573,6 +832,7 @@ async function deleteArrayItem(key, idx){
   try{
     await db.ref(cfg.path).set(arr);
     STATE[key] = arr;
+    addLog('حذف', `${cfg.title}: عنصر رقم ${idx+1}`);
     renderArraySectionPage(document.getElementById('content'), key);
     toastOk('تم الحذف');
   }catch(err){ STATE[key] = backup; showError(err, 'حذف عنصر من «'+cfg.title+'»'); }
@@ -582,7 +842,15 @@ async function deleteArrayItem(key, idx){
 function renderKeyedSectionPage(c, key){
   const cfg = keyedSections[key];
   const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+  let catTabsHtml = '';
+  if(cfg.categoryFiltered){
+    catTabsHtml = `<div class="cat-tabs" id="catTabsK-${key}">
+      <div class="cat-tab active" data-cat="all" onclick="filterKeyedByCat('${key}','all')">الكل</div>
+      ${CATS.map(cat=>`<div class="cat-tab" data-cat="${cat}" onclick="filterKeyedByCat('${key}','${cat}')">${cat}</div>`).join('')}
+    </div>`;
+  }
   c.innerHTML = `
+    ${cfg.letterhead ? renderOfficialLetterheadHtml() : ''}
     <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
     <div class="panel">
       <h3 id="formTitle-${key}"><i class="fas fa-plus-circle"></i> إضافة جديد</h3>
@@ -593,16 +861,18 @@ function renderKeyedSectionPage(c, key){
         <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelKeyedEdit('${key}')">إلغاء التعديل</button>
       </div>
     </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3><div id="list-${key}"></div></div>`;
-  renderKeyedList(key);
+    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3>${catTabsHtml}<div id="list-${key}"></div></div>`;
+  renderKeyedList(key, 'all');
 }
-function renderKeyedList(key){
+function renderKeyedList(key, catFilter){
+  catFilter = catFilter || 'all';
   const cfg = keyedSections[key];
-  const arr = STATE[key] || [];
+  const arr = (STATE[key] || []).filter(item => catFilter==='all' || !cfg.categoryFiltered || item.category===catFilter);
   document.getElementById('list-'+key).innerHTML = arr.length ? arr.map(item => `
     <div class="list-item">
       ${cfg.thumb ? (cfg.thumb(item) ? `<img class="thumb" src="${cfg.thumb(item)}" />` : `<div class="image-preview"><span>لا صورة</span></div>`) : ''}
-      <div class="body"><div class="t">${escapeHtml(cfg.display(item))}</div></div>
+      <div class="body"><div class="t">${escapeHtml(cfg.display(item))}</div>${cfg.extraInfo?cfg.extraInfo(item):''}</div>
+      ${cfg.badge?cfg.badge(item):''}
       <div class="actions">
         ${key==='players'?`<a class="btn btn-secondary" href="player.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
         ${key==='articles'?`<a class="btn btn-secondary" href="article.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
@@ -610,6 +880,10 @@ function renderKeyedList(key){
         <button class="btn btn-danger" onclick="deleteKeyedItem('${key}','${item.id}')"><i class="fas fa-trash"></i></button>
       </div>
     </div>`).join('') : `<div class="empty-msg">لا توجد عناصر بعد</div>`;
+}
+function filterKeyedByCat(key, cat){
+  document.querySelectorAll(`#catTabsK-${key} .cat-tab`).forEach(t => t.classList.toggle('active', t.dataset.cat===cat));
+  renderKeyedList(key, cat);
 }
 async function saveKeyedItem(key){
   const cfg = keyedSections[key];
@@ -620,14 +894,17 @@ async function saveKeyedItem(key){
     const missing = cfg.fields.filter(f=>f.required && !data[f.key]);
     if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); btn.disabled=false; btn.innerHTML=origHtml; return; }
     const id = document.getElementById('editId-'+key).value;
+    if(cfg.beforeSave) data = cfg.beforeSave(data, !id);
     if(id){
       await db.ref(cfg.path+'/'+id).update(data);
       const idx = STATE[key].findIndex(x=>x.id===id);
       if(idx>=0) STATE[key][idx] = {...STATE[key][idx], ...data};
+      addLog('تعديل', `${cfg.title}: ${cfg.display(STATE[key][idx])}`);
     } else {
       data.createdAt = new Date().toISOString();
       const ref = await db.ref(cfg.path).push(data);
       STATE[key].push({id:ref.key, ...data});
+      addLog('إضافة', `${cfg.title}: ${cfg.display(data)}`);
     }
     cancelKeyedEdit(key);
     renderKeyedSectionPage(document.getElementById('content'), key);
@@ -655,11 +932,155 @@ function cancelKeyedEdit(key){
 async function deleteKeyedItem(key, id){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
   try{
+    const item = STATE[key].find(x=>x.id===id);
     await db.ref(keyedSections[key].path+'/'+id).remove();
     STATE[key] = STATE[key].filter(x=>x.id!==id);
+    addLog('حذف', `${keyedSections[key].title}: ${item?keyedSections[key].display(item):id}`);
     renderKeyedSectionPage(document.getElementById('content'), key);
     toastOk('تم الحذف');
   }catch(err){ showError(err, 'حذف من «'+keyedSections[key].title+'»'); }
+}
+
+/* ============ ملفات الفئات (الأفواج) - منقول ============ */
+function renderCategoryFiles(c){
+  c.innerHTML = `${renderOfficialLetterheadHtml()}
+    <h2 class="page-title"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</h2>
+    <p class="page-sub">اضغط على فئة لعرض توزيع اللاعبين على الأفواج A / B / C</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
+      ${CATS.map(cat=>{
+        const count = (STATE.players||[]).filter(p=>p.category===cat && p.status!=='rejected').length;
+        return `<div class="fawj-card" onclick="renderCategoryFawjDetail('${cat}')">
+          <h4 style="text-align:center;color:var(--text);margin-bottom:8px;">فئة ${cat}</h4>
+          <div class="n">${count}</div>
+          <div style="text-align:center;color:var(--text-2);font-size:.78rem;">لاعب</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+function renderCategoryFawjDetail(cat){
+  const c = document.getElementById('content');
+  const players = (STATE.players||[]).filter(p=>p.category===cat && p.status!=='rejected');
+  let html = `<button class="btn btn-secondary" onclick="renderCategoryFiles(document.getElementById('content'))"><i class="fas fa-arrow-right"></i> رجوع لملفات الفئات</button>
+    ${renderOfficialLetterheadHtml()}
+    <h2 class="page-title"><i class="fas fa-folder-tree"></i> فئة ${cat}</h2>
+    <p class="page-sub">توزيع اللاعبين على الأفواج الثلاثة</p>`;
+  FAWJ_LIST.forEach(fawj=>{
+    const fawjPlayers = players.filter(p=>p.fawj===fawj);
+    html += `<div class="panel">
+      <h3><i class="fas fa-people-group"></i> الفوج ${fawj} <span style="font-size:.75rem;color:var(--text-2);font-weight:600;">(${fawjPlayers.length} لاعب)</span></h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>#</th><th>الاسم</th><th>رقم القميص</th><th>ولي الأمر</th><th>هاتف الولي</th></tr></thead>
+        <tbody>
+          ${fawjPlayers.length? fawjPlayers.map((p,idx)=>`<tr>
+            <td>${idx+1}</td><td style="font-weight:700;">${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</td>
+            <td>${p.jersey||'-'}</td><td>${escapeHtml(p.guardianName||'-')}</td><td>${escapeHtml(p.guardianPhone||'-')}</td>
+          </tr>`).join('') : `<tr><td colspan="5" class="empty-msg">لا يوجد لاعبون في هذا الفوج</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>`;
+  });
+  c.innerHTML = html;
+}
+
+/* ============ السجلات الطبية - منقولة ============ */
+function renderMedical(c){
+  const players = (STATE.players||[]).filter(p=>p.status!=='rejected');
+  const labels = {healthy:'سليم',injured:'مصاب',recovering:'في التعافي',ready:'جاهز'};
+  let html = `${renderOfficialLetterheadHtml()}
+    <h2 class="page-title"><i class="fas fa-notes-medical"></i> السجلات الطبية</h2>
+    <p class="page-sub">متابعة الحالة الصحية للاعبين</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>الاسم</th><th>الفئة</th><th>الحالة الصحية</th><th>تحديث</th></tr></thead>
+      <tbody>
+        ${players.map((p,idx)=>`<tr>
+          <td>${idx+1}</td>
+          <td style="font-weight:700;">${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</td>
+          <td>${p.category||'-'}</td>
+          <td><span class="badge ${p.injuryStatus||'healthy'}">${labels[p.injuryStatus||'healthy']}</span></td>
+          <td>
+            <select id="med_${p.id}" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);">
+              ${Object.keys(labels).map(k=>`<option value="${k}" ${(p.injuryStatus||'healthy')===k?'selected':''}>${labels[k]}</option>`).join('')}
+            </select>
+            <button class="btn btn-primary" style="padding:6px 12px;" onclick="saveMedicalStatus('${p.id}')"><i class="fas fa-save"></i></button>
+          </td>
+        </tr>`).join('') || `<tr><td colspan="5" class="empty-msg">لا يوجد لاعبون</td></tr>`}
+      </tbody>
+    </table></div>`;
+  c.innerHTML = html;
+}
+async function saveMedicalStatus(playerId){
+  const val = document.getElementById('med_'+playerId).value;
+  try{
+    await db.ref('academy/players/'+playerId+'/injuryStatus').set(val);
+    const p = (STATE.players||[]).find(x=>x.id===playerId); if(p) p.injuryStatus = val;
+    addLog('تحديث طبي', `تحديث الحالة الصحية للاعب ${p?p.firstName+' '+p.lastName:playerId}`);
+    toastOk('تم تحديث الحالة الصحية');
+    renderMedical(document.getElementById('content'));
+  }catch(err){ showError(err, 'تحديث الحالة الصحية'); }
+}
+
+/* ============ متابعة الاشتراكات - منقولة ============ */
+function renderSubscriptions(c){
+  const ym = STATE._currentSubMonth || currentYearMonth();
+  STATE._currentSubMonth = ym;
+  const players = (STATE.players||[]).filter(p=>p.status!=='rejected');
+  const [y,m] = ym.split('_');
+  let html = `${renderOfficialLetterheadHtml()}
+    <h2 class="page-title"><i class="fas fa-money-check-dollar"></i> متابعة الاشتراكات</h2>
+    <p class="page-sub">حالة الدفع الشهري للاعبين</p>
+    <div class="panel" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <label style="font-weight:700;font-size:.85rem;">الشهر:</label>
+      <input type="month" id="subMonthPicker" value="${y}-${m}" onchange="changeSubMonth(this.value)" style="padding:8px 12px;border-radius:8px;border:2px solid var(--border);" />
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>#</th><th>اللاعب</th><th>الفئة</th><th>الحالة</th><th>إجراء</th></tr></thead>
+      <tbody>
+        ${players.map((p,idx)=>{
+          const paid = !!(p.payments && p.payments[ym] && p.payments[ym].paid);
+          return `<tr>
+            <td>${idx+1}</td>
+            <td style="font-weight:700;">${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</td>
+            <td>${p.category||'-'}</td>
+            <td><span class="badge ${paid?'paid':'unpaid'}">${paid?'✅ مدفوع':'❌ غير مدفوع'}</span></td>
+            <td><button class="btn ${paid?'btn-danger':'btn-success'}" onclick="toggleSubscription('${p.id}','${ym}',${!paid})">${paid?'إلغاء الدفع':'تأكيد الدفع'}</button></td>
+          </tr>`;
+        }).join('') || `<tr><td colspan="5" class="empty-msg">لا يوجد لاعبون</td></tr>`}
+      </tbody>
+    </table></div>`;
+  c.innerHTML = html;
+}
+function changeSubMonth(val){
+  STATE._currentSubMonth = val.replace('-','_');
+  renderSubscriptions(document.getElementById('content'));
+}
+async function toggleSubscription(playerId, ym, newVal){
+  try{
+    await db.ref(`academy/players/${playerId}/payments/${ym}`).set({paid:newVal, date:new Date().toISOString()});
+    const p = (STATE.players||[]).find(x=>x.id===playerId);
+    if(p){ p.payments = p.payments || {}; p.payments[ym] = {paid:newVal, date:new Date().toISOString()}; }
+    addLog('اشتراك', `${newVal?'تأكيد':'إلغاء'} دفع اشتراك ${p?p.firstName+' '+p.lastName:playerId} لشهر ${ym}`);
+    toastOk(newVal?'تم تأكيد الدفع':'تم إلغاء الدفع');
+    renderSubscriptions(document.getElementById('content'));
+  }catch(err){ showError(err, 'تحديث حالة الاشتراك'); }
+}
+
+/* ============ سجل التعديلات - منقول ============ */
+function renderLogs(c){
+  const sorted = [...(STATE.logs||[])].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
+  let html = `<h2 class="page-title"><i class="fas fa-clipboard-list"></i> سجل التعديلات</h2><p class="page-sub">آخر العمليات في لوحة التحكم</p>`;
+  if(!sorted.length){ html += `<div class="empty-msg">لا يوجد سجل بعد</div>`; }
+  else {
+    sorted.slice(0,100).forEach(l=>{
+      html += `<div class="list-item">
+        <div class="body">
+          <div class="t">${escapeHtml(l.action||'')}</div>
+          <div style="font-size:.78rem;color:var(--text-2);">${escapeHtml(l.details||'')}</div>
+        </div>
+        <div style="font-size:.72rem;color:var(--text-2);text-align:left;white-space:nowrap;">${escapeHtml(l.timeFormatted||'')}</div>
+      </div>`;
+    });
+  }
+  c.innerHTML = html;
 }
 
 /* ============ CATEGORIES ============ */
@@ -693,15 +1114,16 @@ async function saveCategory(cat){
   try{
     await db.ref('academy/categories/'+cat).update(data);
     STATE.categories[cat] = {...(STATE.categories[cat]||{}), ...data};
+    addLog('تعديل', `فئة عمرية: ${cat}`);
     toastOk('تم حفظ فئة '+cat);
   }catch(err){ showError(err, 'حفظ فئة '+cat); }
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 
-/* ============ REGISTRATIONS ============ */
+/* ============ REGISTRATIONS (طلبات التسجيل + إنشاء ملف لاعب عند القبول) ============ */
 function renderRegistrations(c){
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-inbox"></i> طلبات التسجيل</h2>
-    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية</p>
+    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية — قبول الطلب ينشئ ملف لاعب تلقائياً</p>
     <div class="panel"><div id="regList"></div></div>`;
   renderRegList();
 }
@@ -724,6 +1146,25 @@ async function setRegStatus(id, status){
   try{
     await db.ref('academy/registrations/'+id).update({status});
     const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
+    if(status==='accepted' && r){
+      // إنشاء ملف لاعب تلقائياً من طلب التسجيل (إن لم يكن موجوداً مسبقاً)
+      await ensureKeyedLoaded('players');
+      const alreadyExists = (STATE.players||[]).some(p => p.fromRegistrationId === id);
+      if(!alreadyExists){
+        const newPlayer = {
+          firstName: r.firstName || '', lastName: r.lastName || '', category: r.category || '',
+          guardianName: r.guardianName || '', guardianPhone: r.phone || '',
+          status: 'approved', injuryStatus: 'healthy', parentCode: genParentCode(),
+          fromRegistrationId: id, createdAt: new Date().toISOString()
+        };
+        const ref = await db.ref('academy/players').push(newPlayer);
+        STATE.players = STATE.players || [];
+        STATE.players.push({id:ref.key, ...newPlayer});
+        addLog('قبول طلب', `تم إنشاء ملف لاعب لـ ${newPlayer.firstName} ${newPlayer.lastName} — كود ولي الأمر: ${newPlayer.parentCode}`);
+      }
+    } else {
+      addLog(status==='accepted'?'قبول طلب':'رفض طلب', `${r?r.firstName+' '+r.lastName:id}`);
+    }
     renderRegList();
     toastOk('تم التحديث');
   }catch(err){ showError(err, 'تحديث حالة طلب التسجيل'); }
@@ -731,10 +1172,19 @@ async function setRegStatus(id, status){
 
 /* ============ SETTINGS ============ */
 function renderSettings(c){
+  const lh = STATE.letterhead || {};
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-gear"></i> الإعدادات</h2>
     <div class="panel"><h3><i class="fas fa-key"></i> تغيير كود الدخول</h3>
       <div class="form-grid"><div class="fg full"><label>كود الدخول الجديد</label><input type="text" id="newPassword" /></div></div>
       <button class="btn btn-primary" id="savePassBtn" onclick="changePassword()"><i class="fas fa-check"></i> حفظ</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-file-signature"></i> بيانات الترويسة الرسمية</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>اسم الرابطة الولائية</label><input type="text" id="lh_leagueName" value="${escapeHtml(lh.leagueName||'')}" /></div>
+        <div class="fg"><label>رقم الاعتماد</label><input type="text" id="lh_approvalNumber" value="${escapeHtml(lh.approvalNumber||'')}" /></div>
+        <div class="fg"><label>هاتف المدير</label><input type="text" id="lh_directorPhone" value="${escapeHtml(lh.directorPhone||'')}" /></div>
+      </div>
+      <button class="btn btn-primary" id="saveLhBtn" onclick="saveLetterhead()"><i class="fas fa-check"></i> حفظ بيانات الترويسة</button>
     </div>`;
 }
 function changePassword(){
@@ -743,9 +1193,25 @@ function changePassword(){
   const btn = document.getElementById('savePassBtn'); const orig = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   db.ref('academy/adminSettings/password').set(val)
-    .then(() => toastOk('تم تحديث كود الدخول بنجاح'))
+    .then(() => { addLog('تعديل','تغيير كود الدخول'); toastOk('تم تحديث كود الدخول بنجاح'); })
     .catch(err => showError(err, 'تحديث كود الدخول'))
     .finally(() => { btn.disabled=false; btn.innerHTML=orig; });
+}
+async function saveLetterhead(){
+  const btn = document.getElementById('saveLhBtn'); const orig = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+  const data = {
+    leagueName: document.getElementById('lh_leagueName').value.trim(),
+    approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
+    directorPhone: document.getElementById('lh_directorPhone').value.trim()
+  };
+  try{
+    await db.ref('academy/adminSettings/letterhead').set(data);
+    STATE.letterhead = data;
+    addLog('تعديل','بيانات الترويسة الرسمية');
+    toastOk('تم حفظ بيانات الترويسة');
+  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
+  finally { btn.disabled=false; btn.innerHTML=orig; }
 }
 </script>
 </body>
