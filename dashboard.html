@@ -84,6 +84,7 @@ img{max-width:100%;}
 .btn:hover{opacity:.9;}
 
 .list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;}
+.list-item img.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 .list-item .body{flex:1;min-width:0;}
 .list-item .t{font-weight:700;font-size:.86rem;}
 .list-item .actions{display:flex;gap:6px;flex-shrink:0;}
@@ -99,7 +100,14 @@ img{max-width:100%;}
 .cat-card-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
 .cat-card-box h4{font-size:.95rem;margin-bottom:10px;color:var(--green);}
 
-@media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;}}
+/* IMAGE UPLOAD FIELD */
+.image-upload-wrap{border:2px dashed var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
+.image-upload-wrap input[type=file]{flex:1;font-size:.78rem;}
+.image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
+.image-preview img{width:100%;height:100%;object-fit:cover;}
+.image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
+
+@media(max-width:960px){.sidebar{display:none;} .stats-row{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -175,7 +183,7 @@ const RULES_SNIPPET = `{
 }`;
 
 function escapeHtml(s){ s=(s===undefined||s===null)?'':String(s); return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function fileToBase64(file, maxDim=1200, quality=.75){
+function fileToBase64(file, maxDim=1000, quality=.72){
   return new Promise((resolve,reject)=>{
     if(file.type==='application/pdf'){ const r=new FileReader(); r.onload=e=>resolve(e.target.result); r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file); return; }
     const r=new FileReader();
@@ -187,8 +195,14 @@ function fileToBase64(file, maxDim=1200, quality=.75){
     r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file);
   });
 }
+function previewImageField(key, input){
+  if(!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => { const p=document.getElementById('preview_'+key); if(p) p.innerHTML = `<img src="${e.target.result}" />`; };
+  reader.readAsDataURL(input.files[0]);
+}
 
-/* ============ ERROR BANNER — shows REAL diagnosis, not a generic message ============ */
+/* ============ ERROR BANNER ============ */
 function showError(err, context){
   console.error(context||'خطأ', err);
   const code = err && err.code ? err.code : '';
@@ -214,8 +228,8 @@ function toastOk(msg){
 const arraySections = {
   ticker:{path:'academy/newsTicker',title:'شريط الأخبار',icon:'fa-bullhorn',simple:true,itemLabel:'نص الخبر'},
   gallery:{path:'academy/gallery',title:'ألبوم الصور',icon:'fa-images',fields:[
-    {key:'url',label:'رابط الصورة',type:'text',required:true},{key:'caption',label:'الوصف',type:'text'}
-  ],display:i=>i.caption||i.url},
+    {key:'url',label:'الصورة',type:'image',maxDim:1000},{key:'caption',label:'الوصف',type:'text'}
+  ],display:i=>i.caption||'صورة بدون وصف',thumb:i=>i.url},
   eduVideos:{path:'academy/eduVideos',title:'الفيديوهات التعليمية',icon:'fa-graduation-cap',fields:[
     {key:'url',label:'رابط الفيديو',type:'text',required:true},{key:'title',label:'العنوان',type:'text',required:true},
     {key:'coach',label:'المدرب',type:'text'},{key:'description',label:'الوصف',type:'textarea'},
@@ -224,11 +238,11 @@ const arraySections = {
   hydrate:i=>({...i,topics:(i.topics||[]).join(', ')}),display:i=>i.title},
   staff:{path:'academy/staff',title:'الطاقم الفني',icon:'fa-user-tie',fields:[
     {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'المنصب',type:'text',required:true},
-    {key:'bio',label:'نبذة',type:'textarea'},{key:'photoUrl',label:'رابط الصورة',type:'text'}
-  ],display:i=>`${i.name} - ${i.role}`},
+    {key:'bio',label:'نبذة',type:'textarea'},{key:'photoUrl',label:'الصورة',type:'image',maxDim:800}
+  ],display:i=>`${i.name} - ${i.role}`,thumb:i=>i.photoUrl},
   kits:{path:'academy/kits',title:'الأطقم',icon:'fa-tshirt',fields:[
-    {key:'name',label:'اسم الطقم',type:'text',required:true},{key:'photoUrl',label:'رابط صورة الطقم',type:'text',required:true}
-  ],display:i=>i.name},
+    {key:'name',label:'اسم الطقم',type:'text',required:true},{key:'photoUrl',label:'صورة الطقم',type:'image',maxDim:1000,required:true}
+  ],display:i=>i.name,thumb:i=>i.photoUrl},
   testimonials:{path:'academy/testimonials',title:'آراء المتابعين',icon:'fa-comment-dots',fields:[
     {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'الصفة',type:'text'},
     {key:'opinion',label:'الرأي',type:'textarea',required:true}
@@ -248,7 +262,7 @@ const arraySections = {
   ],display:i=>`${i.category} — ${i.name||'حصة'} (${i.date||'بدون تاريخ'})`},
   matches:{path:'academy/matches',title:'المباريات',icon:'fa-futbol',categoryFiltered:true,fields:[
     {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'opponent',label:'الفريق المنافس',type:'text',required:true},
-    {key:'opponentLogo',label:'رابط شعار المنافس',type:'text'},{key:'tournament',label:'البطولة/الدوري',type:'text'},
+    {key:'opponentLogo',label:'شعار المنافس',type:'image',maxDim:400},{key:'tournament',label:'البطولة/الدوري',type:'text'},
     {key:'round',label:'الجولة',type:'text'},{key:'date',label:'التاريخ',type:'date'},{key:'time',label:'التوقيت',type:'time'},
     {key:'field',label:'الملعب',type:'text'},{key:'type',label:'نوع المباراة',type:'text'},
     {key:'status',label:'الحالة',type:'select',options:['upcoming','live','finished','canceled'],optionLabels:['قادمة','جارية الآن','انتهت','ملغاة']},
@@ -262,7 +276,7 @@ const arraySections = {
   display:i=>`${i.category} ضد ${i.opponent} (${i.date||'بدون تاريخ'})`},
   tournaments:{path:'academy/tournaments',title:'البطولات',icon:'fa-trophy',categoryFiltered:true,fields:[
     {key:'category',label:'الفئة',type:'select',options:CATS,required:true},{key:'name',label:'اسم البطولة',type:'text',required:true},
-    {key:'logo',label:'رابط شعار البطولة',type:'text'},{key:'organizer',label:'المنظم',type:'text'},{key:'place',label:'المكان',type:'text'},
+    {key:'logo',label:'شعار البطولة',type:'image',maxDim:400},{key:'organizer',label:'المنظم',type:'text'},{key:'place',label:'المكان',type:'text'},
     {key:'date',label:'التاريخ',type:'text'},{key:'period',label:'المدة',type:'text'},{key:'teamsCount',label:'عدد الفرق',type:'number'},
     {key:'standings',label:'الترتيب',type:'text'},{key:'files',label:'رابط الملفات المرفقة',type:'text'},
     {key:'callUpsText',label:'اللاعبون المستدعون (اسم في كل سطر)',type:'textarea'}
@@ -280,19 +294,19 @@ const keyedSections = {
     {key:'firstName',label:'الاسم',type:'text',required:true},{key:'lastName',label:'اللقب',type:'text',required:true},
     {key:'category',label:'الفئة',type:'select',options:CATS},{key:'jersey',label:'رقم القميص',type:'number'},
     {key:'position',label:'المركز',type:'text'},{key:'birthDate',label:'تاريخ الميلاد',type:'date'},
-    {key:'photo',label:'رابط الصورة',type:'text'},{key:'bio',label:'نبذة',type:'textarea'},
+    {key:'photo',label:'صورة اللاعب',type:'image',maxDim:800},{key:'bio',label:'نبذة',type:'textarea'},
     {key:'goals',label:'الأهداف',type:'number'},{key:'assists',label:'التمريرات الحاسمة',type:'number'},{key:'matches',label:'عدد المباريات',type:'number'}
-  ],display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''}`},
+  ],display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''}`,thumb:i=>i.photo},
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
-    {key:'title',label:'العنوان',type:'text',required:true},{key:'image',label:'رابط الصورة',type:'text'},
+    {key:'title',label:'العنوان',type:'text',required:true},{key:'image',label:'صورة المقال',type:'image',maxDim:1000},
     {key:'author',label:'الكاتب',type:'text'},{key:'tag',label:'التصنيف',type:'text'},
     {key:'excerpt',label:'ملخص قصير',type:'textarea'},{key:'content',label:'المحتوى الكامل',type:'textarea',required:true}
-  ],display:i=>i.title}
+  ],display:i=>i.title,thumb:i=>i.image}
 };
 
-let STATE = {}; // section data cache — populated lazily on first visit to each page
+let STATE = {};
 
-/* ============ LOGIN — instant entry, password check only ============ */
+/* ============ LOGIN ============ */
 function tryLogin(){
   const input = document.getElementById('loginPassword').value.trim();
   const loginBtn = document.getElementById('loginBtn');
@@ -312,21 +326,20 @@ function grantAccess(){
   sessionStorage.setItem('raed_admin_auth','1');
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('shell').classList.add('active');
-  showPage('home'); // فوري — لا انتظار لأي بيانات
-  runConnectivityCheck(); // فحص صامت بالخلفية دون تعطيل الواجهة
+  showPage('home');
+  runConnectivityCheck();
 }
 function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
 document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
 
-/* ============ SILENT CONNECTIVITY/RULES CHECK (runs after entry, non-blocking) ============ */
 function runConnectivityCheck(){
   db.ref('academy/adminSettings/_connCheck').set({ts:Date.now()})
     .then(() => db.ref('academy/adminSettings/_connCheck').remove())
     .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
 }
 
-/* ============ LAZY LOAD — each section fetches its own data once, on first visit ============ */
+/* ============ LAZY LOAD ============ */
 async function ensureArrayLoaded(key){
   if(STATE[key] !== undefined) return;
   try{
@@ -345,10 +358,8 @@ async function ensureKeyedLoaded(key){
 }
 async function ensureCategoriesLoaded(){
   if(STATE.categories !== undefined) return;
-  try{
-    const snap = await db.ref('academy/categories').once('value');
-    STATE.categories = snap.val() || {};
-  }catch(err){ STATE.categories = {}; showError(err, 'تحميل الفئات العمرية'); }
+  try{ const snap = await db.ref('academy/categories').once('value'); STATE.categories = snap.val() || {}; }
+  catch(err){ STATE.categories = {}; showError(err, 'تحميل الفئات العمرية'); }
 }
 async function ensureRegistrationsLoaded(){
   if(STATE.registrations !== undefined) return;
@@ -378,9 +389,7 @@ async function showPage(page){
 }
 
 /* ============ HOME ============ */
-function renderHomeSkeleton(c){
-  c.innerHTML = `<h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2><p class="page-sub">جارٍ تحميل الإحصائيات...</p>`;
-}
+function renderHomeSkeleton(c){ c.innerHTML = `<h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2><p class="page-sub">جارٍ تحميل الإحصائيات...</p>`; }
 function renderHome(c){
   const pending = (STATE.registrations||[]).filter(r=>r.status==='pending').length;
   c.innerHTML = `
@@ -404,14 +413,57 @@ function renderHome(c){
     </div>`;
 }
 
-/* ============ GENERIC ARRAY SECTION ============ */
+/* ============ FIELD RENDERING (now with image type) ============ */
 function fieldInputHTML(f, val){
   val = val===undefined||val===null ? '' : val;
   if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
   if(f.type==='select') return `<select id="f_${f.key}">${f.options.map((o,i)=>`<option value="${o}" ${val===o?'selected':''}>${f.optionLabels?f.optionLabels[i]:o}</option>`).join('')}</select>`;
   if(f.type==='file') return `<input type="file" id="f_${f.key}" accept="image/*,.pdf" />`;
+  if(f.type==='image'){
+    return `<div class="image-upload-wrap">
+      <input type="file" id="f_${f.key}" accept="image/*" onchange="previewImageField('${f.key}', this)" />
+      <div class="image-preview" id="preview_${f.key}">${val ? `<img src="${val}" />` : `<span>لا صورة</span>`}</div>
+      <input type="hidden" id="f_${f.key}_existing" value="${escapeHtml(val)}" />
+    </div>`;
+  }
   return `<input type="${f.type}" id="f_${f.key}" value="${escapeHtml(val)}" />`;
 }
+function resetFieldEl(f){
+  if(f.type==='image'){
+    const fileEl = document.getElementById('f_'+f.key); if(fileEl) fileEl.value='';
+    const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value='';
+    const preview = document.getElementById('preview_'+f.key); if(preview) preview.innerHTML = '<span>لا صورة</span>';
+    return;
+  }
+  const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value='';
+}
+function setFieldEl(f, val){
+  if(f.type==='image'){
+    const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value = val||'';
+    const preview = document.getElementById('preview_'+f.key); if(preview) preview.innerHTML = val ? `<img src="${val}" />` : '<span>لا صورة</span>';
+    return;
+  }
+  const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = val!==undefined?val:'';
+}
+async function collectFields(fields){
+  const data = {};
+  for(const f of fields){
+    if(f.type==='image'){
+      const fileEl = document.getElementById('f_'+f.key);
+      if(fileEl && fileEl.files[0]){ data[f.key] = await fileToBase64(fileEl.files[0], f.maxDim||1000, 0.72); }
+      else { const existing = document.getElementById('f_'+f.key+'_existing'); data[f.key] = existing ? existing.value : ''; }
+      continue;
+    }
+    const el = document.getElementById('f_'+f.key);
+    if(!el) continue;
+    if(f.type==='file'){ if(el.files[0]) data[f.key] = await fileToBase64(el.files[0]); }
+    else if(f.type==='number'){ data[f.key] = el.value===''?0:Number(el.value); }
+    else { data[f.key] = el.value.trim(); }
+  }
+  return data;
+}
+
+/* ============ GENERIC ARRAY SECTION ============ */
 function renderArraySectionPage(c, key){
   const cfg = arraySections[key];
   let formHtml;
@@ -419,7 +471,7 @@ function renderArraySectionPage(c, key){
   if(cfg.simple){
     formHtml = `<div class="fg full"><label>${cfg.itemLabel}</label><input type="text" id="f_value" /></div>`;
   } else {
-    formHtml = cfg.fields.map(f => `<div class="fg ${f.type==='textarea'?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+    formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
   }
   if(cfg.categoryFiltered){
     catTabsHtml = `<div class="cat-tabs" id="catTabs-${key}">
@@ -451,6 +503,7 @@ function renderArrayList(key, catFilter){
   const rows = arr.map((item,i)=>({item,i})).filter(({item}) => catFilter==='all' || !cfg.categoryFiltered || item.category===catFilter);
   document.getElementById('list-'+key).innerHTML = rows.length ? rows.map(({item,i}) => `
     <div class="list-item">
+      ${cfg.thumb ? (cfg.thumb(item) ? `<img class="thumb" src="${cfg.thumb(item)}" />` : `<div class="image-preview"><span>لا صورة</span></div>`) : ''}
       <div class="body"><div class="t">${escapeHtml(cfg.simple ? item : (cfg.display ? cfg.display(item) : ''))}</div></div>
       <div class="actions">
         <button class="btn btn-secondary" onclick="editArrayItem('${key}',${i})"><i class="fas fa-edit"></i></button>
@@ -461,17 +514,6 @@ function renderArrayList(key, catFilter){
 function filterArrayByCat(key, cat){
   document.querySelectorAll(`#catTabs-${key} .cat-tab`).forEach(t => t.classList.toggle('active', t.dataset.cat===cat));
   renderArrayList(key, cat);
-}
-async function collectFields(fields){
-  const data = {};
-  for(const f of fields){
-    const el = document.getElementById('f_'+f.key);
-    if(!el) continue;
-    if(f.type==='file'){ if(el.files[0]) data[f.key] = await fileToBase64(el.files[0]); }
-    else if(f.type==='number'){ data[f.key] = el.value===''?0:Number(el.value); }
-    else { data[f.key] = el.value.trim(); }
-  }
-  return data;
 }
 async function saveArrayItem(key){
   const cfg = arraySections[key];
@@ -507,7 +549,7 @@ function editArrayItem(key, idx){
   if(cfg.simple){ document.getElementById('f_value').value = item; }
   else {
     const hydrated = cfg.hydrate ? cfg.hydrate(item) : item;
-    cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = hydrated[f.key]!==undefined?hydrated[f.key]:''; });
+    cfg.fields.forEach(f => setFieldEl(f, hydrated[f.key]));
   }
   document.getElementById('editIndex-'+key).value = idx;
   document.getElementById('cancelEdit-'+key).style.display='inline-flex';
@@ -520,7 +562,7 @@ function cancelArrayEdit(key){
   document.getElementById('cancelEdit-'+key).style.display='none';
   document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-plus-circle"></i> إضافة عنصر جديد';
   if(cfg.simple){ document.getElementById('f_value').value=''; }
-  else cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value=''; });
+  else cfg.fields.forEach(f => resetFieldEl(f));
 }
 async function deleteArrayItem(key, idx){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
@@ -539,7 +581,7 @@ async function deleteArrayItem(key, idx){
 /* ============ GENERIC KEYED SECTION (players/articles) ============ */
 function renderKeyedSectionPage(c, key){
   const cfg = keyedSections[key];
-  const formHtml = cfg.fields.map(f => `<div class="fg ${f.type==='textarea'?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+  const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
   c.innerHTML = `
     <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
     <div class="panel">
@@ -559,6 +601,7 @@ function renderKeyedList(key){
   const arr = STATE[key] || [];
   document.getElementById('list-'+key).innerHTML = arr.length ? arr.map(item => `
     <div class="list-item">
+      ${cfg.thumb ? (cfg.thumb(item) ? `<img class="thumb" src="${cfg.thumb(item)}" />` : `<div class="image-preview"><span>لا صورة</span></div>`) : ''}
       <div class="body"><div class="t">${escapeHtml(cfg.display(item))}</div></div>
       <div class="actions">
         ${key==='players'?`<a class="btn btn-secondary" href="player.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
@@ -596,7 +639,7 @@ function editKeyedItem(key, id){
   const cfg = keyedSections[key];
   const item = STATE[key].find(x=>x.id===id);
   if(!item) return;
-  cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = item[f.key]!==undefined?item[f.key]:''; });
+  cfg.fields.forEach(f => setFieldEl(f, item[f.key]));
   document.getElementById('editId-'+key).value = id;
   document.getElementById('cancelEdit-'+key).style.display='inline-flex';
   document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-edit"></i> تعديل العنصر';
@@ -607,7 +650,7 @@ function cancelKeyedEdit(key){
   document.getElementById('editId-'+key).value = '';
   document.getElementById('cancelEdit-'+key).style.display='none';
   document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-plus-circle"></i> إضافة جديد';
-  cfg.fields.forEach(f => { const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value=''; });
+  cfg.fields.forEach(f => resetFieldEl(f));
 }
 async function deleteKeyedItem(key, id){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
