@@ -3,52 +3,101 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>مقال | أكاديمية الرائد</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<title>أكاديمية الرائد | المقال</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-:root{--green:#1B5E3A;--green-2:#2E9E5B;--black:#0A0A0A;--gold:#C9A227;--bg:#F4F6F5;--border:#E3E8E5;--text:#141614;--text-2:#5C665F;}
+:root{
+  --deep:#1B6B3F; --deep2:#22803F; --mid:#219653; --dark:#155C34; --light:#3DC57D;
+  --accent:#E8871E; --accent-dark:#C56A0F; --accent-light:#F4A94D;
+  --white:#F2F2F2; --black-text:#14201A;
+  --shadow-heavy:0 20px 60px rgba(27,107,63,0.28);
+  --shadow-soft:0 8px 32px rgba(27,107,63,0.1);
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Cairo',sans-serif;background:#fff;color:var(--text);}
-.container{max-width:800px;margin:0 auto;padding:0 20px;}
+body{font-family:'Cairo',sans-serif;background:var(--white);color:var(--black-text);direction:rtl;line-height:1.8;}
 a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+.container{max-width:900px;margin:0 auto;padding:0 24px;}
 
-.topbar{background:var(--black);padding:16px 0;}
-.topbar .container{max-width:900px;display:flex;justify-content:space-between;align-items:center;}
-.topbar .brand{color:#fff;font-weight:800;display:flex;align-items:center;gap:10px;}
-.topbar .brand i{color:var(--green-2);}
-.topbar a.back{color:rgba(255,255,255,0.7);font-size:.85rem;font-weight:600;}
+.top-bar{background:var(--deep);padding:16px 0;position:sticky;top:0;z-index:99;box-shadow:0 4px 20px rgba(0,0,0,.15);}
+.top-bar .container{display:flex;align-items:center;justify-content:space-between;}
+.top-bar .logo-link{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;}
+.top-bar .logo-link img{width:38px;height:38px;border-radius:50%;background:#fff;padding:2px;}
+.top-bar .back-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.85);font-weight:700;font-size:.9rem;}
+.top-bar .back-btn:hover{color:var(--accent-light);}
 
-.article-hero{position:relative;height:420px;overflow:hidden;}
-.article-hero img{width:100%;height:100%;object-fit:cover;}
-.article-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.2),rgba(10,10,10,0.9));}
-.article-hero-content{position:absolute;bottom:0;right:0;left:0;padding:40px 0;}
-.article-tag{display:inline-block;background:linear-gradient(135deg,var(--green-2),var(--green));color:#fff;padding:7px 20px;
-  border-radius:8px;font-size:.78rem;font-weight:800;margin-bottom:14px;}
-.article-hero h1{color:#fff;font-size:2rem;font-weight:900;line-height:1.4;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.article-hero{padding:50px 0 30px;}
+.badge-category{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;font-size:.78rem;font-weight:800;padding:7px 18px;border-radius:20px;margin-bottom:18px;box-shadow:0 6px 16px rgba(232,135,30,.35);}
+.article-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3.3rem);color:var(--deep);letter-spacing:1px;line-height:1.15;}
+.article-subtitle{font-size:1.1rem;color:#5c6660;margin-top:16px;font-weight:400;line-height:1.8;}
+.article-meta{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:26px;padding:18px 0;border-top:1px solid #e5ede8;border-bottom:1px solid #e5ede8;font-size:.86rem;color:#5c6660;font-weight:700;}
+.article-meta span{display:flex;align-items:center;gap:7px;}
+.article-meta i{color:var(--mid);}
 
-.article-meta{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--border);margin-bottom:30px;color:var(--text-2);font-size:.85rem;flex-wrap:wrap;}
-.article-meta span{display:flex;align-items:center;gap:8px;}
-.article-meta i{color:var(--green-2);}
-.article-body{padding-bottom:60px;font-size:1.05rem;line-height:2.1;color:var(--text);white-space:pre-line;}
-.not-found{text-align:center;padding:120px 20px;}
-.not-found i{font-size:3rem;color:var(--border);margin-bottom:16px;}
-@media(max-width:768px){.article-hero{height:280px;} .article-hero h1{font-size:1.4rem;}}
+.article-main-img{margin:34px 0;border-radius:26px;overflow:hidden;box-shadow:var(--shadow-heavy);max-height:520px;}
+.article-main-img img{width:100%;height:100%;object-fit:cover;}
+
+.article-body{padding:10px 0 50px;font-size:1.08rem;color:#2a332d;line-height:2.05;}
+.article-body h2{font-family:'Bebas Neue',sans-serif;color:var(--deep);font-size:1.9rem;letter-spacing:1px;margin:34px 0 14px;}
+.article-body h3{color:var(--deep);font-size:1.35rem;font-weight:800;margin:28px 0 12px;}
+.article-body p{margin-bottom:20px;}
+.article-body img{border-radius:20px;margin:26px 0;box-shadow:var(--shadow-soft);}
+.article-body video{width:100%;border-radius:20px;margin:26px 0;box-shadow:var(--shadow-soft);}
+.article-body ul,.article-body ol{margin:0 0 20px 24px;}
+.article-body blockquote{border-right:4px solid var(--accent);background:#f2f8f4;padding:16px 22px;border-radius:14px;margin:26px 0;color:var(--dark);font-weight:600;}
+.article-body a{color:var(--mid);font-weight:700;text-decoration:underline;}
+
+.share-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:26px 0;border-top:1px solid #e5ede8;margin-top:20px;}
+.share-bar span.lbl{font-weight:800;color:var(--deep);font-size:.9rem;}
+.share-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;transition:.3s;border:none;cursor:pointer;}
+.share-btn:hover{transform:translateY(-4px);}
+.share-fb{background:#1877F2;} .share-tw{background:#000;} .share-wa{background:#25D366;}
+.share-copy{background:var(--mid);}
+.copy-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--deep);color:#fff;padding:12px 26px;border-radius:30px;font-weight:700;font-size:.86rem;opacity:0;pointer-events:none;transition:.3s;z-index:999;}
+.copy-toast.show{opacity:1;transform:translateX(-50%) translateY(-8px);}
+
+.related-sec{background:#f2f8f4;padding:60px 0 70px;}
+.related-sec .title{font-family:'Bebas Neue',sans-serif;font-size:2.1rem;color:var(--deep);letter-spacing:1px;text-align:center;margin-bottom:34px;}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;}
+.related-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-soft);border:1px solid #e8f0ea;transition:.3s;}
+.related-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-heavy);}
+.related-card .img-frame{height:150px;overflow:hidden;background:var(--deep);}
+.related-card .img-frame img{width:100%;height:100%;object-fit:cover;}
+.related-card .body{padding:16px 18px;}
+.related-card h4{font-size:.98rem;font-weight:800;color:var(--deep);line-height:1.5;}
+.related-card .meta{font-size:.74rem;color:#8a9690;margin-top:8px;font-weight:700;}
+
+.reg-cta{background:var(--deep);padding:50px 0;text-align:center;}
+.reg-cta h3{color:#fff;font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:1px;margin-bottom:16px;}
+.reg-cta a{display:inline-flex;background:var(--accent);color:#fff;padding:13px 38px;border-radius:40px;font-weight:800;}
+
+.loading-state,.error-state{text-align:center;padding:120px 20px;color:#8a9690;}
+.loading-state i,.error-state i{font-size:2.4rem;margin-bottom:14px;display:block;color:var(--mid);}
+
+@media(max-width:600px){.article-meta{gap:14px;font-size:.78rem;}.article-body{font-size:1rem;}}
 </style>
 </head>
 <body>
-<div class="topbar">
+
+<div class="top-bar">
   <div class="container">
-    <div class="brand"><i class="fas fa-shield-halved"></i> أكاديمية الرائد</div>
-    <a href="index.html" class="back"><i class="fas fa-arrow-right"></i> رجوع للصفحة الرئيسية</a>
+    <a href="index.html" class="logo-link"><img id="topLogo" src="" alt="" onerror="this.style.display='none'"/> أكاديمية الرائد</a>
+    <a href="index.html#articles" class="back-btn"><i class="fas fa-arrow-right"></i> الرجوع للأخبار</a>
   </div>
 </div>
 
-<div id="pageBody"></div>
+<div id="pageContent">
+  <div class="loading-state" id="loadingState"><i class="fas fa-spinner fa-spin"></i> جارِ تحميل المقال...</div>
+</div>
 
 <script>
+const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
+document.getElementById('topLogo').src = LOGO_URL;
+
 const firebaseConfig = {
   apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
   authDomain: "academy-raed-new.firebaseapp.com",
@@ -61,38 +110,137 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const params = new URLSearchParams(window.location.search);
-const articleId = params.get('id');
-const body = document.getElementById('pageBody');
+const ARTICLE_CATEGORIES = {
+  academy:       {label:"أخبار الأكاديمية", icon:"fa-shield-halved"},
+  categories:    {label:"أخبار الفئات",     icon:"fa-users"},
+  matches:       {label:"مباريات",          icon:"fa-futbol"},
+  tournaments:   {label:"بطولات",           icon:"fa-trophy"},
+  training:      {label:"تدريبات",          icon:"fa-dumbbell"},
+  talents:       {label:"مواهب",            icon:"fa-star"},
+  announcements: {label:"إعلانات",          icon:"fa-bullhorn"},
+  stories:       {label:"قصص ونجاحات",      icon:"fa-medal"},
+  tips:          {label:"نصائح رياضية",     icon:"fa-lightbulb"}
+};
 
-if(!articleId){
-  body.innerHTML = `<div class="not-found"><i class="fas fa-newspaper"></i><h2>لم يتم تحديد مقال</h2><p>الرجاء الوصول لهذه الصفحة عبر رابط مقال صحيح.</p></div>`;
-} else {
-  db.ref('academy/articles/'+articleId).once('value').then(snap => {
+function formatArabicDate(iso){
+  if(!iso) return '';
+  const d = new Date(iso); if(isNaN(d)) return '';
+  return d.toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'});
+}
+function calcReadTime(html){
+  const text = (html||'').replace(/<[^>]*>/g,' ');
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words/180));
+}
+function stripHtml(html){ return (html||'').replace(/<[^>]*>/g,''); }
+function toArr(v){ return v ? (Array.isArray(v)?v.filter(Boolean):Object.entries(v).map(([id,x])=>({id,...x}))) : []; }
+
+function relatedCardHtml(a){
+  return `<a class="related-card" href="article.html?id=${a.id}">
+    <div class="img-frame"><img src="${a.image||''}" onerror="this.style.display='none'"/></div>
+    <div class="body"><h4>${a.title||''}</h4><div class="meta">${formatArabicDate(a.publishedAt)}</div></div>
+  </a>`;
+}
+
+async function loadArticle(){
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const contentWrap = document.getElementById('pageContent');
+  if(!id){ contentWrap.innerHTML = errorHtml(); return; }
+
+  try{
+    const snap = await db.ref('academy/articles/'+id).once('value');
     const a = snap.val();
-    if(!a){
-      body.innerHTML = `<div class="not-found"><i class="fas fa-newspaper"></i><h2>المقال غير موجود</h2></div>`;
-      return;
-    }
-    document.title = `${a.title} | أكاديمية الرائد`;
-    const dateStr = a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('ar-EG', {year:'numeric',month:'long',day:'numeric'}) : '';
-    body.innerHTML = `
-      <div class="article-hero">
-        ${a.image ? `<img src="${a.image}" />` : `<div style="width:100%;height:100%;background:linear-gradient(160deg,#0A0A0A,#1B5E3A);"></div>`}
-        <div class="article-hero-content"><div class="container">
-          ${a.tag ? `<span class="article-tag">${a.tag}</span>` : ''}
-          <h1>${a.title}</h1>
-        </div></div>
-      </div>
+    if(!a || a.status === 'draft'){ contentWrap.innerHTML = errorHtml(); return; }
+    a.id = id;
+    document.title = (a.title||'مقال') + ' | أكاديمية الرائد';
+    renderArticle(a);
+    loadRelated(a);
+  }catch(err){
+    console.error(err);
+    contentWrap.innerHTML = errorHtml();
+  }
+}
+
+function errorHtml(){
+  return `<div class="error-state"><i class="fas fa-triangle-exclamation"></i><p>تعذّر العثور على هذا المقال</p></div>`;
+}
+
+function renderArticle(a){
+  const cat = ARTICLE_CATEGORIES[a.category] || {label:'أخبار',icon:'fa-newspaper'};
+  const shareUrl = window.location.href;
+  document.getElementById('pageContent').innerHTML = `
+    <section class="article-hero">
       <div class="container">
+        <span class="badge-category"><i class="fas ${cat.icon}"></i> ${cat.label}</span>
+        <h1 class="article-title">${a.title||''}</h1>
+        ${a.excerpt ? `<p class="article-subtitle">${a.excerpt}</p>` : ''}
         <div class="article-meta">
-          <span><i class="fas fa-user"></i> ${a.author||'إدارة الأكاديمية'}</span>
-          ${dateStr ? `<span><i class="fas fa-calendar"></i> ${dateStr}</span>` : ''}
+          <span><i class="far fa-calendar"></i> ${formatArabicDate(a.publishedAt)}</span>
+          <span><i class="far fa-user"></i> ${a.author || 'إدارة الأكاديمية'}</span>
+          <span><i class="far fa-clock"></i> ${calcReadTime(a.content)} دقائق قراءة</span>
         </div>
-        <div class="article-body">${a.content||''}</div>
-      </div>`;
+      </div>
+    </section>
+
+    ${a.image ? `<div class="container"><div class="article-main-img"><img src="${a.image}" onerror="this.parentElement.style.display='none'"/></div></div>` : ''}
+
+    <div class="container">
+      <div class="article-body">${a.content || ''}</div>
+      ${a.video ? `<video controls src="${a.video}"></video>` : ''}
+
+      <div class="share-bar">
+        <span class="lbl">شارك المقال:</span>
+        <a class="share-btn share-fb" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}"><i class="fab fa-facebook-f"></i></a>
+        <a class="share-btn share-tw" target="_blank" href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(a.title||'')}"><i class="fab fa-x-twitter"></i></a>
+        <a class="share-btn share-wa" target="_blank" href="https://wa.me/?text=${encodeURIComponent((a.title||'')+' '+shareUrl)}"><i class="fab fa-whatsapp"></i></a>
+        <button class="share-btn share-copy" onclick="copyArticleLink()"><i class="fas fa-link"></i></button>
+      </div>
+    </div>
+
+    <section class="related-sec" id="relatedSec" style="display:none;">
+      <div class="container">
+        <h3 class="title">مقالات قد تهمك</h3>
+        <div class="related-grid" id="relatedGrid"></div>
+      </div>
+    </section>
+
+    <section class="reg-cta">
+      <div class="container">
+        <h3>هل يمتلك ابنك موهبة كرة القدم؟</h3>
+        <a href="index.html#register">سجل الآن في الأكاديمية</a>
+      </div>
+    </section>
+
+    <div class="copy-toast" id="copyToast">تم نسخ الرابط بنجاح ✅</div>
+  `;
+}
+
+async function loadRelated(current){
+  try{
+    const snap = await db.ref('academy/articles').once('value');
+    const all = toArr(snap.val()).filter(a => a.id !== current.id && a.status !== 'draft');
+    let related = all.filter(a => a.category === current.category);
+    if(related.length < 3){
+      const rest = all.filter(a => a.category !== current.category);
+      related = related.concat(rest);
+    }
+    related = related.sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)).slice(0,3);
+    if(!related.length) return;
+    document.getElementById('relatedSec').style.display = 'block';
+    document.getElementById('relatedGrid').innerHTML = related.map(relatedCardHtml).join('');
+  }catch(err){ console.error(err); }
+}
+
+function copyArticleLink(){
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const toast = document.getElementById('copyToast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
   });
 }
+
+loadArticle();
 </script>
 </body>
 </html>
