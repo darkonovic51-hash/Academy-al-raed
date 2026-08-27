@@ -100,25 +100,55 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 @keyframes scrollWheel{0%,100%{opacity:1;transform:translateX(-50%) translateY(0);}50%{opacity:.2;transform:translateX(-50%) translateY(10px);}}
 @keyframes floatDown{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(8px);}}
 
-/* ARTICLES */
-.articles-section{padding:70px 0 80px;background:#fff;}
-.articles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
-.articles-grid .article-card.featured{grid-column:1/-1;}
-.article-card{border-radius:26px;overflow:hidden;background:#fff;box-shadow:var(--shadow-soft);border:1px solid #e8f0ea;transition:.35s;display:block;}
-.article-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-heavy);}
-.article-card .img-frame{height:210px;overflow:hidden;position:relative;background:var(--deep);}
-.article-card .img-frame img{width:100%;height:100%;object-fit:cover;transition:.5s;}
-.article-card:hover .img-frame img{transform:scale(1.08);}
-.article-card .body{padding:20px 22px;}
-.article-card h4{font-weight:700;font-size:1.1rem;color:var(--deep);margin-bottom:8px;}
-.article-card p{font-size:.86rem;color:#5c6660;line-height:1.6;}
-.article-card .read-more{display:inline-block;margin-top:10px;color:var(--mid);font-weight:700;font-size:.85rem;}
-.article-card.featured{display:grid;grid-template-columns:1.3fr 1fr;border:2px solid var(--accent);}
-.article-card.featured .img-frame{height:100%;min-height:300px;}
-.article-card.featured .body{display:flex;flex-direction:column;justify-content:center;padding:30px 34px;}
-.article-card.featured h4{font-size:1.7rem;}
-.article-card.featured .featured-tag{display:inline-block;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px;width:fit-content;}
-@media(max-width:700px){.article-card.featured{grid-template-columns:1fr;}}
+/* ============ NEWS / ARTICLES SECTION (احترافي) ============ */
+.news-section{padding:90px 0 100px;background:#fff;position:relative;overflow:hidden;}
+.news-hero-bg{position:absolute;top:-120px;left:-120px;width:420px;height:420px;background:radial-gradient(circle,rgba(232,135,30,.08) 0%,transparent 70%);z-index:0;pointer-events:none;}
+.news-header{text-align:center;max-width:680px;margin:0 auto 40px;position:relative;z-index:1;}
+.news-kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(33,150,83,.1);color:var(--mid);font-weight:800;font-size:.82rem;padding:7px 20px;border-radius:30px;margin-bottom:16px;letter-spacing:.5px;}
+.news-title{font-size:clamp(2.2rem,5vw,3.4rem);color:var(--deep);letter-spacing:1.5px;}
+.news-title span{color:var(--accent);}
+.news-subtitle{color:#5c6660;font-size:1rem;margin-top:10px;line-height:1.8;}
+
+.news-toolbar{display:flex;flex-direction:column;gap:20px;align-items:center;margin-bottom:44px;position:relative;z-index:1;}
+.news-search{position:relative;width:100%;max-width:420px;}
+.news-search i{position:absolute;top:50%;right:20px;transform:translateY(-50%);color:var(--mid);font-size:.95rem;}
+.news-search input{width:100%;padding:14px 50px 14px 20px;border-radius:40px;border:1.5px solid #e0ece4;background:#f7fbf8;font-family:'Cairo',sans-serif;font-size:.94rem;transition:.3s;}
+.news-search input:focus{outline:none;border-color:var(--mid);background:#fff;box-shadow:0 0 0 4px rgba(33,150,83,.1);}
+.news-categories{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.cat-pill{display:inline-flex;align-items:center;gap:7px;background:#f2f8f4;color:var(--deep);border:1.5px solid #e0ece4;padding:9px 18px;border-radius:30px;font-weight:700;font-size:.82rem;font-family:'Cairo',sans-serif;cursor:pointer;transition:.25s;}
+.cat-pill i{font-size:.8rem;color:var(--mid);}
+.cat-pill:hover{border-color:var(--mid);transform:translateY(-2px);}
+.cat-pill.active{background:var(--mid);border-color:var(--mid);color:#fff;box-shadow:0 8px 18px rgba(33,150,83,.3);}
+.cat-pill.active i{color:#fff;}
+
+.featured-article{display:grid;grid-template-columns:1.15fr 1fr;background:#fff;border-radius:32px;overflow:hidden;box-shadow:var(--shadow-heavy);border:1px solid #eef4f0;margin-bottom:50px;position:relative;z-index:1;transition:.4s;}
+.featured-article:hover{transform:translateY(-6px);}
+.featured-img{position:relative;min-height:340px;background:var(--deep);overflow:hidden;}
+.featured-img img{width:100%;height:100%;object-fit:cover;transition:.6s;}
+.featured-article:hover .featured-img img{transform:scale(1.06);}
+.featured-body{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;}
+.featured-body h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,3vw,2.3rem);color:var(--deep);letter-spacing:1px;line-height:1.15;margin:14px 0 12px;}
+.featured-body p{color:#5c6660;font-size:.98rem;line-height:1.85;margin-bottom:18px;}
+.read-more-btn{display:inline-flex;align-items:center;gap:8px;color:var(--accent-dark);font-weight:800;font-size:.9rem;transition:gap .3s;}
+.featured-article:hover .read-more-btn{gap:14px;}
+@media(max-width:860px){.featured-article{grid-template-columns:1fr;}.featured-img{min-height:220px;}.featured-body{padding:30px 26px;}}
+
+.badge-category{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:800;padding:6px 14px;border-radius:20px;width:fit-content;box-shadow:0 6px 16px rgba(232,135,30,.35);}
+.featured-img .badge-category,.news-card .img-frame .badge-category{position:absolute;top:16px;right:16px;z-index:2;}
+
+.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;position:relative;z-index:1;}
+.news-card{display:block;background:#fff;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-soft);border:1px solid #eef4f0;transition:.35s cubic-bezier(.16,1,.3,1);}
+.news-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-heavy);border-color:var(--accent);}
+.news-card .img-frame{position:relative;height:200px;overflow:hidden;background:var(--deep);}
+.news-card .img-frame img{width:100%;height:100%;object-fit:cover;transition:.5s;}
+.news-card:hover .img-frame img{transform:scale(1.1);}
+.news-card .body{padding:22px 22px 24px;}
+.news-card h4{font-size:1.12rem;font-weight:800;color:var(--deep);line-height:1.5;margin-bottom:8px;}
+.news-card p{font-size:.86rem;color:#5c6660;line-height:1.7;margin-bottom:14px;}
+.card-meta{display:flex;align-items:center;gap:16px;font-size:.76rem;color:#8a9690;font-weight:700;border-top:1px dashed #e5ede8;padding-top:12px;}
+.card-meta i{color:var(--mid);margin-left:5px;}
+.news-empty{text-align:center;padding:60px 20px;color:#9aa8a1;}
+.news-empty i{font-size:2.6rem;margin-bottom:14px;color:#c8d8cf;}
 
 /* ABOUT */
 .about{padding:80px 0;background:#fff;}
@@ -341,10 +371,30 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
   <div class="scroll-indicator"><div class="mouse"></div><span>مرر للأسفل</span></div>
 </section>
 
-<section class="articles-section" id="articles">
+<section class="news-section" id="articles">
+  <div class="news-hero-bg"></div>
   <div class="container">
-    <h2 class="section-title center reveal">مقالات الأكاديمية</h2>
-    <div class="articles-grid" id="articlesGrid"></div>
+    <div class="news-header reveal">
+      <span class="news-kicker"><i class="fas fa-newspaper"></i> غرفة الأخبار</span>
+      <h2 class="news-title">أخبار <span>الأكاديمية</span></h2>
+      <p class="news-subtitle">آخر الأخبار والمستجدات من داخل أكاديمية الرائد لكرة القدم</p>
+    </div>
+
+    <div class="news-toolbar reveal">
+      <div class="news-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="articleSearchInput" placeholder="ابحث عن خبر أو مقال..." />
+      </div>
+      <div class="news-categories" id="newsCategories"></div>
+    </div>
+
+    <div id="featuredArticleWrap"></div>
+
+    <div class="news-grid" id="articlesGrid"></div>
+    <div class="news-empty" id="newsEmpty" style="display:none;">
+      <i class="fas fa-newspaper"></i>
+      <p>لا توجد مقالات مطابقة لبحثك</p>
+    </div>
   </div>
 </section>
 
@@ -623,15 +673,150 @@ function renderAgeGroups(cats){
   const footerCats = document.getElementById('footerCats');
   footerCats.innerHTML = entries.map(([key]) => `<a href="category.html?cat=${key}">${key}</a>`).join('');
 }
-function renderArticles(items){
-  const grid = document.getElementById('articlesGrid');
-  if(!items.length){ document.getElementById('articles').style.display='none'; return; }
-  grid.innerHTML = items.map((a,i) => `
-    <a class="article-card ${i===0?'featured':''}" href="article.html?id=${a.id}">
-      <div class="img-frame">${a.image?`<img src="${a.image}" onerror="this.style.display='none'"/>`:''}</div>
-      <div class="body">${i===0?'<span class="featured-tag">مقال مميز</span>':''}<h4>${a.title}</h4><p>${a.excerpt||(a.content||'').slice(0,90)}</p><span class="read-more">اقرأ المزيد ←</span></div>
-    </a>`).join('');
+
+/* ===== ARTICLE CATEGORIES ===== */
+const ARTICLE_CATEGORIES = {
+  academy:       {label:"أخبار الأكاديمية", icon:"fa-shield-halved"},
+  categories:    {label:"أخبار الفئات",     icon:"fa-users"},
+  matches:       {label:"مباريات",          icon:"fa-futbol"},
+  tournaments:   {label:"بطولات",           icon:"fa-trophy"},
+  training:      {label:"تدريبات",          icon:"fa-dumbbell"},
+  talents:       {label:"مواهب",            icon:"fa-star"},
+  announcements: {label:"إعلانات",          icon:"fa-bullhorn"},
+  stories:       {label:"قصص ونجاحات",      icon:"fa-medal"},
+  tips:          {label:"نصائح رياضية",     icon:"fa-lightbulb"}
+};
+
+function formatArabicDate(iso){
+  if(!iso) return '';
+  const d = new Date(iso);
+  if(isNaN(d)) return '';
+  return d.toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'});
 }
+function calcReadTime(html){
+  const text = (html||'').replace(/<[^>]*>/g,' ');
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words/180));
+}
+function stripHtml(html){ return (html||'').replace(/<[^>]*>/g,''); }
+
+let allArticlesData = [];
+let articleFilter = { cat:'all', q:'' };
+
+function renderNewsCategoryPills(){
+  const wrap = document.getElementById('newsCategories');
+  if(!wrap) return;
+  const cats = [['all',{label:'الكل',icon:'fa-layer-group'}], ...Object.entries(ARTICLE_CATEGORIES)];
+  wrap.innerHTML = cats.map(([key,c]) => `
+    <button type="button" class="cat-pill ${articleFilter.cat===key?'active':''}" data-cat="${key}">
+      <i class="fas ${c.icon}"></i> ${c.label}
+    </button>`).join('');
+  wrap.querySelectorAll('.cat-pill').forEach(btn => btn.addEventListener('click', function(){
+    articleFilter.cat = this.dataset.cat;
+    renderNewsCategoryPills();
+    applyArticleFilters();
+  }));
+}
+
+function featuredArticleHtml(a){
+  const cat = ARTICLE_CATEGORIES[a.category] || {label:'أخبار',icon:'fa-newspaper'};
+  return `<a class="featured-article reveal visible" href="article.html?id=${a.id}">
+    <div class="featured-img">
+      <span class="badge-category"><i class="fas ${cat.icon}"></i> ${cat.label}</span>
+      <img src="${a.image||''}" onerror="this.style.display='none'" alt="${a.title||''}"/>
+    </div>
+    <div class="featured-body">
+      <h3>${a.title||''}</h3>
+      <p>${a.excerpt || stripHtml(a.content).slice(0,170)}</p>
+      <div class="card-meta">
+        <span><i class="far fa-calendar"></i> ${formatArabicDate(a.publishedAt)}</span>
+        <span><i class="far fa-clock"></i> ${calcReadTime(a.content)} د قراءة</span>
+      </div>
+      <span class="read-more-btn">اقرأ المزيد <i class="fas fa-arrow-left"></i></span>
+    </div>
+  </a>`;
+}
+
+function articleCardHtml(a){
+  const cat = ARTICLE_CATEGORIES[a.category] || {label:'أخبار',icon:'fa-newspaper'};
+  return `<a class="news-card reveal visible" href="article.html?id=${a.id}">
+    <div class="img-frame">
+      <span class="badge-category"><i class="fas ${cat.icon}"></i> ${cat.label}</span>
+      <img src="${a.image||''}" onerror="this.style.display='none'" alt="${a.title||''}"/>
+    </div>
+    <div class="body">
+      <h4>${a.title||''}</h4>
+      <p>${a.excerpt || stripHtml(a.content).slice(0,95)}</p>
+      <div class="card-meta">
+        <span><i class="far fa-calendar"></i> ${formatArabicDate(a.publishedAt)}</span>
+        <span><i class="far fa-clock"></i> ${calcReadTime(a.content)} د</span>
+      </div>
+    </div>
+  </a>`;
+}
+
+function renderFeaturedAndGrid(filteredList){
+  const featuredWrap = document.getElementById('featuredArticleWrap');
+  const grid = document.getElementById('articlesGrid');
+  const emptyMsg = document.getElementById('newsEmpty');
+  const isDefaultView = articleFilter.cat==='all' && !articleFilter.q.trim();
+
+  let featured = null;
+  if(isDefaultView){
+    featured = allArticlesData.find(a => a.featured && a.status!=='draft') || filteredList[0] || null;
+  }
+
+  if(featured){
+    featuredWrap.style.display = 'block';
+    featuredWrap.innerHTML = featuredArticleHtml(featured);
+  } else {
+    featuredWrap.style.display = 'none';
+    featuredWrap.innerHTML = '';
+  }
+
+  const gridList = featured ? filteredList.filter(a => a.id !== featured.id) : filteredList;
+
+  if(!gridList.length){
+    grid.innerHTML = '';
+    emptyMsg.style.display = 'block';
+  } else {
+    emptyMsg.style.display = 'none';
+    grid.innerHTML = gridList.map(articleCardHtml).join('');
+  }
+}
+
+function applyArticleFilters(){
+  let list = allArticlesData.filter(a => a.status !== 'draft');
+  if(articleFilter.cat !== 'all') list = list.filter(a => a.category === articleFilter.cat);
+  if(articleFilter.q.trim()){
+    const q = articleFilter.q.trim().toLowerCase();
+    list = list.filter(a =>
+      (a.title||'').toLowerCase().includes(q) ||
+      (a.excerpt||'').toLowerCase().includes(q) ||
+      stripHtml(a.content).toLowerCase().includes(q)
+    );
+  }
+  list.sort((a,b) => new Date(b.publishedAt||0) - new Date(a.publishedAt||0));
+  renderFeaturedAndGrid(list);
+}
+
+function renderArticles(items){
+  allArticlesData = items;
+  if(!items.length){ document.getElementById('articles').style.display = 'none'; return; }
+  renderNewsCategoryPills();
+  applyArticleFilters();
+
+  const searchInput = document.getElementById('articleSearchInput');
+  if(searchInput && !searchInput.dataset.bound){
+    searchInput.dataset.bound = '1';
+    let debounceT;
+    searchInput.addEventListener('input', function(){
+      clearTimeout(debounceT);
+      debounceT = setTimeout(() => { articleFilter.q = this.value; applyArticleFilters(); }, 200);
+    });
+  }
+}
+
 function renderTesti(list){
   const grid = document.getElementById('testiGrid');
   if(!list.length){ document.getElementById('testimonials').style.display='none'; return; }
@@ -758,7 +943,7 @@ function initCounters(){
   renderStaff(Array.isArray(staff)?staff:defaultStaff);
   renderAgeGroups(categories);
   renderPlayers(toArr(players));
-  renderArticles(toArr(articles).sort((a,b)=>new Date(b.publishedAt||0)-new Date(a.publishedAt||0)));
+  renderArticles(toArr(articles));
   renderTesti(toArr(testi));
   renderDocs(toArr(docs));
   renderKits(toArr(kits));
