@@ -341,6 +341,32 @@ function previewImageField(key, input){
 }
 
 /* ============ رفع ملف (فيديو/صورة) مباشرة إلى Firebase Storage مع Progress حقيقي وكاشف توقف ============ */
+/* ===== إصلاح: تتبّع عمليات الرفع الجارية لمنع الحفظ قبل اكتمال الرابط (هذا كان سبب "رفض" الرفع في المقالات/الفيديوهات التعليمية/المباريات) ===== */
+let activeUploads = {}; // key -> {task, kind}
+
+function isFieldUploading(key){
+  return !!activeUploads[key];
+}
+function anyUploadPendingForFields(fields){
+  return (fields||[]).some(f => (f.type==='videoUpload' || f.type==='imageUpload') && isFieldUploading(f.key));
+}
+function setUploadingLockUI(){
+  const anyActive = Object.keys(activeUploads).length > 0;
+  document.querySelectorAll('[id^="saveBtn-"]').forEach(btn=>{
+    if(anyActive){
+      if(!btn.dataset.uploadingLock){ btn.dataset.origLabel = btn.innerHTML; }
+      btn.dataset.uploadingLock = '1';
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ رفع الملف، الرجاء الانتظار...';
+    } else if(btn.dataset.uploadingLock){
+      btn.disabled = false;
+      btn.innerHTML = btn.dataset.origLabel || '<i class="fas fa-check"></i> حفظ';
+      delete btn.dataset.uploadingLock;
+      delete btn.dataset.origLabel;
+    }
+  });
+}
+
 function handleStorageUpload(key, kind, input){
   const file = input.files[0];
   if(!file) return;
@@ -349,9 +375,17 @@ function handleStorageUpload(key, kind, input){
   const text = document.getElementById('progressText_'+key);
   const preview = document.getElementById('uploadPreview_'+key);
   const hidden = document.getElementById('f_'+key);
+
+  // إن كان هناك رفع سابق لم يكتمل بعد لنفس الحقل، نُلغيه أولاً قبل بدء رفع جديد (لتفادي تعارض عمليتين على نفس الحقل)
+  if(activeUploads[key] && activeUploads[key].task){
+    try{ activeUploads[key].task.cancel(); }catch(e){}
+    delete activeUploads[key];
+  }
+
   if(progressWrap){ progressWrap.style.display='flex'; }
   if(fill) fill.style.width='0%';
   if(text) text.textContent='جارٍ البدء...';
+  if(hidden) hidden.value=''; // نُفرغ الرابط القديم فوراً حتى لا يُحفظ عنصر برابط قديم أثناء رفع ملف جديد
 
   const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_');
   const folder = kind==='video' ? 'academy/uploads/videos' : 'academy/uploads/images';
@@ -366,9 +400,12 @@ function handleStorageUpload(key, kind, input){
     return;
   }
 
+  activeUploads[key] = {task, kind};
+  setUploadingLockUI();
+
   let lastBytes = -1;
   let stallTimer = null;
-  const STALL_MS = 20000; // إذا لم يتحرك الرفع 20 ثانية نعتبره متوقفاً ونلغيه
+  const STALL_MS = 45000; // مهلة أطول (45 ثانية) بدل 20 لإعطاء وقت كافٍ لرفع الفيديوهات الكبيرة على اتصال بطيء
   const resetStallTimer = ()=>{
     if(stallTimer) clearTimeout(stallTimer);
     stallTimer = setTimeout(()=>{ try{ task.cancel(); }catch(e){} }, STALL_MS);
@@ -384,6 +421,8 @@ function handleStorageUpload(key, kind, input){
     if(stallTimer) clearTimeout(stallTimer);
     if(progressWrap) progressWrap.style.display='none';
     if(input) input.value='';
+    delete activeUploads[key];
+    setUploadingLockUI();
     if(err && err.code === 'storage/canceled'){
       showError({code:'storage/timeout', message:'توقف الرفع ولم يكتمل خلال المدة المتوقعة — تحقق من قواعد Storage والاتصال بالإنترنت ثم أعد المحاولة'}, 'رفع الملف إلى Storage');
     } else {
@@ -396,9 +435,15 @@ function handleStorageUpload(key, kind, input){
       if(hidden) hidden.value = url;
       if(preview) preview.innerHTML = kind==='video' ? `<video src="${url}" controls></video>` : `<img src="${url}" />`;
       if(progressWrap) progressWrap.style.display='none';
+      delete activeUploads[key];
+      setUploadingLockUI();
       addDebugLog('📤 تم رفع ملف إلى Storage: '+path,'success');
       toastOk('تم رفع الملف بنجاح');
-    }catch(err){ showError(err, 'الحصول على رابط الملف بعد الرفع'); }
+    }catch(err){
+      delete activeUploads[key];
+      setUploadingLockUI();
+      showError(err, 'الحصول على رابط الملف بعد الرفع');
+    }
   });
 }
 
@@ -647,9 +692,6 @@ const keyedSections = {
   extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
   badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
   },
-  /* ===== المقالات — تم إصلاح القسم: الصورة/الفيديو الآن يُرفعان إلى Firebase Storage بدل base64
-     (نفس أسلوب "الفيديوهات التعليمية")، وأُضيفت الحقول التي يحتاجها الموقع فعلياً: تصنيف مطابق،
-     حالة النشر، مقال مميز، تاريخ النشر ===== */
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
     {key:'title',label:'عنوان المقال',type:'text',required:true},
     {key:'category',label:'التصنيف',type:'select',options:ARTICLE_CAT_KEYS,optionLabels:ARTICLE_CAT_LABELS,required:true},
@@ -860,6 +902,7 @@ function resetFieldEl(f){
     const preview = document.getElementById('uploadPreview_'+f.key); if(preview) preview.innerHTML='';
     const fileInput = document.getElementById('f_'+f.key+'_file'); if(fileInput) fileInput.value='';
     const progressWrap = document.getElementById('progress_'+f.key); if(progressWrap) progressWrap.style.display='none';
+    if(activeUploads[f.key] && activeUploads[f.key].task){ try{ activeUploads[f.key].task.cancel(); }catch(e){} delete activeUploads[f.key]; setUploadingLockUI(); }
     return;
   }
   const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value='';
@@ -956,6 +999,10 @@ function filterArrayByCat(key, cat){
 }
 async function saveArrayItem(key){
   const cfg = arraySections[key];
+  if(anyUploadPendingForFields(cfg.fields)){
+    showToast('الرجاء الانتظار حتى ينتهي رفع الملف قبل الحفظ', 'warning');
+    return;
+  }
   const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
@@ -1068,6 +1115,10 @@ function filterKeyedByCat(key, cat){
 }
 async function saveKeyedItem(key){
   const cfg = keyedSections[key];
+  if(anyUploadPendingForFields(cfg.fields)){
+    showToast('الرجاء الانتظار حتى ينتهي رفع الملف قبل الحفظ', 'warning');
+    return;
+  }
   const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
@@ -1609,21 +1660,4 @@ function changePassword(){
     .finally(() => { btn.disabled=false; btn.innerHTML=orig; });
 }
 async function saveLetterhead(){
-  const btn = document.getElementById('saveLhBtn'); const orig = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
-  const data = {
-    leagueName: document.getElementById('lh_leagueName').value.trim(),
-    approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
-    directorPhone: document.getElementById('lh_directorPhone').value.trim()
-  };
-  try{
-    await db.ref('academy/adminSettings/letterhead').set(data);
-    STATE.letterhead = data;
-    addLog('تعديل','بيانات الترويسة الرسمية');
-    toastOk('تم حفظ بيانات الترويسة');
-  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
-  finally { btn.disabled=false; btn.innerHTML=orig; }
-}
-</script>
-</body>
-</html>
+  const btn = document.getElementById('saveLhBtn'); const 
