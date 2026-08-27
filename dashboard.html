@@ -6,9 +6,9 @@
 <title>لوحة تحكم أكاديمية الرائد</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <style>
 :root{
   --green:#1B6B3F; --green2:#219653; --green-dark:#155C34; --green-light:#3DC57D;
@@ -297,9 +297,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-// إجبار الـ SDK على استخدام الـ bucket الصريح بصيغة gs:// بدل الاستنتاج التلقائي،
-// لتفادي مشكلة معروفة: عدم بناء رابط الطلب بشكل صحيح مع صيغة bucket الجديدة *.firebasestorage.app
-const storage = firebase.app().storage(`gs://${firebaseConfig.storageBucket}`);
+const storage = firebase.storage();
 const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
 document.getElementById('sideLogo').src = LOGO_URL;
 document.getElementById('loadingLogo').src = LOGO_URL;
@@ -386,14 +384,9 @@ function handleStorageUpload(key, kind, input){
     if(stallTimer) clearTimeout(stallTimer);
     if(progressWrap) progressWrap.style.display='none';
     if(input) input.value='';
-    // إذا كان الإلغاء بسبب stallTimer (لم يصل أي رد من Firebase إطلاقاً منذ بداية الرفع)
-    if(err && err.code === 'storage/canceled' && lastBytes <= 0){
-      showError({
-        code:'storage/no-response',
-        message:'لم يصل أي رد من خادم Firebase Storage خلال '+(STALL_MS/1000)+' ثانية. الأسباب الشائعة: (1) الـ bucket في firebaseConfig غير مطابق للـ bucket الفعلي في المشروع، (2) لا يوجد CORS مفعّل على الـ bucket للنطاق الحالي، (3) حجب الشبكة/الجدار الناري لنطاق firebasestorage.googleapis.com.'
-      }, 'رفع الملف إلى Storage — لا رد من الخادم');
+    if(err && err.code === 'storage/canceled'){
+      showError({code:'storage/timeout', message:'توقف الرفع ولم يكتمل خلال المدة المتوقعة — تحقق من قواعد Storage والاتصال بالإنترنت ثم أعد المحاولة'}, 'رفع الملف إلى Storage');
     } else {
-      // خطأ حقيقي وصل من Firebase — نعرضه كما هو (code + message الأصليين)
       showError(err, 'رفع الملف إلى Storage');
     }
   }, async()=>{
@@ -523,15 +516,7 @@ function showError(err, context){
       اذهب إلى Firebase Console ← Realtime Database ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish:</div>
       <div class="rules-box">${RULES_SNIPPET}</div>`;
   }
-  if(code === 'storage/no-response'){
-    html += `<div style="margin-top:8px;">هذا ليس خطأ صلاحيات (Rules) — الطلب لم يصل للخادم أصلاً. الأسباب الأكثر احتمالاً:<br/>
-      1) عدم تطابق الـ bucket في firebaseConfig مع الـ bucket الفعلي (تحقّق من Firebase Console ← Storage ← الرابط أعلى الصفحة).<br/>
-      2) عدم إعداد CORS على الـ bucket لنطاق موقعك. نفّذ عبر gcloud/gsutil:</div>
-      <div class="rules-box">gsutil cors set cors.json gs://${firebaseConfig.storageBucket}
-
-# محتوى cors.json:
-[{"origin": ["*"],"method": ["GET","PUT","POST"],"maxAgeSeconds": 3600,"responseHeader": ["Content-Type","x-goog-resumable"]}]</div>`;
-  } else if(code.startsWith('storage/')){
+  if(code.startsWith('storage/')){
     html += `<div style="margin-top:8px;">السبب المحتمل: قواعد أمان Firebase Storage تمنع الرفع، أو انقطاع في الاتصال أثناء الرفع.<br/>
       اذهب إلى Firebase Console ← Storage ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish، ثم أعد المحاولة:</div>
       <div class="rules-box">${STORAGE_RULES_SNIPPET}</div>`;
@@ -662,7 +647,9 @@ const keyedSections = {
   extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
   badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
   },
-  /* ===== المقالات — الصورة/الفيديو يُرفعان إلى Firebase Storage (نفس أسلوب "الفيديوهات التعليمية") ===== */
+  /* ===== المقالات — تم إصلاح القسم: الصورة/الفيديو الآن يُرفعان إلى Firebase Storage بدل base64
+     (نفس أسلوب "الفيديوهات التعليمية")، وأُضيفت الحقول التي يحتاجها الموقع فعلياً: تصنيف مطابق،
+     حالة النشر، مقال مميز، تاريخ النشر ===== */
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
     {key:'title',label:'عنوان المقال',type:'text',required:true},
     {key:'category',label:'التصنيف',type:'select',options:ARTICLE_CAT_KEYS,optionLabels:ARTICLE_CAT_LABELS,required:true},
@@ -716,7 +703,6 @@ function grantAccess(){
   addDebugLog('✅ تسجيل دخول ناجح للمدير','success');
   showPage('home');
   runConnectivityCheck();
-  runStorageConnectivityCheck();
 }
 function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
@@ -726,15 +712,6 @@ function runConnectivityCheck(){
   db.ref('academy/adminSettings/_connCheck').set({ts:Date.now()})
     .then(() => db.ref('academy/adminSettings/_connCheck').remove())
     .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
-}
-
-/* فحص اتصال Storage — يكشف فوراً مشكلة الـ bucket/CORS عند تسجيل الدخول بدل انتظار محاولة رفع فعلية */
-function runStorageConnectivityCheck(){
-  const testRef = storage.ref('academy/_connCheck/' + Date.now() + '.txt');
-  testRef.putString('ok')
-    .then(() => testRef.delete())
-    .then(() => addDebugLog('📦 Storage bucket متصل ويعمل بشكل صحيح', 'success'))
-    .catch(err => showError(err, 'التحقق من إعدادات Firebase Storage bucket'));
 }
 
 /* ============ LAZY LOAD ============ */
@@ -1637,4 +1614,16 @@ async function saveLetterhead(){
   const data = {
     leagueName: document.getElementById('lh_leagueName').value.trim(),
     approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
-    directorPhone: document
+    directorPhone: document.getElementById('lh_directorPhone').value.trim()
+  };
+  try{
+    await db.ref('academy/adminSettings/letterhead').set(data);
+    STATE.letterhead = data;
+    addLog('تعديل','بيانات الترويسة الرسمية');
+    toastOk('تم حفظ بيانات الترويسة');
+  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
+  finally { btn.disabled=false; btn.innerHTML=orig; }
+}
+</script>
+</body>
+</html>
