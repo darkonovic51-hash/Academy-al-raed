@@ -149,6 +149,8 @@ img{max-width:100%;}
 .badge.ready{background:#D6EAF8;color:#154360;}
 .badge.paid{background:#D4EDDA;color:#155724;}
 .badge.unpaid{background:#F8D7DA;color:#721C24;}
+.badge.published{background:#D4EDDA;color:#155724;}
+.badge.draft{background:#FFF3D6;color:#B8860B;}
 .empty-msg{color:#999;text-align:center;padding:20px;font-size:.85rem;}
 .loading-msg{color:var(--green2);text-align:center;padding:30px;font-size:.9rem;}
 .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
@@ -171,6 +173,10 @@ img{max-width:100%;}
 .image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
 .image-preview img{width:100%;height:100%;object-fit:cover;}
 .image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
+
+.checkbox-field-wrap{display:flex;align-items:center;gap:10px;padding:9px 2px;}
+.checkbox-field-wrap input[type=checkbox]{width:19px;height:19px;accent-color:var(--green2);cursor:pointer;flex-shrink:0;}
+.checkbox-field-wrap span{font-size:.84rem;font-weight:600;color:var(--text-2);}
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,15,0.65);backdrop-filter:blur(4px);z-index:999998;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.active{display:flex;}
@@ -614,6 +620,11 @@ const arraySections = {
     {key:'text',label:'نص الرسالة',type:'textarea',required:true},{key:'date',label:'التاريخ',type:'date'}
   ],display:i=>`${i.category} — ${i.type||'رسالة'}`}
 };
+
+/* ============ تصنيفات المقالات — مطابقة تماماً لما هو مستخدم في index.html ============ */
+const ARTICLE_CAT_KEYS = ['academy','categories','matches','tournaments','training','talents','announcements','stories','tips'];
+const ARTICLE_CAT_LABELS = ['أخبار الأكاديمية','أخبار الفئات','مباريات','بطولات','تدريبات','مواهب','إعلانات','قصص ونجاحات','نصائح رياضية'];
+
 const keyedSections = {
   players:{path:'academy/players',title:'اللاعبون',icon:'fa-user',categoryFiltered:true,fields:[
     {key:'firstName',label:'الاسم',type:'text',required:true},{key:'lastName',label:'اللقب',type:'text',required:true},
@@ -636,11 +647,30 @@ const keyedSections = {
   extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
   badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
   },
+  /* ===== المقالات — تم إصلاح القسم: الصورة/الفيديو الآن يُرفعان إلى Firebase Storage بدل base64
+     (نفس أسلوب "الفيديوهات التعليمية")، وأُضيفت الحقول التي يحتاجها الموقع فعلياً: تصنيف مطابق،
+     حالة النشر، مقال مميز، تاريخ النشر ===== */
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
-    {key:'title',label:'العنوان',type:'text',required:true},{key:'image',label:'صورة المقال',type:'image',maxDim:1000},
-    {key:'author',label:'الكاتب',type:'text'},{key:'tag',label:'التصنيف',type:'text'},
-    {key:'excerpt',label:'ملخص قصير',type:'textarea'},{key:'content',label:'المحتوى الكامل',type:'textarea',required:true}
-  ],display:i=>i.title,thumb:i=>i.image}
+    {key:'title',label:'عنوان المقال',type:'text',required:true},
+    {key:'category',label:'التصنيف',type:'select',options:ARTICLE_CAT_KEYS,optionLabels:ARTICLE_CAT_LABELS,required:true},
+    {key:'author',label:'الكاتب / الإدارة',type:'text'},
+    {key:'publishedAt',label:'تاريخ النشر',type:'date'},
+    {key:'status',label:'حالة النشر',type:'select',options:['published','draft'],optionLabels:['منشور','مسودة']},
+    {key:'featured',label:'تحديد كمقال مميز',type:'checkbox',checkboxLabel:'إظهار هذا المقال في الأعلى كمقال رئيسي'},
+    {key:'image',label:'صورة المقال الرئيسية',type:'imageUpload'},
+    {key:'video',label:'فيديو داخل المقال (اختياري)',type:'videoUpload'},
+    {key:'excerpt',label:'ملخص قصير',type:'textarea'},
+    {key:'content',label:'محتوى المقال الكامل',type:'textarea',required:true}
+  ],
+  beforeSave:(data,isNew)=>{ if(!data.publishedAt) data.publishedAt = new Date().toISOString().substring(0,10); if(!data.status) data.status='published'; return data; },
+  display:i=>i.title,
+  thumb:i=>i.image,
+  extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">
+    ${i.category ? ('التصنيف: '+escapeHtml(ARTICLE_CAT_LABELS[ARTICLE_CAT_KEYS.indexOf(i.category)]||i.category)) : ''}
+    ${i.featured ? ' — <b style="color:var(--accent-dark);">⭐ مميز</b>' : ''}
+  </div>`,
+  badge:i=>`<span class="badge ${i.status==='draft'?'draft':'published'}">${i.status==='draft'?'مسودة':'منشور'}</span>`
+  }
 };
 
 let STATE = {};
@@ -783,6 +813,12 @@ function fieldInputHTML(f, val){
   if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
   if(f.type==='select') return `<select id="f_${f.key}">${f.options.map((o,i)=>`<option value="${o}" ${val===o?'selected':''}>${f.optionLabels?f.optionLabels[i]:(o||'—')}</option>`).join('')}</select>`;
   if(f.type==='file') return `<input type="file" id="f_${f.key}" accept="image/*,.pdf" />`;
+  if(f.type==='checkbox'){
+    return `<div class="checkbox-field-wrap">
+      <input type="checkbox" id="f_${f.key}" ${val?'checked':''} />
+      <span>${f.checkboxLabel || ''}</span>
+    </div>`;
+  }
   if(f.type==='videoUpload' || f.type==='imageUpload'){
     const kind = f.type==='videoUpload' ? 'video' : 'image';
     const accept = kind==='video' ? 'video/*' : 'image/*';
@@ -809,6 +845,10 @@ function fieldInputHTML(f, val){
   return `<input type="${f.type}" id="f_${f.key}" value="${escapeHtml(val)}" />`;
 }
 function resetFieldEl(f){
+  if(f.type==='checkbox'){
+    const el=document.getElementById('f_'+f.key); if(el) el.checked=false;
+    return;
+  }
   if(f.type==='image'){
     const fileEl = document.getElementById('f_'+f.key); if(fileEl) fileEl.value='';
     const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value='';
@@ -825,6 +865,10 @@ function resetFieldEl(f){
   const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value='';
 }
 function setFieldEl(f, val){
+  if(f.type==='checkbox'){
+    const el=document.getElementById('f_'+f.key); if(el) el.checked = !!val;
+    return;
+  }
   if(f.type==='image'){
     const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value = val||'';
     const preview = document.getElementById('preview_'+f.key); if(preview) preview.innerHTML = val ? `<img src="${val}" />` : '<span>لا صورة</span>';
@@ -851,6 +895,7 @@ async function collectFields(fields){
     if(!el) continue;
     if(f.type==='file'){ if(el.files[0]) data[f.key] = await fileToBase64(el.files[0]); }
     else if(f.type==='number'){ data[f.key] = el.value===''?0:Number(el.value); }
+    else if(f.type==='checkbox'){ data[f.key] = !!el.checked; }
     else { data[f.key] = el.value.trim(); }
   }
   return data;
@@ -977,7 +1022,7 @@ async function deleteArrayItem(key, idx){
 /* ============ GENERIC KEYED SECTION (players/articles) ============ */
 function renderKeyedSectionPage(c, key){
   const cfg = keyedSections[key];
-  const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image'||f.type==='videoUpload'||f.type==='imageUpload')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+  const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image'||f.type==='videoUpload'||f.type==='imageUpload'||f.type==='checkbox')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
   let catTabsHtml = '';
   if(cfg.categoryFiltered){
     catTabsHtml = `<div class="cat-tabs" id="catTabsK-${key}">
