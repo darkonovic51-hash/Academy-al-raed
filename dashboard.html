@@ -23,7 +23,6 @@ button{font-family:'Cairo',sans-serif;cursor:pointer;}
 img{max-width:100%;}
 ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
-/* ============ شاشة تسجيل الدخول ============ */
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
 .login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
 .login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
@@ -36,7 +35,6 @@ img{max-width:100%;}
 .login-box button:disabled{opacity:.6;cursor:not-allowed;}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
 
-/* ============ شاشة التحميل العامة (منقولة) ============ */
 .loading-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;justify-content:center;align-items:center;flex-direction:column;background:rgba(10,20,15,0.82);backdrop-filter:blur(8px);color:#fff;}
 .loading-overlay.active{display:flex;}
 .loading-overlay img.logo{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#fff;padding:4px;animation:pulseLogo 1.2s ease-in-out infinite;}
@@ -46,7 +44,6 @@ img{max-width:100%;}
 @keyframes spin{to{transform:rotate(360deg);}}
 @keyframes pulseLogo{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 
-/* ============ نظام التنبيهات (Toast) منقول ============ */
 .toast-container{position:fixed;bottom:20px;left:20px;z-index:999999;display:flex;flex-direction:column;gap:8px;}
 .toast{padding:12px 22px;border-radius:10px;color:#fff;font-weight:700;font-size:.85rem;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:slideUp .3s ease;min-width:200px;}
 .toast-success{background:#1B6B3F;}
@@ -55,7 +52,6 @@ img{max-width:100%;}
 .toast-warning{background:#E8871E;}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
-/* ============ لوحة التصحيح (Debug) منقولة ============ */
 #debugPanel{position:fixed;bottom:80px;left:10px;z-index:999997;background:rgba(10,20,15,0.92);color:#7CFC9A;font-family:monospace;font-size:11px;padding:12px 16px;border-radius:12px;max-width:280px;min-width:200px;max-height:50vh;overflow-y:auto;border:2px solid var(--green2);box-shadow:0 4px 30px rgba(0,0,0,.5);direction:ltr;text-align:left;display:none;}
 #debugPanel.minimized{max-height:44px;overflow:hidden;cursor:pointer;}
 #debugPanel .debug-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
@@ -71,7 +67,6 @@ img{max-width:100%;}
 #debugToggleBtn{position:fixed;bottom:20px;right:20px;z-index:999996;background:rgba(27,107,63,0.9);border:2px solid var(--green2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(27,107,63,.35);}
 #debugToggleBtn.active{background:var(--green-dark);}
 
-/* ============ الترويسة الرسمية منقولة ============ */
 .official-letterhead{background:#fff;border:2px solid var(--green);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .official-letterhead .ol-left{display:flex;align-items:center;gap:14px;}
 .official-letterhead .ol-left img.ol-logo{height:56px;width:56px;border-radius:50%;object-fit:cover;}
@@ -83,7 +78,6 @@ img{max-width:100%;}
 .official-letterhead .ol-right{text-align:left;font-size:.78rem;color:#333;line-height:1.8;}
 .official-letterhead .ol-right strong{color:var(--text);}
 
-/* ============ الهيكل العام ============ */
 .shell{display:none;min-height:100vh;flex-direction:column;}
 .shell.active{display:flex;}
 .shell-body{display:flex;flex:1;min-height:0;}
@@ -166,42 +160,40 @@ img{max-width:100%;}
 .fawj-card:hover{transform:translateY(-3px);}
 .fawj-card .n{font-size:1.8rem;font-weight:900;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-align:center;}
 
-/* ============ الجداول (منقولة) ============ */
 .table-wrap{background:#fff;border-radius:14px;overflow:auto;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px;}
 .table-wrap table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:640px;}
 .table-wrap th{background:var(--green);color:#fff;padding:11px 8px;text-align:center;font-weight:700;white-space:nowrap;font-size:.75rem;}
 .table-wrap td{padding:9px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 .table-wrap tr:hover td{background:rgba(33,150,83,0.04);}
 
-/* ============ صورة رفع ============ */
 .image-upload-wrap{border:2px dashed var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
 .image-upload-wrap input[type=file]{flex:1;font-size:.78rem;}
 .image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
 .image-preview img{width:100%;height:100%;object-fit:cover;}
 .image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
 
-/* ============ نافذة منبثقة عامة (Modal) ============ */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,20,15,0.65);backdrop-filter:blur(4px);z-index:999998;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.active{display:flex;}
 .modal-box{background:#fff;border-radius:16px;width:100%;max-width:520px;max-height:86vh;overflow-y:auto;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:modalPop .25s ease;}
 @keyframes modalPop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
 .modal-box h3{font-size:1.05rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 
-/* ============ رفع فيديو/صورة إلى Storage ============ */
 .upload-field-wrap{display:flex;flex-direction:column;gap:8px;}
 .upload-progress{display:none;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:6px 10px;}
 .upload-progress-track{flex:1;height:8px;background:var(--border);border-radius:6px;overflow:hidden;}
 .upload-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green2),var(--green));transition:width .2s;}
-.upload-progress-text{font-size:.72rem;font-weight:700;color:var(--green);min-width:34px;}
+.upload-progress-text{font-size:.72rem;font-weight:700;color:var(--green);min-width:70px;text-align:left;}
 .upload-preview video,.upload-preview img{max-width:220px;max-height:160px;border-radius:10px;margin-top:2px;display:block;object-fit:cover;}
 
-/* ============ بطاقات طلبات التسجيل ============ */
 .reg-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow);animation:cardEnterAnim .4s cubic-bezier(.16,1,.3,1) backwards;}
 .reg-card .reg-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;}
 .reg-card .reg-body{flex:1;min-width:180px;}
 .reg-card .reg-name{font-weight:800;font-size:.95rem;}
 .reg-card .reg-meta{font-size:.78rem;color:var(--text-2);margin-top:4px;display:flex;gap:12px;flex-wrap:wrap;}
 .reg-card .reg-actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+.sub-year-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sub-year-nav .y{font-weight:800;font-size:1rem;}
 
 @media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
 </style>
@@ -219,7 +211,6 @@ img{max-width:100%;}
   </div>
 </div>
 
-<!-- ===== شاشة تحميل عامة (منقولة) ===== -->
 <div class="loading-overlay" id="loadingOverlay">
   <img class="logo" id="loadingLogo" src="" alt="" />
   <div class="spinner"></div>
@@ -227,13 +218,10 @@ img{max-width:100%;}
   <div class="sub">أكاديمية الرائد</div>
 </div>
 
-<!-- ===== التنبيهات (منقولة) ===== -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ===== نافذة منبثقة عامة ===== -->
 <div class="modal-overlay" id="modalOverlay"></div>
 
-<!-- ===== زر ولوحة التصحيح (منقولة) ===== -->
 <button id="debugToggleBtn" onclick="toggleDebugMode()" title="تفعيل/تعطيل وضع التصحيح"><i class="fas fa-bug"></i></button>
 <div id="debugPanel">
   <div class="debug-header" onclick="toggleDebugPanel()">
@@ -310,10 +298,19 @@ document.getElementById('loadingLogo').src = LOGO_URL;
 const DEFAULT_PASSWORD = "raed2627";
 const CATS = ["U07","U09","U11","U13","U15"];
 const FAWJ_LIST = ["A","B","C"];
+const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 const RULES_SNIPPET = `{
   "rules": {
     ".read": true,
     ".write": true
+  }
+}`;
+const STORAGE_RULES_SNIPPET = `rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
   }
 }`;
 
@@ -336,7 +333,8 @@ function previewImageField(key, input){
   reader.onload = e => { const p=document.getElementById('preview_'+key); if(p) p.innerHTML = `<img src="${e.target.result}" />`; };
   reader.readAsDataURL(input.files[0]);
 }
-/* ============ رفع ملف (فيديو/صورة) مباشرة إلى Firebase Storage مع Progress ============ */
+
+/* ============ رفع ملف (فيديو/صورة) مباشرة إلى Firebase Storage مع Progress حقيقي وكاشف توقف ============ */
 function handleStorageUpload(key, kind, input){
   const file = input.files[0];
   if(!file) return;
@@ -347,20 +345,46 @@ function handleStorageUpload(key, kind, input){
   const hidden = document.getElementById('f_'+key);
   if(progressWrap){ progressWrap.style.display='flex'; }
   if(fill) fill.style.width='0%';
-  if(text) text.textContent='0%';
+  if(text) text.textContent='جارٍ البدء...';
+
   const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_');
   const folder = kind==='video' ? 'academy/uploads/videos' : 'academy/uploads/images';
   const path = `${folder}/${Date.now()}_${safeName}`;
-  const ref = storage.ref(path);
-  const task = ref.put(file);
+
+  let task;
+  try{
+    task = storage.ref(path).put(file);
+  }catch(err){
+    if(progressWrap) progressWrap.style.display='none';
+    showError(err, 'بدء رفع الملف إلى Storage');
+    return;
+  }
+
+  let lastBytes = -1;
+  let stallTimer = null;
+  const STALL_MS = 20000; // إذا لم يتحرك الرفع 20 ثانية نعتبره متوقفاً ونلغيه
+  const resetStallTimer = ()=>{
+    if(stallTimer) clearTimeout(stallTimer);
+    stallTimer = setTimeout(()=>{ try{ task.cancel(); }catch(e){} }, STALL_MS);
+  };
+  resetStallTimer();
+
   task.on('state_changed', snap=>{
+    if(snap.bytesTransferred !== lastBytes){ lastBytes = snap.bytesTransferred; resetStallTimer(); }
     const pct = snap.totalBytes ? Math.round((snap.bytesTransferred/snap.totalBytes)*100) : 0;
     if(fill) fill.style.width = pct+'%';
     if(text) text.textContent = pct+'%';
   }, err=>{
+    if(stallTimer) clearTimeout(stallTimer);
     if(progressWrap) progressWrap.style.display='none';
-    showError(err, 'رفع الملف إلى Storage');
+    if(input) input.value='';
+    if(err && err.code === 'storage/canceled'){
+      showError({code:'storage/timeout', message:'توقف الرفع ولم يكتمل خلال المدة المتوقعة — تحقق من قواعد Storage والاتصال بالإنترنت ثم أعد المحاولة'}, 'رفع الملف إلى Storage');
+    } else {
+      showError(err, 'رفع الملف إلى Storage');
+    }
   }, async()=>{
+    if(stallTimer) clearTimeout(stallTimer);
     try{
       const url = await task.snapshot.ref.getDownloadURL();
       if(hidden) hidden.value = url;
@@ -371,6 +395,7 @@ function handleStorageUpload(key, kind, input){
     }catch(err){ showError(err, 'الحصول على رابط الملف بعد الرفع'); }
   });
 }
+
 function genParentCode(){
   return 'P' + Date.now().toString(36).slice(-4).toUpperCase() + Math.floor(100 + Math.random()*900);
 }
@@ -379,7 +404,7 @@ function currentYearMonth(){
   return d.getFullYear() + '_' + String(d.getMonth()+1).padStart(2,'0');
 }
 
-/* ============ نظام التنبيهات (Toast) - منقول ومعمم ============ */
+/* ============ نظام التنبيهات (Toast) ============ */
 function showToast(message, type){
   type = type || 'info';
   const container = document.getElementById('toastContainer');
@@ -392,7 +417,7 @@ function showToast(message, type){
 }
 function toastOk(msg){ showToast(msg, 'success'); }
 
-/* ============ نافذة منبثقة عامة (Modal) - جديدة ومعممة ============ */
+/* ============ نافذة منبثقة عامة (Modal) ============ */
 function showModal(html, opts){
   const overlay = document.getElementById('modalOverlay');
   if(!overlay) return;
@@ -406,7 +431,7 @@ function closeModal(){
   if(overlay){ overlay.classList.remove('active'); overlay.innerHTML=''; }
 }
 
-/* ============ شاشة التحميل العامة - منقولة ============ */
+/* ============ شاشة التحميل العامة ============ */
 function showLoading(msg){
   const overlay = document.getElementById('loadingOverlay');
   if(!overlay) return;
@@ -418,7 +443,7 @@ function hideLoading(){
   if(overlay) overlay.classList.remove('active');
 }
 
-/* ============ لوحة التصحيح (Debug) - منقولة ============ */
+/* ============ لوحة التصحيح (Debug) ============ */
 let DEBUG_MODE = false;
 let debugLogs = [];
 let debugOpCount = 0;
@@ -464,7 +489,7 @@ document.addEventListener('keydown', e => { if(e.ctrlKey && e.shiftKey && e.key=
   });
 })();
 
-/* ============ سجل التعديلات (Logs) - منقول ============ */
+/* ============ سجل التعديلات (Logs) ============ */
 function addLog(action, details){
   db.ref('academy/logs').push({
     action: action,
@@ -485,13 +510,18 @@ function showError(err, context){
       اذهب إلى Firebase Console ← Realtime Database ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish:</div>
       <div class="rules-box">${RULES_SNIPPET}</div>`;
   }
+  if(code.startsWith('storage/')){
+    html += `<div style="margin-top:8px;">السبب المحتمل: قواعد أمان Firebase Storage تمنع الرفع، أو انقطاع في الاتصال أثناء الرفع.<br/>
+      اذهب إلى Firebase Console ← Storage ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish، ثم أعد المحاولة:</div>
+      <div class="rules-box">${STORAGE_RULES_SNIPPET}</div>`;
+  }
   document.getElementById('bannerContent').innerHTML = html;
   document.getElementById('topBanner').classList.add('show');
   showToast(context ? ('تعذّر: '+context) : 'حدث خطأ', 'error');
   addDebugLog('❌ '+(context||'خطأ')+': '+message, 'error');
 }
 
-/* ============ الترويسة الرسمية - منقولة ============ */
+/* ============ الترويسة الرسمية ============ */
 function renderOfficialLetterheadHtml(){
   const lh = STATE.letterhead || {};
   return `<div class="official-letterhead">
@@ -1047,7 +1077,7 @@ async function deleteKeyedItem(key, id){
   }catch(err){ showError(err, 'حذف من «'+keyedSections[key].title+'»'); }
 }
 
-/* ============ ملفات الفئات (الأفواج) - منقول ============ */
+/* ============ ملفات الفئات (الأفواج) ============ */
 function renderCategoryFiles(c){
   c.innerHTML = `${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</h2>
@@ -1088,7 +1118,7 @@ function renderCategoryFawjDetail(cat){
   c.innerHTML = html;
 }
 
-/* ============ السجلات الطبية - منقولة ============ */
+/* ============ السجلات الطبية ============ */
 function renderMedical(c){
   const players = (STATE.players||[]).filter(p=>p.status!=='rejected');
   const labels = {healthy:'سليم',injured:'مصاب',recovering:'في التعافي',ready:'جاهز'};
@@ -1125,7 +1155,7 @@ async function saveMedicalStatus(playerId){
   }catch(err){ showError(err, 'تحديث الحالة الصحية'); }
 }
 
-/* ============ متابعة الاشتراكات - منقولة ============ */
+/* ============ متابعة الاشتراكات — ملف سنوي احترافي لكل لاعب ============ */
 function renderSubscriptions(c){
   const ym = STATE._currentSubMonth || currentYearMonth();
   STATE._currentSubMonth = ym;
@@ -1133,13 +1163,13 @@ function renderSubscriptions(c){
   const [y,m] = ym.split('_');
   let html = `${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-money-check-dollar"></i> متابعة الاشتراكات</h2>
-    <p class="page-sub">حالة الدفع الشهري للاعبين</p>
+    <p class="page-sub">حالة الدفع الشهري السريعة، أو افتح الملف السنوي الكامل لكل لاعب</p>
     <div class="panel" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <label style="font-weight:700;font-size:.85rem;">الشهر:</label>
       <input type="month" id="subMonthPicker" value="${y}-${m}" onchange="changeSubMonth(this.value)" style="padding:8px 12px;border-radius:8px;border:2px solid var(--border);" />
     </div>
     <div class="table-wrap"><table>
-      <thead><tr><th>#</th><th>اللاعب</th><th>الفئة</th><th>الحالة</th><th>إجراء</th></tr></thead>
+      <thead><tr><th>#</th><th>اللاعب</th><th>الفئة</th><th>حالة الشهر الحالي</th><th>إجراء سريع</th><th>الملف السنوي</th></tr></thead>
       <tbody>
         ${players.map((p,idx)=>{
           const paid = !!(p.payments && p.payments[ym] && p.payments[ym].paid);
@@ -1149,8 +1179,9 @@ function renderSubscriptions(c){
             <td>${p.category||'-'}</td>
             <td><span class="badge ${paid?'paid':'unpaid'}">${paid?'✅ مدفوع':'❌ غير مدفوع'}</span></td>
             <td><button class="btn ${paid?'btn-danger':'btn-success'}" onclick="toggleSubscription('${p.id}','${ym}',${!paid})">${paid?'إلغاء الدفع':'تأكيد الدفع'}</button></td>
+            <td><button class="btn btn-secondary" onclick="openSubscriptionFileModal('${p.id}')"><i class="fas fa-calendar-days"></i> عرض الملف</button></td>
           </tr>`;
-        }).join('') || `<tr><td colspan="5" class="empty-msg">لا يوجد لاعبون</td></tr>`}
+        }).join('') || `<tr><td colspan="6" class="empty-msg">لا يوجد لاعبون</td></tr>`}
       </tbody>
     </table></div>`;
   c.innerHTML = html;
@@ -1170,7 +1201,65 @@ async function toggleSubscription(playerId, ym, newVal){
   }catch(err){ showError(err, 'تحديث حالة الاشتراك'); }
 }
 
-/* ============ سجل التعديلات - منقول ============ */
+/* ---- الملف السنوي الكامل (12 شهر) داخل نافذة منبثقة ---- */
+function openSubscriptionFileModal(playerId){
+  renderSubscriptionFileModalContent(playerId, new Date().getFullYear());
+}
+function renderSubscriptionFileModalContent(playerId, y){
+  const p = (STATE.players||[]).find(x=>x.id===playerId);
+  if(!p) return;
+  const payments = p.payments || {};
+  let paidCount = 0;
+  let rowsHtml = '';
+  for(let mIdx=0; mIdx<12; mIdx++){
+    const mNum = String(mIdx+1).padStart(2,'0');
+    const ym = `${y}_${mNum}`;
+    const rec = payments[ym] || {};
+    const paid = !!rec.paid;
+    if(paid) paidCount++;
+    const dateVal = rec.date ? rec.date.substring(0,10) : '';
+    rowsHtml += `<tr>
+      <td style="font-weight:700;">${AR_MONTHS[mIdx]}</td>
+      <td><span class="badge ${paid?'paid':'unpaid'}">${paid?'✅ مدفوع':'❌ غير مدفوع'}</span></td>
+      <td><input type="date" id="subDate_${ym}" value="${dateVal}" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);font-size:.78rem;" /></td>
+      <td><button class="btn ${paid?'btn-danger':'btn-success'}" style="padding:6px 12px;" onclick="toggleSubscriptionInModal('${playerId}','${ym}',${!paid})">${paid?'إلغاء':'تأكيد الدفع'}</button></td>
+    </tr>`;
+  }
+  showModal(`
+    <h3><i class="fas fa-calendar-days"></i> الملف السنوي للاشتراكات</h3>
+    <p style="font-size:.85rem;color:var(--text-2);margin-bottom:4px;">اللاعب: <b>${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</b> — الفئة: ${escapeHtml(p.category||'-')}${p.fawj?(' / الفوج '+escapeHtml(p.fawj)):''}</p>
+    <p style="font-size:.78rem;color:var(--green2);font-weight:700;margin-bottom:12px;">${paidCount} من 12 شهر مدفوع لسنة ${y}</p>
+    <div class="sub-year-nav">
+      <button class="btn btn-secondary" style="padding:6px 12px;" onclick="renderSubscriptionFileModalContent('${playerId}', ${y-1})"><i class="fas fa-chevron-right"></i></button>
+      <div class="y num-font">${y}</div>
+      <button class="btn btn-secondary" style="padding:6px 12px;" onclick="renderSubscriptionFileModalContent('${playerId}', ${y+1})"><i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="table-wrap" style="margin-bottom:0;"><table>
+      <thead><tr><th>الشهر</th><th>الحالة</th><th>تاريخ الدفع</th><th>إجراء</th></tr></thead>
+      <tbody>${rowsHtml}</tbody>
+    </table></div>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
+    </div>
+  `, {width:'580px'});
+}
+async function toggleSubscriptionInModal(playerId, ym, newVal){
+  const dateInput = document.getElementById('subDate_'+ym);
+  const dateVal = dateInput && dateInput.value ? dateInput.value : new Date().toISOString().substring(0,10);
+  try{
+    await db.ref(`academy/players/${playerId}/payments/${ym}`).set({paid:newVal, date:dateVal});
+    const p = (STATE.players||[]).find(x=>x.id===playerId);
+    if(p){ p.payments = p.payments || {}; p.payments[ym] = {paid:newVal, date:dateVal}; }
+    addLog('اشتراك', `${newVal?'تأكيد':'إلغاء'} دفع اشتراك ${p?p.firstName+' '+p.lastName:playerId} لشهر ${ym}`);
+    toastOk(newVal?'تم تأكيد الدفع':'تم إلغاء الدفع');
+    const y = parseInt(ym.split('_')[0]);
+    renderSubscriptionFileModalContent(playerId, y);
+    const content = document.getElementById('content');
+    if(content && content.querySelector('#subMonthPicker')) renderSubscriptions(content);
+  }catch(err){ showError(err, 'تحديث حالة الاشتراك'); }
+}
+
+/* ============ سجل التعديلات ============ */
 function renderLogs(c){
   const sorted = [...(STATE.logs||[])].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
   let html = `<h2 class="page-title"><i class="fas fa-clipboard-list"></i> سجل التعديلات</h2><p class="page-sub">آخر العمليات في لوحة التحكم</p>`;
@@ -1226,7 +1315,7 @@ async function saveCategory(cat){
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 
-/* ============ REGISTRATIONS (طلبات التسجيل + معاينة + تعديل + قبول مع اختيار الفئة + حذف) ============ */
+/* ============ REGISTRATIONS (معاينة + تعديل + قبول مع اختيار الفئة والفوج معاً + حذف) ============ */
 const REG_LABELS = {
   firstName:'الاسم', lastName:'اللقب', category:'الفئة المطلوبة', guardianName:'اسم ولي الأمر',
   phone:'هاتف ولي الأمر', guardianPhone:'هاتف ولي الأمر', email:'البريد الإلكتروني', address:'العنوان',
@@ -1242,7 +1331,7 @@ function isFileLike(key, val){
 }
 function renderRegistrations(c){
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-inbox"></i> طلبات التسجيل</h2>
-    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية — قبول الطلب يحدد الفئة وينشئ/يحدّث ملف اللاعب تلقائياً</p>
+    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية — قبول الطلب يحدد الفئة والفوج وينقل اللاعب مباشرة لجدوله</p>
     <div class="panel"><div id="regList"></div></div>`;
   renderRegList();
 }
@@ -1346,20 +1435,31 @@ async function saveRegEdit(id){
   }catch(err){ showError(err, 'تعديل طلب التسجيل'); }
 }
 
-/* ---- قبول الطلب مع اختيار الفئة ---- */
+/* ---- قبول الطلب: اختيار الفئة والفوج معاً ثم النقل الفوري ---- */
 function openAcceptModal(id){
   const r = STATE.registrations.find(x=>x.id===id);
   if(!r) return;
-  const suggested = r.category && CATS.includes(r.category) ? r.category : CATS[0];
+  const suggestedCat = r.category && CATS.includes(r.category) ? r.category : CATS[0];
+  const suggestedFawj = FAWJ_LIST.includes(r.fawj) ? r.fawj : FAWJ_LIST[0];
   showModal(`
-    <h3><i class="fas fa-layer-group"></i> اختر الفئة التي سينضم إليها اللاعب</h3>
+    <h3><i class="fas fa-layer-group"></i> تحديد الفئة والفوج</h3>
     <p style="color:var(--text-2);font-size:.85rem;margin-bottom:14px;">اللاعب: <b>${escapeHtml(r.firstName||'')} ${escapeHtml(r.lastName||'')}</b></p>
-    <div class="cat-tabs" id="acceptCatTabs">
-      ${CATS.map(cat=>`<div class="cat-tab ${cat===suggested?'active':''}" data-cat="${cat}" onclick="selectAcceptCat('${cat}')">${cat}</div>`).join('')}
+    <div style="margin-bottom:16px;">
+      <label style="font-size:.78rem;font-weight:700;display:block;margin-bottom:8px;">الفئة العمرية</label>
+      <div class="cat-tabs" id="acceptCatTabs">
+        ${CATS.map(cat=>`<div class="cat-tab ${cat===suggestedCat?'active':''}" data-cat="${cat}" onclick="selectAcceptCat('${cat}')">${cat}</div>`).join('')}
+      </div>
     </div>
-    <input type="hidden" id="acceptCatSelected" value="${suggested}" />
+    <div style="margin-bottom:6px;">
+      <label style="font-size:.78rem;font-weight:700;display:block;margin-bottom:8px;">الفوج داخل الفئة</label>
+      <div class="cat-tabs" id="acceptFawjTabs">
+        ${FAWJ_LIST.map(fw=>`<div class="cat-tab ${fw===suggestedFawj?'active':''}" data-fawj="${fw}" onclick="selectAcceptFawj('${fw}')">الفوج ${fw}</div>`).join('')}
+      </div>
+    </div>
+    <input type="hidden" id="acceptCatSelected" value="${suggestedCat}" />
+    <input type="hidden" id="acceptFawjSelected" value="${suggestedFawj}" />
     <div style="display:flex;gap:10px;margin-top:18px;">
-      <button class="btn btn-primary" onclick="confirmAcceptRegistration('${id}')"><i class="fas fa-check"></i> تأكيد القبول</button>
+      <button class="btn btn-primary" id="confirmAcceptBtn" onclick="confirmAcceptRegistration('${id}')"><i class="fas fa-check"></i> تأكيد القبول والنقل</button>
       <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
     </div>
   `);
@@ -1368,11 +1468,16 @@ function selectAcceptCat(cat){
   document.getElementById('acceptCatSelected').value = cat;
   document.querySelectorAll('#acceptCatTabs .cat-tab').forEach(t=>t.classList.toggle('active', t.dataset.cat===cat));
 }
+function selectAcceptFawj(fw){
+  document.getElementById('acceptFawjSelected').value = fw;
+  document.querySelectorAll('#acceptFawjTabs .cat-tab').forEach(t=>t.classList.toggle('active', t.dataset.fawj===fw));
+}
 async function confirmAcceptRegistration(id){
   const r = STATE.registrations.find(x=>x.id===id);
   if(!r) return;
   const cat = document.getElementById('acceptCatSelected').value;
-  const btn = event && event.target ? event.target.closest('button') : null;
+  const fawj = document.getElementById('acceptFawjSelected').value;
+  const btn = document.getElementById('confirmAcceptBtn');
   if(btn){ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التنفيذ...'; }
   try{
     await ensureKeyedLoaded('players');
@@ -1381,6 +1486,7 @@ async function confirmAcceptRegistration(id){
     const playerData = {
       ...rest,
       category: cat,
+      fawj: fawj,
       status: 'approved',
       injuryStatus: (existingIdx>=0 && STATE.players[existingIdx].injuryStatus) || 'healthy',
       parentCode: (existingIdx>=0 && STATE.players[existingIdx].parentCode) || genParentCode(),
@@ -1400,15 +1506,15 @@ async function confirmAcceptRegistration(id){
     }
     await db.ref('academy/registrations/'+id).update({status:'accepted', playerId:newId});
     r.status = 'accepted'; r.playerId = newId;
-    addLog('قبول طلب', `تم قبول ${playerData.firstName||''} ${playerData.lastName||''} وإضافته لفئة ${cat}`);
+    addLog('قبول طلب', `تم قبول ${playerData.firstName||''} ${playerData.lastName||''} ونقله إلى فئة ${cat} — الفوج ${fawj}`);
     renderRegList();
-    showAcceptSuccessModal(playerData, newId, cat);
+    showAcceptSuccessModal(playerData, newId, cat, fawj);
   }catch(err){ showError(err, 'قبول طلب التسجيل'); }
 }
-function showAcceptSuccessModal(playerData, playerId, cat){
+function showAcceptSuccessModal(playerData, playerId, cat, fawj){
   showModal(`
-    <h3><i class="fas fa-circle-check" style="color:var(--green2);"></i> تم القبول بنجاح</h3>
-    <p style="font-size:.9rem;margin-bottom:18px;">تم قبول اللاعب <b>${escapeHtml(playerData.firstName||'')} ${escapeHtml(playerData.lastName||'')}</b> وإضافته إلى فئة <b>${escapeHtml(cat)}</b>.</p>
+    <h3><i class="fas fa-circle-check" style="color:var(--green2);"></i> تم القبول والنقل بنجاح</h3>
+    <p style="font-size:.9rem;margin-bottom:18px;">تم قبول اللاعب <b>${escapeHtml(playerData.firstName||'')} ${escapeHtml(playerData.lastName||'')}</b> وإضافته مباشرة إلى فئة <b>${escapeHtml(cat)}</b> — الفوج <b>${escapeHtml(fawj)}</b>.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button class="btn btn-primary" onclick="closeModal(); document.querySelector('[data-page=categoryFiles]').click(); setTimeout(()=>renderCategoryFawjDetail('${cat}'),500);"><i class="fas fa-folder-open"></i> فتح الفئة</button>
       <a class="btn btn-secondary" href="player.html?id=${playerId}" target="_blank"><i class="fas fa-eye"></i> فتح ملف اللاعب</a>
