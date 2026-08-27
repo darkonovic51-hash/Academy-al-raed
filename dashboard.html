@@ -24,7 +24,7 @@ img{max-width:100%;}
 ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
-.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
+.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:420px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
 .login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
 .login-box .icon i{font-size:1.8rem;color:#fff;}
 .login-box h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;}
@@ -326,6 +326,7 @@ img{max-width:100%;}
 const firebaseConfig = {
   apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
   authDomain: "academy-raed-new.firebaseapp.com",
+  databaseURL: "https://academy-raed-new-default-rtdb.firebaseio.com/",
   projectId: "academy-raed-new",
   storageBucket: "academy-raed-new.firebasestorage.app",
   messagingSenderId: "408030922593",
@@ -599,21 +600,57 @@ const keyedSections = {
 
 let STATE = {};
 
+/* ============ LOGIN (نسخة تشخيصية) ============ */
 function tryLogin(){
   const input = document.getElementById('loginPassword').value.trim();
   const loginBtn = document.getElementById('loginBtn');
-  document.getElementById('loginError').style.display='none';
+  const errorEl = document.getElementById('loginError');
+  errorEl.style.display='none';
+
+  let diagBox = document.getElementById('loginDiagBox');
+  if(!diagBox){
+    diagBox = document.createElement('div');
+    diagBox.id = 'loginDiagBox';
+    diagBox.style.cssText = 'margin-top:12px;text-align:left;direction:ltr;font-family:monospace;font-size:.7rem;background:#0f1a14;color:#7CFC9A;padding:10px;border-radius:8px;max-height:160px;overflow-y:auto;white-space:pre-wrap;';
+    document.querySelector('.login-box').appendChild(diagBox);
+  }
+  const log = (msg)=>{ diagBox.textContent += msg + '\n'; diagBox.scrollTop = diagBox.scrollHeight; };
+  diagBox.textContent = '';
+  log('▶ بدء المحاولة | الكود المُدخل: "'+input+'"');
+  log('▶ رابط القاعدة: ' + firebase.app().options.databaseURL);
+
+  if(!input){ errorEl.textContent='الرجاء إدخال كود الدخول'; errorEl.style.display='block'; return; }
   loginBtn.disabled = true; loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحقق...';
-  showLoading('جارٍ التحقق من الكود...');
+
+  let settled = false;
+  const finish = (ok, msg)=>{
+    if(settled) return; settled = true;
+    loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول';
+    if(ok){ log('✅ تطابق الكود — جارٍ الدخول...'); grantAccess(); }
+    else { log('❌ '+msg); errorEl.textContent = msg; errorEl.style.display='block'; }
+  };
+
+  const safetyTimeout = setTimeout(()=>{
+    log('⏱️ انتهت مهلة 8 ثوانٍ بدون رد من Firebase — هذا يعني أن الطلب "عالق" ولم يصل رد أصلاً (مشكلة شبكة/CORS/حظر) لا علاقة لها بالـ Rules.');
+    finish(input===DEFAULT_PASSWORD, 'لم يصل رد من قاعدة البيانات خلال 8 ثوانٍ. تحقق من الشبكة أو افتح Console (F12) لرؤية الخطأ الكامل.');
+  }, 8000);
+
   db.ref('academy/adminSettings/password').once('value')
-    .then(snap => snap.val())
-    .catch(err => { console.warn('تعذّر قراءة كود الدخول المخزّن، سيُستخدم الكود الافتراضي', err); return null; })
+    .then(snap => { log('✅ وصل رد من Firebase بنجاح.'); return snap.val(); })
+    .catch(err => {
+      log('❌ فشلت القراءة: ' + (err && err.code ? err.code+' — ' : '') + (err && err.message ? err.message : String(err)));
+      return null;
+    })
     .then(stored => {
+      clearTimeout(safetyTimeout);
+      if(settled) return;
+      log('▶ القيمة المخزّنة فعلياً في القاعدة: ' + JSON.stringify(stored));
       const expected = stored || DEFAULT_PASSWORD;
-      if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(()=>{}); }
-      if(input === expected){ grantAccess(); }
-      else { hideLoading(); document.getElementById('loginError').style.display='block'; loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول'; }
-    });
+      log('▶ الكود المتوقع للمقارنة: "'+expected+'"');
+      if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(e=>log('⚠️ فشل حفظ الكود الافتراضي: '+e.message)); }
+      finish(input === expected, 'الكود غير مطابق. تحقق من الفراغات الزائدة أو حروف مخفية.');
+    })
+    .catch(err => { clearTimeout(safetyTimeout); log('❌ خطأ غير متوقع: '+err.message); finish(false, 'حدث خطأ غير متوقع.'); });
 }
 function grantAccess(){
   sessionStorage.setItem('raed_admin_auth','1');
@@ -1181,9 +1218,7 @@ async function saveLetterhead(){
   finally { btn.disabled=false; btn.innerHTML=orig; }
 }
 
-/* ============================================================
-   الفيديوهات التعليمية — رفع مباشر من الجهاز إلى Firebase Storage
-   ============================================================ */
+/* ============ الفيديوهات التعليمية ============ */
 function renderEduVideosPage(c){
   c.innerHTML = `
     <h2 class="page-title"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</h2>
@@ -1360,9 +1395,7 @@ async function deleteVideo(id){
   }catch(err){ showError(err,'حذف الفيديو'); }
 }
 
-/* ============================================================
-   طلبات التسجيل — نظام ملف لاعب مصغّر (بطاقات + معاينة + تعديل + قبول)
-   ============================================================ */
+/* ============ طلبات التسجيل ============ */
 const REG_LABELS = {
   firstName:'الاسم', lastName:'اللقب', fullName:'الاسم الكامل', birthDate:'تاريخ الميلاد', age:'العمر',
   gender:'الجنس', phone:'رقم الهاتف', email:'البريد الإلكتروني', address:'العنوان', city:'المدينة',
@@ -1536,30 +1569,4 @@ function openRegEdit(id){
       <div class="form-grid">
         ${editableKeys.map(k=>`<div class="fg"><label>${fieldLabel(k)}</label><input type="text" id="edit_${k}" value="${escapeHtml(r[k])}" /></div>`).join('')}
       </div>
-      ${groups.documents.length ? `<div class="info-card"><h4><i class="fas fa-folder-open"></i> المستندات الحالية</h4>
-        <div class="doc-cards-grid">
-          ${groups.documents.map(k=>{
-            const meta = docMeta(k, r[k]); const isImg=/image/.test(meta.type); const safeUrl = meta.url.replace(/'/g,"\\'");
-            return `<div class="doc-card">
-              <div class="doc-thumb" onclick="${isImg?`openLightbox('${safeUrl}')`:`window.open('${safeUrl}','_blank')`}">${isImg?`<img src="${meta.url}"/>`:`<i class="fas fa-file"></i>`}</div>
-              <div class="doc-name">${escapeHtml(fieldLabel(k))}</div>
-              <div class="doc-meta">${formatSize(meta.sizeBytes)}</div>
-              <div class="doc-actions">
-                <button class="btn btn-danger" onclick="deleteDocFromReg('${id}','${k}')"><i class="fas fa-trash"></i> حذف</button>
-              </div>
-            </div>`;
-          }).join('')}
-        </div></div>` : ''}
-      <div class="panel" style="margin-top:14px;">
-        <h4 style="margin-bottom:8px;"><i class="fas fa-upload"></i> إضافة / استبدال مستند</h4>
-        <div class="fg"><label>اسم المستند</label><input type="text" id="newDocName" placeholder="مثال: شهادة_ميلاد" /></div>
-        <div class="fg"><label>الملف</label><input type="file" id="newDocFile" accept="image/*,.pdf" /></div>
-      </div>
-    </div>
-    <div class="modal-footer sticky">
-      <button class="btn btn-secondary" onclick="closeModalGeneric()">إلغاء</button>
-      <button class="btn btn-primary" id="saveRegEditBtn" onclick="saveRegEdit('${id}')"><i class="fas fa-check"></i> حفظ التعديلات</button>
-    </div>`;
-  openModal(html,{size:'xl'});
-}
-async function s
+      ${groups.documents.length ? `<div class="info-card"><h4><i cla
