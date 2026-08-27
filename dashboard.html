@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <style>
 :root{
   --green:#1B6B3F; --green2:#219653; --green-dark:#155C34; --green-light:#3DC57D;
@@ -23,8 +22,9 @@ button{font-family:'Cairo',sans-serif;cursor:pointer;}
 img{max-width:100%;}
 ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-thumb{background:var(--green2);border-radius:10px;}
 
+/* ============ شاشة تسجيل الدخول ============ */
 .login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--green),var(--green-dark));padding:20px;}
-.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:420px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
+.login-box{background:#fff;border-radius:24px;padding:44px 38px;max-width:400px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,0.3);text-align:center;}
 .login-box .icon{width:70px;height:70px;border-radius:16px;background:linear-gradient(135deg,var(--green2),var(--green));margin:0 auto 20px;display:flex;align-items:center;justify-content:center;}
 .login-box .icon i{font-size:1.8rem;color:#fff;}
 .login-box h2{font-size:1.4rem;font-weight:900;margin-bottom:6px;}
@@ -35,6 +35,7 @@ img{max-width:100%;}
 .login-box button:disabled{opacity:.6;cursor:not-allowed;}
 .login-error{color:#C0392B;font-size:.8rem;margin-top:10px;display:none;}
 
+/* ============ شاشة التحميل العامة (منقولة) ============ */
 .loading-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;justify-content:center;align-items:center;flex-direction:column;background:rgba(10,20,15,0.82);backdrop-filter:blur(8px);color:#fff;}
 .loading-overlay.active{display:flex;}
 .loading-overlay img.logo{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#fff;padding:4px;animation:pulseLogo 1.2s ease-in-out infinite;}
@@ -44,11 +45,16 @@ img{max-width:100%;}
 @keyframes spin{to{transform:rotate(360deg);}}
 @keyframes pulseLogo{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 
+/* ============ نظام التنبيهات (Toast) منقول ============ */
 .toast-container{position:fixed;bottom:20px;left:20px;z-index:999999;display:flex;flex-direction:column;gap:8px;}
 .toast{padding:12px 22px;border-radius:10px;color:#fff;font-weight:700;font-size:.85rem;box-shadow:0 8px 24px rgba(0,0,0,.25);animation:slideUp .3s ease;min-width:200px;}
-.toast-success{background:#1B6B3F;} .toast-error{background:#C0392B;} .toast-info{background:#2E86C1;} .toast-warning{background:#E8871E;}
+.toast-success{background:#1B6B3F;}
+.toast-error{background:#C0392B;}
+.toast-info{background:#2E86C1;}
+.toast-warning{background:#E8871E;}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
+/* ============ لوحة التصحيح (Debug) منقولة ============ */
 #debugPanel{position:fixed;bottom:80px;left:10px;z-index:999997;background:rgba(10,20,15,0.92);color:#7CFC9A;font-family:monospace;font-size:11px;padding:12px 16px;border-radius:12px;max-width:280px;min-width:200px;max-height:50vh;overflow-y:auto;border:2px solid var(--green2);box-shadow:0 4px 30px rgba(0,0,0,.5);direction:ltr;text-align:left;display:none;}
 #debugPanel.minimized{max-height:44px;overflow:hidden;cursor:pointer;}
 #debugPanel .debug-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;cursor:pointer;}
@@ -56,24 +62,27 @@ img{max-width:100%;}
 #debugPanel .debug-header button{background:none;border:none;color:#888;cursor:pointer;font-size:14px;padding:2px 4px;}
 #debugPanel .debug-header button:hover{color:#fff;}
 #debugPanel .debug-line{padding:2px 0;font-size:10px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;}
-#debugPanel .debug-line .label{color:#888;} #debugPanel .debug-line .value{font-weight:700;}
+#debugPanel .debug-line .label{color:#888;}
+#debugPanel .debug-line .value{font-weight:700;}
 #debugPanel .debug-log{margin-top:6px;max-height:150px;overflow-y:auto;font-size:9px;color:#aaa;border-top:1px solid rgba(255,255,255,.1);padding-top:4px;}
 #debugPanel .debug-log .log-entry{display:flex;gap:6px;padding:2px 0;}
 #debugPanel .debug-log .log-time{color:#555;min-width:38px;font-size:8px;}
 #debugToggleBtn{position:fixed;bottom:20px;right:20px;z-index:999996;background:rgba(27,107,63,0.9);border:2px solid var(--green2);color:#fff;width:44px;height:44px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(27,107,63,.35);}
 #debugToggleBtn.active{background:var(--green-dark);}
 
+/* ============ الترويسة الرسمية منقولة ============ */
 .official-letterhead{background:#fff;border:2px solid var(--green);border-radius:16px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
 .official-letterhead .ol-left{display:flex;align-items:center;gap:14px;}
 .official-letterhead .ol-left img.ol-logo{height:56px;width:56px;border-radius:50%;object-fit:cover;}
 .official-letterhead .ol-left img.ol-flag{height:44px;width:auto;border:1px solid #ddd;}
 .official-letterhead .ol-titles{text-align:center;flex:1;}
-.official-letterhead .ol-line1{font-weight:800;font-size:.92rem;}
+.official-letterhead .ol-line1{font-weight:800;font-size:.92rem;color:var(--text);}
 .official-letterhead .ol-line2{font-weight:700;font-size:.8rem;color:var(--green2);margin-top:2px;}
 .official-letterhead .ol-line3{font-weight:900;font-size:1.05rem;color:var(--accent);margin-top:2px;}
 .official-letterhead .ol-right{text-align:left;font-size:.78rem;color:#333;line-height:1.8;}
 .official-letterhead .ol-right strong{color:var(--text);}
 
+/* ============ الهيكل العام ============ */
 .shell{display:none;min-height:100vh;flex-direction:column;}
 .shell.active{display:flex;}
 .shell-body{display:flex;flex:1;min-height:0;}
@@ -89,7 +98,8 @@ img{max-width:100%;}
 .sidebar .logo img{width:56px;height:56px;border-radius:50%;background:#fff;padding:3px;object-fit:cover;margin:0 auto 8px;}
 .sidebar .logo h3{font-size:1rem;font-weight:800;}
 .sidebar .logo span{font-size:.68rem;color:rgba(255,255,255,0.6);}
-.menu-item{display:flex;align-items:center;gap:11px;padding:11px 22px;color:rgba(255,255,255,0.75);font-weight:600;font-size:.84rem;cursor:pointer;border-right:3px solid transparent;transition:.2s;}
+.menu-item{display:flex;align-items:center;gap:11px;padding:11px 22px;color:rgba(255,255,255,0.75);font-weight:600;font-size:.84rem;
+  cursor:pointer;border-right:3px solid transparent;transition:.2s;}
 .menu-item i{width:18px;text-align:center;flex-shrink:0;}
 .menu-item:hover,.menu-item.active{background:rgba(255,255,255,0.1);color:#fff;border-right-color:var(--accent);}
 .logout-btn{margin:18px 22px 0;width:calc(100% - 44px);background:rgba(0,0,0,0.15);color:#ffb4b4;border:none;padding:10px;border-radius:8px;font-weight:700;font-size:.82rem;}
@@ -102,7 +112,7 @@ img{max-width:100%;}
 .page-sub{color:var(--text-2);font-size:.85rem;margin-bottom:24px;}
 
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:24px;}
-.stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;position:relative;overflow:hidden;transition:transform .25s ease;}
+.stat-card{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease;}
 .stat-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green2),var(--accent));transform:scaleX(0);transform-origin:right;transition:transform .35s ease;}
 .stat-card:hover::before{transform:scaleX(1);}
 .stat-card:hover{transform:translateY(-4px);}
@@ -124,7 +134,6 @@ img{max-width:100%;}
 .btn-primary:hover{transform:translateY(-2px);}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .btn-danger{background:#FBEAEA;color:#B23A3A;}
-.btn-danger:disabled{opacity:.4;cursor:not-allowed;}
 .btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);}
 .btn-success{background:#D4EDDA;color:#155724;}
 .btn:hover{opacity:.9;}
@@ -135,13 +144,16 @@ img{max-width:100%;}
 .list-item .body{flex:1;min-width:0;}
 .list-item .t{font-weight:700;font-size:.86rem;}
 .list-item .actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
-.badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;white-space:nowrap;}
+.badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;}
 .badge.pending{background:#FFF3D6;color:#B8860B;}
 .badge.accepted{background:#D4EDDA;color:#155724;}
 .badge.rejected{background:#F8D7DA;color:#721C24;}
-.badge.healthy{background:#D4EDDA;color:#155724;} .badge.injured{background:#F8D7DA;color:#721C24;}
-.badge.recovering{background:#FFF3D6;color:#B8860B;} .badge.ready{background:#D6EAF8;color:#154360;}
-.badge.paid{background:#D4EDDA;color:#155724;} .badge.unpaid{background:#F8D7DA;color:#721C24;}
+.badge.healthy{background:#D4EDDA;color:#155724;}
+.badge.injured{background:#F8D7DA;color:#721C24;}
+.badge.recovering{background:#FFF3D6;color:#B8860B;}
+.badge.ready{background:#D6EAF8;color:#154360;}
+.badge.paid{background:#D4EDDA;color:#155724;}
+.badge.unpaid{background:#F8D7DA;color:#721C24;}
 .empty-msg{color:#999;text-align:center;padding:20px;font-size:.85rem;}
 .loading-msg{color:var(--green2);text-align:center;padding:30px;font-size:.9rem;}
 .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
@@ -153,90 +165,21 @@ img{max-width:100%;}
 .fawj-card:hover{transform:translateY(-3px);}
 .fawj-card .n{font-size:1.8rem;font-weight:900;color:var(--green);font-family:'Barlow Condensed',sans-serif;text-align:center;}
 
+/* ============ الجداول (منقولة) ============ */
 .table-wrap{background:#fff;border-radius:14px;overflow:auto;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:20px;}
 .table-wrap table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:640px;}
 .table-wrap th{background:var(--green);color:#fff;padding:11px 8px;text-align:center;font-weight:700;white-space:nowrap;font-size:.75rem;}
 .table-wrap td{padding:9px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 .table-wrap tr:hover td{background:rgba(33,150,83,0.04);}
 
+/* ============ صورة رفع ============ */
 .image-upload-wrap{border:2px dashed var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
 .image-upload-wrap input[type=file]{flex:1;font-size:.78rem;}
 .image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
 .image-preview img{width:100%;height:100%;object-fit:cover;}
 .image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
 
-.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,20,15,0.65);backdrop-filter:blur(6px);z-index:999998;justify-content:center;align-items:center;padding:16px;}
-.modal-overlay.active{display:flex;}
-.modal-box{background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:modalIn .3s cubic-bezier(.2,.9,.4,1);}
-.modal-box.modal-sm{max-width:420px;}
-.modal-box.modal-md{max-width:520px;}
-.modal-box.modal-lg{max-width:680px;}
-.modal-box.modal-xl{max-width:920px;}
-.modal-box.modal-lightbox{max-width:90vw;background:transparent;box-shadow:none;}
-@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.modal-header{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border);position:relative;}
-.modal-header h3{font-size:1.05rem;font-weight:800;flex:1;}
-.modal-avatar{width:56px;height:56px;border-radius:50%;background:var(--bg);border:2px solid var(--green2);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--green2);font-size:1.4rem;}
-.modal-avatar img{width:100%;height:100%;object-fit:cover;}
-.modal-body{padding:20px 22px;overflow-y:auto;flex:1;}
-.modal-footer{display:flex;gap:10px;padding:16px 22px;border-top:1px solid var(--border);flex-wrap:wrap;}
-.modal-footer.sticky{position:sticky;bottom:0;background:#fff;}
-.icon-close-btn{background:var(--bg);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--text);font-size:1rem;cursor:pointer;flex-shrink:0;}
-.icon-close-btn:hover{background:var(--border);}
-.icon-close-btn.on-dark{background:rgba(255,255,255,0.15);color:#fff;}
-.icon-close-btn.on-dark:hover{background:rgba(255,255,255,0.3);}
-.lightbox-inner{position:relative;text-align:center;}
-.lightbox-inner img{max-width:90vw;max-height:85vh;border-radius:10px;}
-.lightbox-inner .icon-close-btn{position:absolute;top:-14px;left:-14px;}
-
-.reg-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.reg-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow);animation:cardEnterAnim .4s ease backwards;}
-.reg-card-top{display:flex;align-items:flex-start;gap:12px;}
-.reg-avatar{width:52px;height:52px;border-radius:50%;background:var(--bg);border:2px solid var(--border);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--green2);font-size:1.3rem;}
-.reg-avatar img{width:100%;height:100%;object-fit:cover;}
-.reg-info{flex:1;min-width:0;}
-.reg-name{font-weight:800;font-size:.92rem;}
-.reg-meta{font-size:.74rem;color:var(--text-2);margin-top:2px;}
-.reg-card-actions{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;border-top:1px dashed var(--border);padding-top:12px;}
-.icon-btn{width:34px;height:34px;border-radius:8px;border:none;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;}
-.icon-btn:hover{background:var(--border);}
-.icon-btn.success{background:#D4EDDA;color:#155724;}
-.icon-btn.warning{background:#FFF3D6;color:#B8860B;}
-.icon-btn.danger{background:#FBEAEA;color:#B23A3A;}
-.icon-btn:disabled{opacity:.35;cursor:not-allowed;}
-
-.info-card{background:var(--bg);border-radius:14px;padding:16px;margin-bottom:14px;}
-.info-card h4{font-size:.9rem;font-weight:800;color:var(--green);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.info-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
-.info-item{background:#fff;border-radius:10px;padding:8px 10px;border:1px solid var(--border);}
-.info-item .label{font-size:.68rem;color:var(--text-2);display:block;}
-.info-item .value{font-size:.85rem;font-weight:700;}
-.doc-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
-.doc-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
-.doc-thumb{width:100%;height:90px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;cursor:pointer;color:var(--green2);font-size:1.8rem;}
-.doc-thumb img{width:100%;height:100%;object-fit:cover;}
-.doc-name{font-size:.78rem;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.doc-meta{font-size:.68rem;color:var(--text-2);margin:4px 0 8px;}
-.doc-actions{display:flex;gap:6px;justify-content:center;}
-.doc-actions .btn{padding:6px 10px;font-size:.7rem;}
-
-.drop-zone{border:2px dashed var(--green2);border-radius:14px;padding:30px 16px;text-align:center;cursor:pointer;position:relative;background:var(--bg);transition:.2s;}
-.drop-zone.dragover{background:#E5F5EC;border-color:var(--green);}
-.drop-zone p{margin-top:8px;font-size:.85rem;color:var(--text-2);}
-.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-.progress-track{width:100%;height:10px;background:var(--border);border-radius:20px;overflow:hidden;}
-.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green2),var(--green));transition:width .2s ease;}
-.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
-.video-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
-.video-thumb{height:120px;background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--green2);font-size:2.2rem;overflow:hidden;}
-.video-thumb img{width:100%;height:100%;object-fit:cover;}
-.video-card-body{padding:12px;}
-.video-title{font-weight:800;font-size:.86rem;margin-bottom:3px;}
-.video-meta{font-size:.7rem;color:var(--text-2);margin-bottom:8px;}
-.video-actions{display:flex;gap:6px;}
-.video-actions .btn{padding:6px 10px;font-size:.72rem;}
-
-@media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;} .info-card-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -252,6 +195,7 @@ img{max-width:100%;}
   </div>
 </div>
 
+<!-- ===== شاشة تحميل عامة (منقولة) ===== -->
 <div class="loading-overlay" id="loadingOverlay">
   <img class="logo" id="loadingLogo" src="" alt="" />
   <div class="spinner"></div>
@@ -259,8 +203,10 @@ img{max-width:100%;}
   <div class="sub">أكاديمية الرائد</div>
 </div>
 
+<!-- ===== التنبيهات (منقولة) ===== -->
 <div class="toast-container" id="toastContainer"></div>
 
+<!-- ===== زر ولوحة التصحيح (منقولة) ===== -->
 <button id="debugToggleBtn" onclick="toggleDebugMode()" title="تفعيل/تعطيل وضع التصحيح"><i class="fas fa-bug"></i></button>
 <div id="debugPanel">
   <div class="debug-header" onclick="toggleDebugPanel()">
@@ -276,10 +222,6 @@ img{max-width:100%;}
     <div class="debug-line"><span class="label">📦 لاعبون محملون:</span><span class="value" id="debugDataCount">0</span></div>
     <div class="debug-log" id="debugLog"><div style="color:#666;text-align:center;padding:4px 0;">🚀 جاهز للتصحيح</div></div>
   </div>
-</div>
-
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModalGeneric()">
-  <div class="modal-box" id="modalBox"></div>
 </div>
 
 <div class="shell" id="shell">
@@ -303,7 +245,7 @@ img{max-width:100%;}
       <div class="menu-item" data-page="categoryFiles"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</div>
       <div class="menu-item" data-page="medical"><i class="fas fa-notes-medical"></i> السجلات الطبية</div>
       <div class="menu-item" data-page="subscriptions"><i class="fas fa-money-check-dollar"></i> متابعة الاشتراكات</div>
-      <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني</div>
+      <div class="menu-item" data-page="staff"><i class="fas fa-user-tie"></i> الطاقم الفني / الموارد البشرية</div>
       <div class="menu-item" data-page="kits"><i class="fas fa-tshirt"></i> الأطقم</div>
       <div class="menu-item" data-page="categories"><i class="fas fa-layer-group"></i> الفئات العمرية</div>
       <div class="menu-item" data-page="sessions"><i class="fas fa-dumbbell"></i> الحصص التدريبية</div>
@@ -326,7 +268,6 @@ img{max-width:100%;}
 const firebaseConfig = {
   apiKey: "AIzaSyCV8V1ELmyirFP8hAYV6abC7nSJbVfEKd0",
   authDomain: "academy-raed-new.firebaseapp.com",
-  databaseURL: "https://academy-raed-new-default-rtdb.firebaseio.com/",
   projectId: "academy-raed-new",
   storageBucket: "academy-raed-new.firebasestorage.app",
   messagingSenderId: "408030922593",
@@ -335,7 +276,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const storage = firebase.storage();
 const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
 document.getElementById('sideLogo').src = LOGO_URL;
 document.getElementById('loadingLogo').src = LOGO_URL;
@@ -368,38 +308,15 @@ function previewImageField(key, input){
   reader.onload = e => { const p=document.getElementById('preview_'+key); if(p) p.innerHTML = `<img src="${e.target.result}" />`; };
   reader.readAsDataURL(input.files[0]);
 }
-function genParentCode(){ return 'P' + Date.now().toString(36).slice(-4).toUpperCase() + Math.floor(100 + Math.random()*900); }
-function currentYearMonth(){ const d = new Date(); return d.getFullYear() + '_' + String(d.getMonth()+1).padStart(2,'0'); }
-function calcAge(birthDate){
-  if(!birthDate) return null;
-  const b = new Date(birthDate); if(isNaN(b)) return null;
-  const diff = Date.now() - b.getTime();
-  const age = Math.floor(diff / (365.25*24*3600*1000));
-  return age>=0 && age<100 ? age : null;
+function genParentCode(){
+  return 'P' + Date.now().toString(36).slice(-4).toUpperCase() + Math.floor(100 + Math.random()*900);
 }
-function formatSize(bytes){
-  if(!bytes) return '-';
-  if(bytes<1024) return bytes+' B';
-  if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' KB';
-  return (bytes/1024/1024).toFixed(2)+' MB';
+function currentYearMonth(){
+  const d = new Date();
+  return d.getFullYear() + '_' + String(d.getMonth()+1).padStart(2,'0');
 }
 
-function openModal(html, opts){
-  opts = opts || {};
-  const overlay = document.getElementById('modalOverlay');
-  const box = document.getElementById('modalBox');
-  box.className = 'modal-box' + (opts.size ? ' modal-'+opts.size : '');
-  box.innerHTML = html;
-  overlay.classList.add('active');
-}
-function closeModalGeneric(){
-  document.getElementById('modalOverlay').classList.remove('active');
-  document.getElementById('modalBox').innerHTML = '';
-}
-function openLightbox(url){
-  openModal(`<div class="lightbox-inner"><button class="icon-close-btn on-dark" onclick="closeModalGeneric()"><i class="fas fa-times"></i></button><img src="${url}"/></div>`,{size:'lightbox'});
-}
-
+/* ============ نظام التنبيهات (Toast) - منقول ومعمم ============ */
 function showToast(message, type){
   type = type || 'info';
   const container = document.getElementById('toastContainer');
@@ -412,15 +329,22 @@ function showToast(message, type){
 }
 function toastOk(msg){ showToast(msg, 'success'); }
 
+/* ============ شاشة التحميل العامة - منقولة ============ */
 function showLoading(msg){
   const overlay = document.getElementById('loadingOverlay');
   if(!overlay) return;
   document.getElementById('loadingMsg').textContent = msg || 'جارٍ التنفيذ...';
   overlay.classList.add('active');
 }
-function hideLoading(){ const overlay = document.getElementById('loadingOverlay'); if(overlay) overlay.classList.remove('active'); }
+function hideLoading(){
+  const overlay = document.getElementById('loadingOverlay');
+  if(overlay) overlay.classList.remove('active');
+}
 
-let DEBUG_MODE = false, debugLogs = [], debugOpCount = 0;
+/* ============ لوحة التصحيح (Debug) - منقولة ============ */
+let DEBUG_MODE = false;
+let debugLogs = [];
+let debugOpCount = 0;
 function addDebugLog(message, type){
   const time = new Date().toLocaleTimeString('fr-FR',{hour12:false});
   debugLogs.unshift({time, message, type: type||'info'});
@@ -436,13 +360,15 @@ function addDebugLog(message, type){
 }
 function clearDebugLog(){ debugLogs=[]; addDebugLog('🗑️ تم مسح السجل'); }
 function toggleDebugPanel(){
-  const panel = document.getElementById('debugPanel'); const icon = document.getElementById('debugToggleIcon');
+  const panel = document.getElementById('debugPanel');
+  const icon = document.getElementById('debugToggleIcon');
   panel.classList.toggle('minimized');
   if(icon) icon.className = panel.classList.contains('minimized') ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
 }
 function toggleDebugMode(){
   DEBUG_MODE = !DEBUG_MODE;
-  const panel = document.getElementById('debugPanel'); const btn = document.getElementById('debugToggleBtn');
+  const panel = document.getElementById('debugPanel');
+  const btn = document.getElementById('debugToggleBtn');
   if(DEBUG_MODE){ panel.style.display='block'; btn.classList.add('active'); addDebugLog('🔍 تم تفعيل وضع التصحيح','success'); showToast('تم تفعيل وضع التصحيح','info'); }
   else { panel.style.display='none'; btn.classList.remove('active'); showToast('تم تعطيل وضع التصحيح','info'); }
 }
@@ -461,21 +387,25 @@ document.addEventListener('keydown', e => { if(e.ctrlKey && e.shiftKey && e.key=
   });
 })();
 
+/* ============ سجل التعديلات (Logs) - منقول ============ */
 function addLog(action, details){
   db.ref('academy/logs').push({
-    action, details, timestamp: Date.now(),
+    action: action,
+    details: details,
+    timestamp: Date.now(),
     timeFormatted: new Date().toLocaleString('ar-DZ',{dateStyle:'medium',timeStyle:'short'})
   }).catch(()=>{});
 }
 
+/* ============ ERROR BANNER ============ */
 function showError(err, context){
   console.error(context||'خطأ', err);
   const code = err && err.code ? err.code : '';
   const message = err && err.message ? err.message : String(err);
   let html = `<b>⚠️ ${context ? 'تعذّر: '+context : 'حدث خطأ'}</b><br/><span style="font-size:.78rem;opacity:.85;">${escapeHtml(code)} — ${escapeHtml(message)}</span>`;
   if(code === 'PERMISSION_DENIED' || /permission/i.test(message)){
-    html += `<div style="margin-top:8px;">السبب: قواعد أمان Firebase (Database أو Storage) تمنع القراءة/الكتابة حالياً.<br/>
-      تحقق من Rules في Realtime Database وأيضاً في Storage (Firebase Console ← Storage ← Rules) ثم اضغط Publish:</div>
+    html += `<div style="margin-top:8px;">السبب: قواعد أمان Firebase Realtime Database تمنع القراءة/الكتابة حالياً.<br/>
+      اذهب إلى Firebase Console ← Realtime Database ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish:</div>
       <div class="rules-box">${RULES_SNIPPET}</div>`;
   }
   document.getElementById('bannerContent').innerHTML = html;
@@ -484,6 +414,7 @@ function showError(err, context){
   addDebugLog('❌ '+(context||'خطأ')+': '+message, 'error');
 }
 
+/* ============ الترويسة الرسمية - منقولة ============ */
 function renderOfficialLetterheadHtml(){
   const lh = STATE.letterhead || {};
   return `<div class="official-letterhead">
@@ -508,15 +439,22 @@ async function ensureLetterheadLoaded(){
   catch(err){ STATE.letterhead = {}; }
 }
 
+/* ============ SECTION CONFIGS ============ */
 const arraySections = {
   ticker:{path:'academy/newsTicker',title:'شريط الأخبار',icon:'fa-bullhorn',simple:true,itemLabel:'نص الخبر'},
   gallery:{path:'academy/gallery',title:'ألبوم الصور',icon:'fa-images',fields:[
     {key:'url',label:'الصورة',type:'image',maxDim:1000},{key:'caption',label:'الوصف',type:'text'}
   ],display:i=>i.caption||'صورة بدون وصف',thumb:i=>i.url},
+  eduVideos:{path:'academy/eduVideos',title:'الفيديوهات التعليمية',icon:'fa-graduation-cap',fields:[
+    {key:'url',label:'رابط الفيديو',type:'text',required:true},{key:'title',label:'العنوان',type:'text',required:true},
+    {key:'coach',label:'المدرب',type:'text'},{key:'description',label:'الوصف',type:'textarea'},
+    {key:'topics',label:'الكلمات المفتاحية (افصل بفاصلة)',type:'text'}
+  ],transform:d=>({...d,topics:d.topics?d.topics.split(',').map(s=>s.trim()).filter(Boolean):[]}),
+  hydrate:i=>({...i,topics:(i.topics||[]).join(', ')}),display:i=>i.title},
   staff:{path:'academy/staff',title:'الطاقم الفني',icon:'fa-user-tie',fields:[
     {key:'name',label:'الاسم',type:'text',required:true},{key:'role',label:'المنصب',type:'text',required:true},
     {key:'roleType',label:'نوع العضوية',type:'select',options:['مدرب رئيسي','مدرب مساعد','إداري','طبيب/مسعف','آخر']},
-    {key:'status',label:'الحالة',type:'select',options:['نشط','متوقف']},
+    {key:'status',label:'الحالة',type:'select',options:['نشط','متوقف'],},
     {key:'phone',label:'الهاتف',type:'text'},
     {key:'bio',label:'نبذة',type:'textarea'},{key:'photoUrl',label:'الصورة',type:'image',maxDim:800}
   ],display:i=>`${i.name} - ${i.role}`,thumb:i=>i.photoUrl},
@@ -600,57 +538,25 @@ const keyedSections = {
 
 let STATE = {};
 
-/* ============ LOGIN (نسخة تشخيصية) ============ */
+/* ============ LOGIN ============ */
 function tryLogin(){
   const input = document.getElementById('loginPassword').value.trim();
   const loginBtn = document.getElementById('loginBtn');
-  const errorEl = document.getElementById('loginError');
-  errorEl.style.display='none';
-
-  let diagBox = document.getElementById('loginDiagBox');
-  if(!diagBox){
-    diagBox = document.createElement('div');
-    diagBox.id = 'loginDiagBox';
-    diagBox.style.cssText = 'margin-top:12px;text-align:left;direction:ltr;font-family:monospace;font-size:.7rem;background:#0f1a14;color:#7CFC9A;padding:10px;border-radius:8px;max-height:160px;overflow-y:auto;white-space:pre-wrap;';
-    document.querySelector('.login-box').appendChild(diagBox);
-  }
-  const log = (msg)=>{ diagBox.textContent += msg + '\n'; diagBox.scrollTop = diagBox.scrollHeight; };
-  diagBox.textContent = '';
-  log('▶ بدء المحاولة | الكود المُدخل: "'+input+'"');
-  log('▶ رابط القاعدة: ' + firebase.app().options.databaseURL);
-
-  if(!input){ errorEl.textContent='الرجاء إدخال كود الدخول'; errorEl.style.display='block'; return; }
+  document.getElementById('loginError').style.display='none';
   loginBtn.disabled = true; loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التحقق...';
-
-  let settled = false;
-  const finish = (ok, msg)=>{
-    if(settled) return; settled = true;
-    loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول';
-    if(ok){ log('✅ تطابق الكود — جارٍ الدخول...'); grantAccess(); }
-    else { log('❌ '+msg); errorEl.textContent = msg; errorEl.style.display='block'; }
-  };
-
-  const safetyTimeout = setTimeout(()=>{
-    log('⏱️ انتهت مهلة 8 ثوانٍ بدون رد من Firebase — هذا يعني أن الطلب "عالق" ولم يصل رد أصلاً (مشكلة شبكة/CORS/حظر) لا علاقة لها بالـ Rules.');
-    finish(input===DEFAULT_PASSWORD, 'لم يصل رد من قاعدة البيانات خلال 8 ثوانٍ. تحقق من الشبكة أو افتح Console (F12) لرؤية الخطأ الكامل.');
-  }, 8000);
-
+  showLoading('جارٍ التحقق من الكود...');
   db.ref('academy/adminSettings/password').once('value')
-    .then(snap => { log('✅ وصل رد من Firebase بنجاح.'); return snap.val(); })
-    .catch(err => {
-      log('❌ فشلت القراءة: ' + (err && err.code ? err.code+' — ' : '') + (err && err.message ? err.message : String(err)));
-      return null;
-    })
+    .then(snap => snap.val())
+    .catch(err => { console.warn('تعذّر قراءة كود الدخول المخزّن، سيُستخدم الكود الافتراضي', err); return null; })
     .then(stored => {
-      clearTimeout(safetyTimeout);
-      if(settled) return;
-      log('▶ القيمة المخزّنة فعلياً في القاعدة: ' + JSON.stringify(stored));
       const expected = stored || DEFAULT_PASSWORD;
-      log('▶ الكود المتوقع للمقارنة: "'+expected+'"');
-      if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(e=>log('⚠️ فشل حفظ الكود الافتراضي: '+e.message)); }
-      finish(input === expected, 'الكود غير مطابق. تحقق من الفراغات الزائدة أو حروف مخفية.');
-    })
-    .catch(err => { clearTimeout(safetyTimeout); log('❌ خطأ غير متوقع: '+err.message); finish(false, 'حدث خطأ غير متوقع.'); });
+      if(!stored){ db.ref('academy/adminSettings/password').set(DEFAULT_PASSWORD).catch(()=>{}); }
+      if(input === expected){ grantAccess(); }
+      else {
+        hideLoading();
+        document.getElementById('loginError').style.display='block'; loginBtn.disabled=false; loginBtn.innerHTML='<i class="fas fa-unlock"></i> دخول';
+      }
+    });
 }
 function grantAccess(){
   sessionStorage.setItem('raed_admin_auth','1');
@@ -664,23 +570,29 @@ function grantAccess(){
 function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
 document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
 function runConnectivityCheck(){
   db.ref('academy/adminSettings/_connCheck').set({ts:Date.now()})
     .then(() => db.ref('academy/adminSettings/_connCheck').remove())
     .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
 }
 
+/* ============ LAZY LOAD ============ */
 async function ensureArrayLoaded(key){
   if(STATE[key] !== undefined) return;
-  try{ const snap = await db.ref(arraySections[key].path).once('value'); const val = snap.val();
-    STATE[key] = Array.isArray(val) ? val : (val ? Object.values(val) : []); }
-  catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+arraySections[key].title+'»'); }
+  try{
+    const snap = await db.ref(arraySections[key].path).once('value');
+    const val = snap.val();
+    STATE[key] = Array.isArray(val) ? val : (val ? Object.values(val) : []);
+  }catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+arraySections[key].title+'»'); }
 }
 async function ensureKeyedLoaded(key){
   if(STATE[key] !== undefined) return;
-  try{ const snap = await db.ref(keyedSections[key].path).once('value'); const val = snap.val();
-    STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : []; }
-  catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+keyedSections[key].title+'»'); }
+  try{
+    const snap = await db.ref(keyedSections[key].path).once('value');
+    const val = snap.val();
+    STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+keyedSections[key].title+'»'); }
 }
 async function ensureCategoriesLoaded(){
   if(STATE.categories !== undefined) return;
@@ -689,23 +601,22 @@ async function ensureCategoriesLoaded(){
 }
 async function ensureRegistrationsLoaded(){
   if(STATE.registrations !== undefined) return;
-  try{ const snap = await db.ref('academy/registrations').once('value'); const val = snap.val();
-    STATE.registrations = val ? Object.entries(val).map(([id,v])=>({id,...v})) : []; }
-  catch(err){ STATE.registrations = []; showError(err, 'تحميل طلبات التسجيل'); }
+  try{
+    const snap = await db.ref('academy/registrations').once('value');
+    const val = snap.val();
+    STATE.registrations = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE.registrations = []; showError(err, 'تحميل طلبات التسجيل'); }
 }
 async function ensureLogsLoaded(){
   if(STATE.logs !== undefined) return;
-  try{ const snap = await db.ref('academy/logs').once('value'); const val = snap.val();
-    STATE.logs = val ? Object.entries(val).map(([id,v])=>({id,...v})) : []; }
-  catch(err){ STATE.logs = []; showError(err, 'تحميل سجل التعديلات'); }
-}
-async function ensureEduVideosLoaded(){
-  if(STATE.eduVideos !== undefined) return;
-  try{ const snap = await db.ref('academy/eduVideos').once('value'); const val = snap.val();
-    STATE.eduVideos = val ? Object.entries(val).map(([id,v])=>({id,...v})) : []; }
-  catch(err){ STATE.eduVideos = []; showError(err, 'تحميل الفيديوهات التعليمية'); }
+  try{
+    const snap = await db.ref('academy/logs').once('value');
+    const val = snap.val();
+    STATE.logs = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE.logs = []; showError(err, 'تحميل سجل التعديلات'); }
 }
 
+/* ============ NAV ============ */
 document.querySelectorAll('.menu-item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
@@ -718,8 +629,7 @@ async function showPage(page){
   await ensureLetterheadLoaded();
   if(page==='home'){ renderHomeSkeleton(c); await ensureKeyedLoaded('players'); await ensureKeyedLoaded('articles'); await ensureArrayLoaded('gallery'); await ensureRegistrationsLoaded(); renderHome(c); }
   else if(page==='categories'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureCategoriesLoaded(); renderCategories(c); }
-  else if(page==='registrations'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureRegistrationsLoaded(); await ensureKeyedLoaded('players'); renderRegistrationsPage(c); }
-  else if(page==='eduVideos'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureEduVideosLoaded(); renderEduVideosPage(c); }
+  else if(page==='registrations'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureRegistrationsLoaded(); renderRegistrations(c); }
   else if(page==='categoryFiles'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderCategoryFiles(c); }
   else if(page==='medical'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderMedical(c); }
   else if(page==='subscriptions'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderSubscriptions(c); }
@@ -730,9 +640,10 @@ async function showPage(page){
   c.classList.remove('page-anim'); void c.offsetWidth; c.classList.add('page-anim');
 }
 
+/* ============ HOME ============ */
 function renderHomeSkeleton(c){ c.innerHTML = `<h2 class="page-title"><i class="fas fa-chart-pie"></i> نظرة عامة</h2><p class="page-sub">جارٍ تحميل الإحصائيات...</p>`; }
 function renderHome(c){
-  const pending = (STATE.registrations||[]).filter(r=>(r.status||'pending')==='pending').length;
+  const pending = (STATE.registrations||[]).filter(r=>r.status==='pending').length;
   const approvedPlayers = (STATE.players||[]).filter(p=>p.status!=='rejected').length;
   c.innerHTML = `
     ${renderOfficialLetterheadHtml()}
@@ -748,15 +659,18 @@ function renderHome(c){
     <div class="panel"><h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=players]').click()"><i class="fas fa-user-plus"></i> إضافة لاعب</button>
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=eduVideos]').click()"><i class="fas fa-video"></i> إضافة فيديو تعليمي</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=categoryFiles]').click()"><i class="fas fa-folder-tree"></i> ملفات الفئات</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=medical]').click()"><i class="fas fa-notes-medical"></i> السجلات الطبية</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=subscriptions]').click()"><i class="fas fa-money-check-dollar"></i> الاشتراكات</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=sessions]').click()"><i class="fas fa-dumbbell"></i> إضافة حصة تدريبية</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=matches]').click()"><i class="fas fa-futbol"></i> إضافة مباراة</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=registrations]').click()"><i class="fas fa-inbox"></i> طلبات التسجيل</button>
       </div>
     </div>`;
 }
 
+/* ============ FIELD RENDERING ============ */
 function fieldInputHTML(f, val){
   val = val===undefined||val===null ? '' : val;
   if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
@@ -806,11 +720,16 @@ async function collectFields(fields){
   return data;
 }
 
+/* ============ GENERIC ARRAY SECTION ============ */
 function renderArraySectionPage(c, key){
   const cfg = arraySections[key];
-  let formHtml, catTabsHtml = '';
-  if(cfg.simple){ formHtml = `<div class="fg full"><label>${cfg.itemLabel}</label><input type="text" id="f_value" /></div>`; }
-  else { formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join(''); }
+  let formHtml;
+  let catTabsHtml = '';
+  if(cfg.simple){
+    formHtml = `<div class="fg full"><label>${cfg.itemLabel}</label><input type="text" id="f_value" /></div>`;
+  } else {
+    formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
+  }
   if(cfg.categoryFiltered){
     catTabsHtml = `<div class="cat-tabs" id="catTabs-${key}">
       <div class="cat-tab active" data-cat="all" onclick="filterArrayByCat('${key}','all')">الكل</div>
@@ -837,7 +756,8 @@ function renderArraySectionPage(c, key){
 }
 function renderArrayList(key, catFilter){
   catFilter = catFilter || 'all';
-  const cfg = arraySections[key]; const arr = STATE[key] || [];
+  const cfg = arraySections[key];
+  const arr = STATE[key] || [];
   const rows = arr.map((item,i)=>({item,i})).filter(({item}) => catFilter==='all' || !cfg.categoryFiltered || item.category===catFilter);
   document.getElementById('list-'+key).innerHTML = rows.length ? rows.map(({item,i}) => `
     <div class="list-item">
@@ -883,9 +803,13 @@ async function saveArrayItem(key){
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 function editArrayItem(key, idx){
-  const cfg = arraySections[key]; const item = STATE[key][idx];
+  const cfg = arraySections[key];
+  const item = STATE[key][idx];
   if(cfg.simple){ document.getElementById('f_value').value = item; }
-  else { const hydrated = cfg.hydrate ? cfg.hydrate(item) : item; cfg.fields.forEach(f => setFieldEl(f, hydrated[f.key])); }
+  else {
+    const hydrated = cfg.hydrate ? cfg.hydrate(item) : item;
+    cfg.fields.forEach(f => setFieldEl(f, hydrated[f.key]));
+  }
   document.getElementById('editIndex-'+key).value = idx;
   document.getElementById('cancelEdit-'+key).style.display='inline-flex';
   document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-edit"></i> تعديل العنصر';
@@ -896,20 +820,25 @@ function cancelArrayEdit(key){
   document.getElementById('editIndex-'+key).value = -1;
   document.getElementById('cancelEdit-'+key).style.display='none';
   document.getElementById('formTitle-'+key).innerHTML = '<i class="fas fa-plus-circle"></i> إضافة عنصر جديد';
-  if(cfg.simple){ document.getElementById('f_value').value=''; } else cfg.fields.forEach(f => resetFieldEl(f));
+  if(cfg.simple){ document.getElementById('f_value').value=''; }
+  else cfg.fields.forEach(f => resetFieldEl(f));
 }
 async function deleteArrayItem(key, idx){
   if(!confirm('حذف هذا العنصر نهائياً؟')) return;
-  const cfg = arraySections[key]; let arr = STATE[key] || []; const backup = [...arr];
+  const cfg = arraySections[key];
+  let arr = STATE[key] || [];
+  const backup = [...arr];
   arr.splice(idx,1);
   try{
-    await db.ref(cfg.path).set(arr); STATE[key] = arr;
+    await db.ref(cfg.path).set(arr);
+    STATE[key] = arr;
     addLog('حذف', `${cfg.title}: عنصر رقم ${idx+1}`);
     renderArraySectionPage(document.getElementById('content'), key);
     toastOk('تم الحذف');
   }catch(err){ STATE[key] = backup; showError(err, 'حذف عنصر من «'+cfg.title+'»'); }
 }
 
+/* ============ GENERIC KEYED SECTION (players/articles) ============ */
 function renderKeyedSectionPage(c, key){
   const cfg = keyedSections[key];
   const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
@@ -984,7 +913,9 @@ async function saveKeyedItem(key){
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 function editKeyedItem(key, id){
-  const cfg = keyedSections[key]; const item = STATE[key].find(x=>x.id===id); if(!item) return;
+  const cfg = keyedSections[key];
+  const item = STATE[key].find(x=>x.id===id);
+  if(!item) return;
   cfg.fields.forEach(f => setFieldEl(f, item[f.key]));
   document.getElementById('editId-'+key).value = id;
   document.getElementById('cancelEdit-'+key).style.display='inline-flex';
@@ -1010,6 +941,7 @@ async function deleteKeyedItem(key, id){
   }catch(err){ showError(err, 'حذف من «'+keyedSections[key].title+'»'); }
 }
 
+/* ============ ملفات الفئات (الأفواج) - منقول ============ */
 function renderCategoryFiles(c){
   c.innerHTML = `${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</h2>
@@ -1018,7 +950,7 @@ function renderCategoryFiles(c){
       ${CATS.map(cat=>{
         const count = (STATE.players||[]).filter(p=>p.category===cat && p.status!=='rejected').length;
         return `<div class="fawj-card" onclick="renderCategoryFawjDetail('${cat}')">
-          <h4 style="text-align:center;margin-bottom:8px;">فئة ${cat}</h4>
+          <h4 style="text-align:center;color:var(--text);margin-bottom:8px;">فئة ${cat}</h4>
           <div class="n">${count}</div>
           <div style="text-align:center;color:var(--text-2);font-size:.78rem;">لاعب</div>
         </div>`;
@@ -1050,6 +982,7 @@ function renderCategoryFawjDetail(cat){
   c.innerHTML = html;
 }
 
+/* ============ السجلات الطبية - منقولة ============ */
 function renderMedical(c){
   const players = (STATE.players||[]).filter(p=>p.status!=='rejected');
   const labels = {healthy:'سليم',injured:'مصاب',recovering:'في التعافي',ready:'جاهز'};
@@ -1086,8 +1019,10 @@ async function saveMedicalStatus(playerId){
   }catch(err){ showError(err, 'تحديث الحالة الصحية'); }
 }
 
+/* ============ متابعة الاشتراكات - منقولة ============ */
 function renderSubscriptions(c){
-  const ym = STATE._currentSubMonth || currentYearMonth(); STATE._currentSubMonth = ym;
+  const ym = STATE._currentSubMonth || currentYearMonth();
+  STATE._currentSubMonth = ym;
   const players = (STATE.players||[]).filter(p=>p.status!=='rejected');
   const [y,m] = ym.split('_');
   let html = `${renderOfficialLetterheadHtml()}
@@ -1114,7 +1049,10 @@ function renderSubscriptions(c){
     </table></div>`;
   c.innerHTML = html;
 }
-function changeSubMonth(val){ STATE._currentSubMonth = val.replace('-','_'); renderSubscriptions(document.getElementById('content')); }
+function changeSubMonth(val){
+  STATE._currentSubMonth = val.replace('-','_');
+  renderSubscriptions(document.getElementById('content'));
+}
 async function toggleSubscription(playerId, ym, newVal){
   try{
     await db.ref(`academy/players/${playerId}/payments/${ym}`).set({paid:newVal, date:new Date().toISOString()});
@@ -1126,19 +1064,26 @@ async function toggleSubscription(playerId, ym, newVal){
   }catch(err){ showError(err, 'تحديث حالة الاشتراك'); }
 }
 
+/* ============ سجل التعديلات - منقول ============ */
 function renderLogs(c){
   const sorted = [...(STATE.logs||[])].sort((a,b)=>(b.timestamp||0)-(a.timestamp||0));
   let html = `<h2 class="page-title"><i class="fas fa-clipboard-list"></i> سجل التعديلات</h2><p class="page-sub">آخر العمليات في لوحة التحكم</p>`;
   if(!sorted.length){ html += `<div class="empty-msg">لا يوجد سجل بعد</div>`; }
-  else { sorted.slice(0,100).forEach(l=>{
-    html += `<div class="list-item">
-      <div class="body"><div class="t">${escapeHtml(l.action||'')}</div><div style="font-size:.78rem;color:var(--text-2);">${escapeHtml(l.details||'')}</div></div>
-      <div style="font-size:.72rem;color:var(--text-2);text-align:left;white-space:nowrap;">${escapeHtml(l.timeFormatted||'')}</div>
-    </div>`;
-  }); }
+  else {
+    sorted.slice(0,100).forEach(l=>{
+      html += `<div class="list-item">
+        <div class="body">
+          <div class="t">${escapeHtml(l.action||'')}</div>
+          <div style="font-size:.78rem;color:var(--text-2);">${escapeHtml(l.details||'')}</div>
+        </div>
+        <div style="font-size:.72rem;color:var(--text-2);text-align:left;white-space:nowrap;">${escapeHtml(l.timeFormatted||'')}</div>
+      </div>`;
+    });
+  }
   c.innerHTML = html;
 }
 
+/* ============ CATEGORIES ============ */
 function renderCategories(c){
   const cats = STATE.categories || {};
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-layer-group"></i> الفئات العمرية</h2>
@@ -1175,6 +1120,57 @@ async function saveCategory(cat){
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 
+/* ============ REGISTRATIONS (طلبات التسجيل + إنشاء ملف لاعب عند القبول) ============ */
+function renderRegistrations(c){
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-inbox"></i> طلبات التسجيل</h2>
+    <p class="page-sub">الطلبات الواردة من استمارة التسجيل بالصفحة الرئيسية — قبول الطلب ينشئ ملف لاعب تلقائياً</p>
+    <div class="panel"><div id="regList"></div></div>`;
+  renderRegList();
+}
+function renderRegList(){
+  const sorted = [...(STATE.registrations||[])].sort((a,b)=>new Date(b.submittedAt||0)-new Date(a.submittedAt||0));
+  document.getElementById('regList').innerHTML = sorted.length ? sorted.map(r => `
+    <div class="list-item">
+      <div class="body">
+        <div class="t">${escapeHtml(r.firstName||'')} ${escapeHtml(r.lastName||'')} — ${escapeHtml(r.category||'')}</div>
+        <div style="font-size:.78rem;color:var(--text-2);margin-top:4px;">ولي الأمر: ${escapeHtml(r.guardianName||'')} — ${escapeHtml(r.phone||'')}</div>
+      </div>
+      <span class="badge ${r.status||'pending'}">${r.status==='accepted'?'مقبول':r.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="setRegStatus('${r.id}','accepted')"><i class="fas fa-check"></i></button>
+        <button class="btn btn-danger" onclick="setRegStatus('${r.id}','rejected')"><i class="fas fa-times"></i></button>
+      </div>
+    </div>`).join('') : `<div class="empty-msg">لا توجد طلبات بعد</div>`;
+}
+async function setRegStatus(id, status){
+  try{
+    await db.ref('academy/registrations/'+id).update({status});
+    const r = STATE.registrations.find(x=>x.id===id); if(r) r.status = status;
+    if(status==='accepted' && r){
+      // إنشاء ملف لاعب تلقائياً من طلب التسجيل (إن لم يكن موجوداً مسبقاً)
+      await ensureKeyedLoaded('players');
+      const alreadyExists = (STATE.players||[]).some(p => p.fromRegistrationId === id);
+      if(!alreadyExists){
+        const newPlayer = {
+          firstName: r.firstName || '', lastName: r.lastName || '', category: r.category || '',
+          guardianName: r.guardianName || '', guardianPhone: r.phone || '',
+          status: 'approved', injuryStatus: 'healthy', parentCode: genParentCode(),
+          fromRegistrationId: id, createdAt: new Date().toISOString()
+        };
+        const ref = await db.ref('academy/players').push(newPlayer);
+        STATE.players = STATE.players || [];
+        STATE.players.push({id:ref.key, ...newPlayer});
+        addLog('قبول طلب', `تم إنشاء ملف لاعب لـ ${newPlayer.firstName} ${newPlayer.lastName} — كود ولي الأمر: ${newPlayer.parentCode}`);
+      }
+    } else {
+      addLog(status==='accepted'?'قبول طلب':'رفض طلب', `${r?r.firstName+' '+r.lastName:id}`);
+    }
+    renderRegList();
+    toastOk('تم التحديث');
+  }catch(err){ showError(err, 'تحديث حالة طلب التسجيل'); }
+}
+
+/* ============ SETTINGS ============ */
 function renderSettings(c){
   const lh = STATE.letterhead || {};
   c.innerHTML = `<h2 class="page-title"><i class="fas fa-gear"></i> الإعدادات</h2>
@@ -1217,356 +1213,6 @@ async function saveLetterhead(){
   }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
   finally { btn.disabled=false; btn.innerHTML=orig; }
 }
-
-/* ============ الفيديوهات التعليمية ============ */
-function renderEduVideosPage(c){
-  c.innerHTML = `
-    <h2 class="page-title"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</h2>
-    <p class="page-sub">رفع الفيديوهات مباشرة من الجهاز — بدون الحاجة لأي رابط خارجي</p>
-    <button class="btn btn-primary" onclick="openAddVideoModal()"><i class="fas fa-plus"></i> إضافة فيديو</button>
-    <div class="panel" style="margin-top:18px;"><h3><i class="fas fa-list"></i> الفيديوهات الحالية (${(STATE.eduVideos||[]).length})</h3>
-      <div id="videosGrid" class="videos-grid"></div>
-    </div>`;
-  renderVideosGrid();
-}
-function renderVideosGrid(){
-  const grid = document.getElementById('videosGrid');
-  const list = STATE.eduVideos||[];
-  grid.innerHTML = list.length ? list.map(v=>`
-    <div class="video-card">
-      <div class="video-thumb" onclick="openVideoPreview('${v.id}')">
-        ${v.thumbnailUrl?`<img src="${v.thumbnailUrl}"/>`:`<i class="fas fa-circle-play"></i>`}
-      </div>
-      <div class="video-card-body">
-        <div class="video-title">${escapeHtml(v.title||'بدون عنوان')}</div>
-        <div class="video-meta">${escapeHtml(v.category||'عام')} — ${v.addedAt?new Date(v.addedAt).toLocaleDateString('ar-DZ'):''}</div>
-        <div class="video-actions">
-          <button class="btn btn-secondary" onclick="openVideoPreview('${v.id}')"><i class="fas fa-eye"></i></button>
-          <button class="btn btn-secondary" onclick="openEditVideoModal('${v.id}')"><i class="fas fa-pen"></i></button>
-          <button class="btn btn-danger" onclick="deleteVideo('${v.id}')"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-    </div>`).join('') : `<div class="empty-msg">لا توجد فيديوهات بعد</div>`;
-}
-function openVideoPreview(id){
-  const v = (STATE.eduVideos||[]).find(x=>x.id===id);
-  if(!v) return;
-  openModal(`
-    <div class="modal-header"><h3>${escapeHtml(v.title||'')}</h3><button class="icon-close-btn" onclick="closeModalGeneric()"><i class="fas fa-times"></i></button></div>
-    <div class="modal-body">
-      <video src="${v.videoUrl}" controls style="width:100%;border-radius:12px;max-height:60vh;"></video>
-      <p style="margin-top:10px;color:var(--text-2);">${escapeHtml(v.description||'')}</p>
-    </div>`,{size:'xl'});
-}
-function openAddVideoModal(existing){
-  const v = existing || {};
-  const html = `
-    <div class="modal-header"><h3><i class="fas fa-video"></i> ${existing?'تعديل فيديو تعليمي':'إضافة فيديو تعليمي'}</h3><button class="icon-close-btn" onclick="closeModalGeneric()"><i class="fas fa-times"></i></button></div>
-    <div class="modal-body">
-      ${existing?'':`
-      <div class="drop-zone" id="videoDropZone">
-        <i class="fas fa-cloud-arrow-up" style="font-size:2rem;color:var(--green2);"></i>
-        <p>اسحب وأفلت الفيديو هنا أو اضغط للاختيار</p>
-        <input type="file" id="videoFileInput" accept="video/*" />
-      </div>
-      <video id="videoPreviewPlayer" controls style="width:100%;border-radius:10px;margin-top:10px;display:none;max-height:260px;"></video>`}
-      <div class="form-grid" style="margin-top:14px;">
-        <div class="fg full"><label>اسم الفيديو</label><input type="text" id="v_title" value="${escapeHtml(v.title||'')}" /></div>
-        <div class="fg full"><label>وصف الفيديو</label><textarea id="v_description" rows="2">${escapeHtml(v.description||'')}</textarea></div>
-        <div class="fg"><label>الفئة المستهدفة</label><select id="v_category">${['عام',...CATS].map(cat=>`<option value="${cat}" ${v.category===cat?'selected':''}>${cat}</option>`).join('')}</select></div>
-        <div class="fg"><label>Thumbnail (اختياري)</label><input type="file" id="v_thumb" accept="image/*" /></div>
-      </div>
-      <div id="uploadProgressWrap" style="display:none;margin-top:14px;">
-        <div class="progress-track"><div class="progress-fill" id="uploadProgressFill"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-top:4px;">
-          <span id="uploadStatusText">جارٍ الرفع...</span><span id="uploadPercentText">0%</span>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer sticky">
-      <button class="btn btn-secondary" onclick="closeModalGeneric()">إلغاء</button>
-      <button class="btn btn-primary" id="uploadVideoBtn" onclick="${existing?`saveVideoMeta('${existing.id}')`:'uploadNewVideo()'}"><i class="fas fa-upload"></i> ${existing?'حفظ التعديلات':'Upload Video'}</button>
-    </div>`;
-  openModal(html,{size:'lg'});
-  if(!existing){
-    const dz = document.getElementById('videoDropZone');
-    const input = document.getElementById('videoFileInput');
-    dz.addEventListener('click', ()=>input.click());
-    dz.addEventListener('dragover', e=>{ e.preventDefault(); dz.classList.add('dragover'); });
-    dz.addEventListener('dragleave', ()=> dz.classList.remove('dragover'));
-    dz.addEventListener('drop', e=>{ e.preventDefault(); dz.classList.remove('dragover'); if(e.dataTransfer.files[0]){ input.files = e.dataTransfer.files; previewSelectedVideo(); } });
-    input.addEventListener('change', previewSelectedVideo);
-  }
-}
-function previewSelectedVideo(){
-  const input = document.getElementById('videoFileInput');
-  const file = input.files[0]; if(!file) return;
-  const player = document.getElementById('videoPreviewPlayer');
-  player.src = URL.createObjectURL(file);
-  player.style.display='block';
-}
-let isUploadingVideo = false;
-async function uploadNewVideo(){
-  if(isUploadingVideo) return;
-  const input = document.getElementById('videoFileInput');
-  const file = input.files[0];
-  if(!file){ showToast('الرجاء اختيار فيديو أولاً','warning'); return; }
-  const title = document.getElementById('v_title').value.trim();
-  if(!title){ showToast('الرجاء إدخال اسم الفيديو','warning'); return; }
-  isUploadingVideo = true;
-  const btn = document.getElementById('uploadVideoBtn'); btn.disabled=true;
-  document.getElementById('uploadProgressWrap').style.display='block';
-  const progressFill = document.getElementById('uploadProgressFill');
-  const percentText = document.getElementById('uploadPercentText');
-  const statusText = document.getElementById('uploadStatusText');
-  try{
-    const videoId = 'v_' + Date.now();
-    const videoPath = 'eduVideos/' + videoId + '/' + file.name;
-    const videoRef = storage.ref(videoPath);
-    const task = videoRef.put(file);
-    await new Promise((resolve, reject)=>{
-      task.on('state_changed', snap=>{
-        const pct = Math.round((snap.bytesTransferred/snap.totalBytes)*100);
-        progressFill.style.width = pct+'%'; percentText.textContent = pct+'%';
-        statusText.textContent = pct<100 ? 'جارٍ الرفع...' : 'جارٍ الإنهاء...';
-      }, reject, resolve);
-    });
-    const videoUrl = await videoRef.getDownloadURL();
-
-    let thumbnailUrl = '';
-    const thumbFile = document.getElementById('v_thumb').files[0];
-    if(thumbFile){ thumbnailUrl = await fileToBase64(thumbFile, 500, 0.75); }
-
-    const data = {
-      title, description: document.getElementById('v_description').value.trim(),
-      category: document.getElementById('v_category').value,
-      videoUrl, videoPath, thumbnailUrl, addedAt: new Date().toISOString(), fileSize: file.size
-    };
-    const ref = await db.ref('academy/eduVideos').push(data);
-    STATE.eduVideos = STATE.eduVideos || [];
-    STATE.eduVideos.push({id:ref.key, ...data});
-    addLog('إضافة فيديو', title);
-    toastOk('تم رفع الفيديو بنجاح');
-    closeModalGeneric();
-    renderVideosGrid();
-  }catch(err){
-    statusText.textContent = 'فشل الرفع';
-    showError(err, 'رفع الفيديو');
-  } finally {
-    isUploadingVideo = false;
-    if(btn) btn.disabled=false;
-  }
-}
-function openEditVideoModal(id){
-  const v = (STATE.eduVideos||[]).find(x=>x.id===id);
-  if(v) openAddVideoModal(v);
-}
-async function saveVideoMeta(id){
-  const btn = document.getElementById('uploadVideoBtn'); const orig = btn.innerHTML;
-  btn.disabled=true; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
-  try{
-    const updates = {
-      title: document.getElementById('v_title').value.trim(),
-      description: document.getElementById('v_description').value.trim(),
-      category: document.getElementById('v_category').value
-    };
-    const thumbFileEl = document.getElementById('v_thumb');
-    if(thumbFileEl && thumbFileEl.files[0]){ updates.thumbnailUrl = await fileToBase64(thumbFileEl.files[0], 500, 0.75); }
-    await db.ref('academy/eduVideos/'+id).update(updates);
-    const idx = STATE.eduVideos.findIndex(x=>x.id===id);
-    STATE.eduVideos[idx] = {...STATE.eduVideos[idx], ...updates};
-    addLog('تعديل فيديو', updates.title);
-    toastOk('تم حفظ التعديلات');
-    closeModalGeneric();
-    renderVideosGrid();
-  }catch(err){ showError(err,'حفظ تعديلات الفيديو'); }
-  finally{ btn.disabled=false; btn.innerHTML=orig; }
-}
-async function deleteVideo(id){
-  if(!confirm('حذف هذا الفيديو نهائياً؟')) return;
-  const v = (STATE.eduVideos||[]).find(x=>x.id===id);
-  try{
-    if(v && v.videoPath){ await storage.ref(v.videoPath).delete().catch(()=>{}); }
-    await db.ref('academy/eduVideos/'+id).remove();
-    STATE.eduVideos = STATE.eduVideos.filter(x=>x.id!==id);
-    addLog('حذف فيديو', v?v.title:id);
-    toastOk('تم حذف الفيديو');
-    renderVideosGrid();
-  }catch(err){ showError(err,'حذف الفيديو'); }
-}
-
-/* ============ طلبات التسجيل ============ */
-const REG_LABELS = {
-  firstName:'الاسم', lastName:'اللقب', fullName:'الاسم الكامل', birthDate:'تاريخ الميلاد', age:'العمر',
-  gender:'الجنس', phone:'رقم الهاتف', email:'البريد الإلكتروني', address:'العنوان', city:'المدينة',
-  guardianName:'اسم ولي الأمر', guardianPhone:'هاتف ولي الأمر', guardianEmail:'بريد ولي الأمر', guardianRelation:'صلة القرابة',
-  parentName:'اسم ولي الأمر', parentPhone:'هاتف ولي الأمر',
-  position:'المركز', preferredFoot:'القدم المفضلة', previousClub:'النادي السابق', skillLevel:'المستوى', yearsPlaying:'سنوات الممارسة',
-  category:'الفئة المطلوبة', proposedCategory:'الفئة المطلوبة', submittedAt:'تاريخ إرسال الطلب', notes:'ملاحظات', status:'الحالة'
-};
-function fieldLabel(k){ return REG_LABELS[k] || k.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase()); }
-const PERSONAL_KEYS=['firstName','lastName','fullName','birthDate','age','gender','phone','email','address','city'];
-const GUARDIAN_PREFIX=['guardian','parent'];
-const SPORTS_KEYS=['position','preferredFoot','previousClub','skillLevel','yearsPlaying','height','weight'];
-const META_KEYS=['category','proposedCategory','submittedAt','notes','status'];
-const HIDDEN_KEYS=['id','playerId','acceptedAt','acceptedCategory','fromRegistrationId'];
-
-function regFieldVal(r, keys){ for(const k of keys){ if(r[k]!==undefined && r[k]!=='' && r[k]!==null) return r[k]; } return null; }
-function isDocumentField(key, val){
-  if(val && typeof val === 'object' && (val.url || val.data)) return true;
-  if(typeof val === 'string' && val.startsWith('data:')) return true;
-  return false;
-}
-function docMeta(key, val){
-  if(typeof val === 'string'){
-    const match = val.match(/^data:([^;]+);base64,(.*)$/);
-    const mime = match?match[1]:'application/octet-stream';
-    const sizeBytes = match? Math.round((match[2].length*3)/4) : 0;
-    return {name:key, type:mime, sizeBytes, url:val};
-  }
-  return { name: val.name || key, type: val.type || '', sizeBytes: val.size || 0, url: val.url || val.data };
-}
-function classifyRegFields(r){
-  const groups = {personal:[],guardian:[],sports:[],meta:[],documents:[],other:[]};
-  Object.keys(r).forEach(k=>{
-    if(HIDDEN_KEYS.includes(k)) return;
-    const val = r[k];
-    if(val===undefined || val==='' || val===null) return;
-    if(isDocumentField(k,val)){ groups.documents.push(k); return; }
-    if(PERSONAL_KEYS.includes(k)){ groups.personal.push(k); return; }
-    if(GUARDIAN_PREFIX.some(p=>k.toLowerCase().startsWith(p))){ groups.guardian.push(k); return; }
-    if(SPORTS_KEYS.includes(k)){ groups.sports.push(k); return; }
-    if(META_KEYS.includes(k)){ groups.meta.push(k); return; }
-    groups.other.push(k);
-  });
-  return groups;
-}
-function renderInfoCard(title, icon, r, keys){
-  if(!keys.length) return '';
-  return `<div class="info-card">
-    <h4><i class="fas ${icon}"></i> ${title}</h4>
-    <div class="info-card-grid">
-      ${keys.map(k=>`<div class="info-item"><span class="label">${fieldLabel(k)}</span><span class="value">${escapeHtml(String(r[k]))}</span></div>`).join('')}
-    </div>
-  </div>`;
-}
-function renderDocumentsSection(r, docKeys){
-  if(!docKeys.length) return `<div class="info-card"><h4><i class="fas fa-folder-open"></i> المستندات</h4><div class="empty-msg">لا توجد مستندات مرفقة</div></div>`;
-  return `<div class="info-card"><h4><i class="fas fa-folder-open"></i> المستندات (${docKeys.length})</h4>
-    <div class="doc-cards-grid">
-      ${docKeys.map(k=>{
-        const meta = docMeta(k, r[k]);
-        const isImg = /image/.test(meta.type);
-        const safeUrl = meta.url.replace(/'/g,"\\'");
-        return `<div class="doc-card">
-          <div class="doc-thumb" onclick="${isImg?`openLightbox('${safeUrl}')`:`window.open('${safeUrl}','_blank')`}">
-            ${isImg?`<img src="${meta.url}"/>`:`<i class="fas ${/pdf/.test(meta.type)?'fa-file-pdf':'fa-file'}"></i>`}
-          </div>
-          <div class="doc-name">${escapeHtml(fieldLabel(k))}</div>
-          <div class="doc-meta">${escapeHtml(meta.type||'-')} — ${formatSize(meta.sizeBytes)}</div>
-          <div class="doc-actions">
-            <button class="btn btn-secondary" onclick="${isImg?`openLightbox('${safeUrl}')`:`window.open('${safeUrl}','_blank')`}"><i class="fas fa-eye"></i> معاينة</button>
-            <a class="btn btn-secondary" href="${meta.url}" download="${escapeHtml(meta.name)}"><i class="fas fa-download"></i> تحميل</a>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-  </div>`;
-}
-
-function renderRegistrationsPage(c){
-  c.innerHTML = `<h2 class="page-title"><i class="fas fa-inbox"></i> طلبات التسجيل</h2>
-    <p class="page-sub">كل طلب يظهر كملف لاعب مصغّر — راجع، عدّل، ثم اقبل اللاعب وحدّد فوجه مباشرة</p>
-    <div class="cat-tabs" id="regFilterTabs">
-      <div class="cat-tab active" data-f="all" onclick="filterRegList('all')">الكل</div>
-      <div class="cat-tab" data-f="pending" onclick="filterRegList('pending')">قيد الانتظار</div>
-      <div class="cat-tab" data-f="accepted" onclick="filterRegList('accepted')">مقبول</div>
-      <div class="cat-tab" data-f="rejected" onclick="filterRegList('rejected')">مرفوض</div>
-    </div>
-    <div id="regCardsWrap" class="reg-cards-grid"></div>`;
-  renderRegCards('all');
-}
-function filterRegList(f){
-  document.querySelectorAll('#regFilterTabs .cat-tab').forEach(t=>t.classList.toggle('active', t.dataset.f===f));
-  renderRegCards(f);
-}
-function renderRegCards(filter){
-  filter = filter || 'all';
-  const wrap = document.getElementById('regCardsWrap');
-  let list = [...(STATE.registrations||[])];
-  if(filter!=='all') list = list.filter(r=>(r.status||'pending')===filter);
-  list.sort((a,b)=> new Date(b.submittedAt||0) - new Date(a.submittedAt||0));
-  if(!list.length){ wrap.innerHTML = `<div class="empty-msg">لا توجد طلبات ${filter!=='all'?'بهذه الحالة':''}</div>`; return; }
-  wrap.innerHTML = list.map(r=>{
-    const photoKey = Object.keys(r).find(k=>/photo|image|picture/i.test(k) && typeof r[k]==='string' && r[k].startsWith('data:image'));
-    const photo = photoKey ? r[photoKey] : '';
-    const fullName = regFieldVal(r,['fullName']) || `${r.firstName||''} ${r.lastName||''}`.trim() || 'بدون اسم';
-    const age = calcAge(regFieldVal(r,['birthDate','dob']));
-    const position = regFieldVal(r,['position']);
-    const cat = regFieldVal(r,['category','proposedCategory']);
-    const status = r.status || 'pending';
-    const statusLabel = status==='accepted'?'مقبول':status==='rejected'?'مرفوض':'قيد الانتظار';
-    return `<div class="reg-card">
-      <div class="reg-card-top">
-        <div class="reg-avatar">${photo?`<img src="${photo}"/>`:`<i class="fas fa-user"></i>`}</div>
-        <div class="reg-info">
-          <div class="reg-name">${escapeHtml(fullName)}</div>
-          <div class="reg-meta">${age?`العمر: ${age}`:''}${position?' — '+escapeHtml(position):''}</div>
-          <div class="reg-meta">الفئة المقترحة: ${escapeHtml(cat||'-')}</div>
-          <div class="reg-meta" style="opacity:.7;">${r.submittedAt? new Date(r.submittedAt).toLocaleDateString('ar-DZ') : ''}</div>
-        </div>
-        <span class="badge ${status}">${statusLabel}</span>
-      </div>
-      <div class="reg-card-actions">
-        <button class="icon-btn" title="معاينة" onclick="openRegPreview('${r.id}')"><i class="fas fa-eye"></i></button>
-        <button class="icon-btn" title="تعديل" onclick="openRegEdit('${r.id}')"><i class="fas fa-pen"></i></button>
-        ${status!=='accepted' ? `<button class="icon-btn success" title="قبول" onclick="openAcceptModal('${r.id}')"><i class="fas fa-check"></i></button>` : `<button class="icon-btn success" title="فتح ملف اللاعب" onclick="openPlayerFile('${r.playerId}')"><i class="fas fa-user-check"></i></button>`}
-        ${status!=='accepted' ? `<button class="icon-btn warning" title="رفض" onclick="setRegStatus('${r.id}','rejected')"><i class="fas fa-ban"></i></button>` : ''}
-        <button class="icon-btn danger" title="${status==='accepted'?'لا يمكن حذف طلب مقبول':'حذف'}" ${status==='accepted'?'disabled':''} onclick="deleteRegistration('${r.id}')"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`;
-  }).join('');
-}
-function openPlayerFile(id){ if(!id){ showToast('لا يوجد ملف لاعب مرتبط','warning'); return; } window.open('player.html?id='+id,'_blank'); }
-
-function openRegPreview(id){
-  const r = (STATE.registrations||[]).find(x=>x.id===id);
-  if(!r) return;
-  const groups = classifyRegFields(r);
-  const fullName = regFieldVal(r,['fullName']) || `${r.firstName||''} ${r.lastName||''}`.trim();
-  const photoKey = Object.keys(r).find(k=>/photo|image|picture/i.test(k) && typeof r[k]==='string' && r[k].startsWith('data:image'));
-  const status = r.status || 'pending';
-  const html = `
-    <div class="modal-header">
-      <div class="modal-avatar">${photoKey?`<img src="${r[photoKey]}"/>`:`<i class="fas fa-user"></i>`}</div>
-      <div><h3>${escapeHtml(fullName||'طلب تسجيل')}</h3><span class="badge ${status}">${status==='accepted'?'مقبول':status==='rejected'?'مرفوض':'قيد الانتظار'}</span></div>
-      <button class="icon-close-btn" onclick="closeModalGeneric()"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      ${renderInfoCard('المعلومات الشخصية','fa-id-card',r,groups.personal)}
-      ${renderInfoCard('معلومات ولي الأمر','fa-user-shield',r,groups.guardian)}
-      ${renderInfoCard('المعلومات الرياضية','fa-futbol',r,groups.sports)}
-      ${renderInfoCard('معلومات التسجيل','fa-clipboard-list',r,groups.meta)}
-      ${groups.other.length?renderInfoCard('معلومات أخرى','fa-circle-info',r,groups.other):''}
-      ${renderDocumentsSection(r, groups.documents)}
-    </div>
-    <div class="modal-footer sticky">
-      <button class="btn btn-secondary" onclick="closeModalGeneric()">إغلاق</button>
-      <button class="btn btn-primary" onclick="closeModalGeneric();openRegEdit('${id}')"><i class="fas fa-pen"></i> تعديل</button>
-      ${status!=='accepted'?`<button class="btn btn-success" onclick="closeModalGeneric();openAcceptModal('${id}')"><i class="fas fa-check"></i> قبول</button>`:''}
-    </div>`;
-  openModal(html,{size:'xl'});
-}
-
-function openRegEdit(id){
-  const r = (STATE.registrations||[]).find(x=>x.id===id);
-  if(!r) return;
-  const groups = classifyRegFields(r);
-  const editableKeys = [...groups.personal, ...groups.guardian, ...groups.sports, ...groups.meta.filter(k=>k!=='submittedAt'&&k!=='status'), ...groups.other];
-  const html = `
-    <div class="modal-header"><h3><i class="fas fa-pen"></i> تعديل طلب التسجيل</h3><button class="icon-close-btn" onclick="closeModalGeneric()"><i class="fas fa-times"></i></button></div>
-    <div class="modal-body">
-      <div class="form-grid">
-        ${editableKeys.map(k=>`<div class="fg"><label>${fieldLabel(k)}</label><input type="text" id="edit_${k}" value="${escapeHtml(r[k])}" /></div>`).join('')}
-      </div>
-      ${groups.documents.length ? `<div class="info-card"><h4><i cla
+</script>
+</body>
+</html>
