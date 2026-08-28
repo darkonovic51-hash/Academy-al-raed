@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 <style>
 :root{
   --green:#1B6B3F; --green2:#219653; --green-dark:#155C34; --green-light:#3DC57D;
@@ -168,11 +167,18 @@ img{max-width:100%;}
 .table-wrap td{padding:9px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 .table-wrap tr:hover td{background:rgba(33,150,83,0.04);}
 
-.image-upload-wrap{border:2px dashed var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;}
-.image-upload-wrap input[type=file]{flex:1;font-size:.78rem;}
-.image-preview{width:56px;height:56px;border-radius:8px;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
-.image-preview img{width:100%;height:100%;object-fit:cover;}
-.image-preview span{font-size:.6rem;color:#999;text-align:center;padding:2px;}
+/* ===== حقول رفع الصور/الفيديو (Base64 مباشرة، بدون Firebase Storage) ===== */
+.image-field-box{background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;padding:14px;}
+.image-status{display:flex;align-items:center;gap:8px;font-size:.85rem;color:#999;margin-bottom:10px;}
+.image-status.has-image{color:var(--green2);font-weight:700;}
+.image-status i{font-size:1rem;}
+.image-field-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.image-upload-btn{background:var(--green2);color:#fff;padding:8px 16px;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.25s;}
+.image-upload-btn:hover{background:var(--green);}
+.image-remove-btn{background:#FBEAEA;color:#B23A3A;border:none;padding:8px 16px;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.25s;}
+.image-remove-btn:hover{background:#B23A3A;color:#fff;}
+.upload-preview video,.upload-preview img{max-width:220px;max-height:160px;border-radius:10px;margin-top:8px;display:block;object-fit:cover;}
+.video-size-hint{font-size:.72rem;color:var(--text-2);margin-top:6px;}
 
 .checkbox-field-wrap{display:flex;align-items:center;gap:10px;padding:9px 2px;}
 .checkbox-field-wrap input[type=checkbox]{width:19px;height:19px;accent-color:var(--green2);cursor:pointer;flex-shrink:0;}
@@ -184,13 +190,6 @@ img{max-width:100%;}
 @keyframes modalPop{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
 .modal-box h3{font-size:1.05rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 
-.upload-field-wrap{display:flex;flex-direction:column;gap:8px;}
-.upload-progress{display:none;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:6px 10px;}
-.upload-progress-track{flex:1;height:8px;background:var(--border);border-radius:6px;overflow:hidden;}
-.upload-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--green2),var(--green));transition:width .2s;}
-.upload-progress-text{font-size:.72rem;font-weight:700;color:var(--green);min-width:70px;text-align:left;}
-.upload-preview video,.upload-preview img{max-width:220px;max-height:160px;border-radius:10px;margin-top:2px;display:block;object-fit:cover;}
-
 .reg-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--shadow);animation:cardEnterAnim .4s cubic-bezier(.16,1,.3,1) backwards;}
 .reg-card .reg-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0;}
 .reg-card .reg-body{flex:1;min-width:180px;}
@@ -201,7 +200,7 @@ img{max-width:100%;}
 .sub-year-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
 .sub-year-nav .y{font-weight:800;font-size:1rem;}
 
-@media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;} .image-upload-wrap{flex-direction:column;}}
+@media(max-width:960px){.sidebar{display:none;} .form-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -297,13 +296,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-let storage;
-try{
-  storage = firebase.app().storage('gs://' + firebaseConfig.storageBucket);
-}catch(err){
-  console.warn('تعذّر تهيئة storage بصيغة gs:// صريحة، سيتم استخدام الإعداد الافتراضي', err);
-  storage = firebase.storage();
-}
 const LOGO_URL = "https://raw.githubusercontent.com/darkonovic51-hash/Academy-al-raed/48472c24d47892d0ee7f5fcde1708bbb8b9b9c1a/FB_IMG_1756300411875.jpg";
 document.getElementById('sideLogo').src = LOGO_URL;
 document.getElementById('loadingLogo').src = LOGO_URL;
@@ -317,17 +309,11 @@ const RULES_SNIPPET = `{
     ".write": true
   }
 }`;
-const STORAGE_RULES_SNIPPET = `rules_version = '2';
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if true;
-    }
-  }
-}`;
-const STORAGE_CORS_SNIPPET = 'gsutil cors set cors.json gs://' + firebaseConfig.storageBucket + '\n\n# محتوى cors.json:\n[{"origin": ["*"],"method": ["GET","PUT","POST"],"maxAgeSeconds": 3600,"responseHeader": ["Content-Type","x-goog-resumable"]}]';
 
 function escapeHtml(s){ s=(s===undefined||s===null)?'':String(s); return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ============ تحويل الملفات إلى Base64 (بديل كامل عن Firebase Storage) ============ */
+// للصور: يتم ضغطها وتصغيرها عبر Canvas قبل تحويلها لنص Base64
 function fileToBase64(file, maxDim=1000, quality=.72){
   return new Promise((resolve,reject)=>{
     if(file.type==='application/pdf'){ const r=new FileReader(); r.onload=e=>resolve(e.target.result); r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file); return; }
@@ -340,76 +326,48 @@ function fileToBase64(file, maxDim=1000, quality=.72){
     r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file);
   });
 }
-function previewImageField(key, input){
-  if(!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => { const p=document.getElementById('preview_'+key); if(p) p.innerHTML = `<img src="${e.target.result}" />`; };
-  reader.readAsDataURL(input.files[0]);
+// للفيديوهات والملفات التي لا يمكن ضغطها كصورة: قراءة مباشرة كـ Base64 بدون معالجة
+function fileToRawBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = e => resolve(e.target.result);
+    r.onerror = () => reject(new Error('read fail'));
+    r.readAsDataURL(file);
+  });
 }
 
-/* ============ رفع ملف (فيديو/صورة) مباشرة إلى Firebase Storage مع Progress حقيقي وكاشف توقف ============ */
-function handleStorageUpload(key, kind, input){
+/* ============ رفع صورة أو فيديو محلياً (Base64) داخل حقل النموذج ============ */
+let pendingUploads = 0;
+function handleInlineFileUpload(key, kind, input){
   const file = input.files[0];
   if(!file) return;
-  const progressWrap = document.getElementById('progress_'+key);
-  const fill = document.getElementById('progressFill_'+key);
-  const text = document.getElementById('progressText_'+key);
+  const statusEl = document.getElementById('status_'+key);
   const preview = document.getElementById('uploadPreview_'+key);
   const hidden = document.getElementById('f_'+key);
-  if(progressWrap){ progressWrap.style.display='flex'; }
-  if(fill) fill.style.width='0%';
-  if(text) text.textContent='جارٍ البدء...';
-
-  const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_');
-  const folder = kind==='video' ? 'academy/uploads/videos' : 'academy/uploads/images';
-  const path = `${folder}/${Date.now()}_${safeName}`;
-
-  let task;
-  try{
-    task = storage.ref(path).put(file);
-  }catch(err){
-    if(progressWrap) progressWrap.style.display='none';
-    showError(err, 'بدء رفع الملف إلى Storage');
-    return;
+  if(kind==='video' && file.size > 8*1024*1024){
+    showToast('حجم الفيديو كبير نسبياً، قد يستغرق الحفظ وقتاً أطول', 'warning');
   }
-
-  let lastBytes = -1;
-  let stallTimer = null;
-  const STALL_MS = 20000;
-  const resetStallTimer = ()=>{
-    if(stallTimer) clearTimeout(stallTimer);
-    stallTimer = setTimeout(()=>{ try{ task.cancel(); }catch(e){} }, STALL_MS);
-  };
-  resetStallTimer();
-
-  task.on('state_changed', snap=>{
-    if(snap.bytesTransferred !== lastBytes){ lastBytes = snap.bytesTransferred; resetStallTimer(); }
-    const pct = snap.totalBytes ? Math.round((snap.bytesTransferred/snap.totalBytes)*100) : 0;
-    if(fill) fill.style.width = pct+'%';
-    if(text) text.textContent = pct+'%';
-  }, err=>{
-    if(stallTimer) clearTimeout(stallTimer);
-    if(progressWrap) progressWrap.style.display='none';
-    if(input) input.value='';
-    if(err && err.code === 'storage/canceled' && lastBytes <= 0){
-      showError({
-        code:'storage/no-response',
-        message:'لم يصل أي رد من خادم Firebase Storage خلال '+(STALL_MS/1000)+' ثانية. الأسباب الشائعة: (1) عدم تطابق bucket، (2) عدم إعداد CORS على الـ bucket لنطاق موقعك، (3) حجب الشبكة لنطاق firebasestorage.googleapis.com.'
-      }, 'رفع الملف إلى Storage — لا رد من الخادم');
-    } else {
-      showError(err, 'رفع الملف إلى Storage');
+  if(statusEl){ statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ المعالجة...'; statusEl.classList.remove('has-image'); }
+  pendingUploads++;
+  const proc = kind==='video' ? fileToRawBase64(file) : fileToBase64(file, 1000, 0.72);
+  proc.then(dataUrl=>{
+    if(hidden) hidden.value = dataUrl;
+    if(preview) preview.innerHTML = kind==='video' ? `<video src="${dataUrl}" controls></video>` : `<img src="${dataUrl}" />`;
+    if(statusEl){
+      statusEl.innerHTML = kind==='video' ? '<i class="fas fa-circle-check"></i> تم تجهيز الفيديو بنجاح' : '<i class="fas fa-circle-check"></i> تم تجهيز الصورة بنجاح';
+      statusEl.classList.add('has-image');
     }
-  }, async()=>{
-    if(stallTimer) clearTimeout(stallTimer);
-    try{
-      const url = await task.snapshot.ref.getDownloadURL();
-      if(hidden) hidden.value = url;
-      if(preview) preview.innerHTML = kind==='video' ? `<video src="${url}" controls></video>` : `<img src="${url}" />`;
-      if(progressWrap) progressWrap.style.display='none';
-      addDebugLog('📤 تم رفع ملف إلى Storage: '+path,'success');
-      toastOk('تم رفع الملف بنجاح');
-    }catch(err){ showError(err, 'الحصول على رابط الملف بعد الرفع'); }
-  });
+    toastOk(kind==='video' ? 'تم تجهيز الفيديو، اضغط حفظ لإتمام الحفظ' : 'تم تجهيز الصورة، اضغط حفظ لإتمام الحفظ');
+  }).catch(err=>{
+    if(statusEl) statusEl.innerHTML = '<i class="fas fa-triangle-exclamation"></i> فشلت معالجة الملف، حاول مجدداً';
+    showError(err, 'معالجة الملف محلياً');
+  }).finally(()=>{ pendingUploads = Math.max(0, pendingUploads-1); });
+}
+function clearUploadField(key, kind){
+  const hidden = document.getElementById('f_'+key); if(hidden) hidden.value='';
+  const preview = document.getElementById('uploadPreview_'+key); if(preview) preview.innerHTML='';
+  const statusEl = document.getElementById('status_'+key);
+  if(statusEl){ statusEl.classList.remove('has-image'); statusEl.innerHTML = kind==='video' ? '<i class="fas fa-video"></i> لم يتم رفع فيديو بعد' : '<i class="fas fa-image"></i> لم يتم رفع صورة بعد'; }
 }
 
 function genParentCode(){
@@ -525,16 +483,6 @@ function showError(err, context){
     html += `<div style="margin-top:8px;">السبب: قواعد أمان Firebase Realtime Database تمنع القراءة/الكتابة حالياً.<br/>
       اذهب إلى Firebase Console ← Realtime Database ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish:</div>
       <div class="rules-box">${RULES_SNIPPET}</div>`;
-  }
-  if(code === 'storage/no-response'){
-    html += `<div style="margin-top:8px;">هذا ليس خطأ صلاحيات (Rules) — الطلب لم يصل للخادم أصلاً. الأسباب الأكثر احتمالاً:<br/>
-      1) عدم تطابق الـ bucket في الإعدادات مع الـ bucket الفعلي (تحقّق من Firebase Console ← Storage).<br/>
-      2) عدم إعداد CORS على الـ bucket لنطاق موقعك — نفّذ الأمر التالي مرة واحدة عبر gcloud/gsutil:</div>
-      <div class="rules-box">${STORAGE_CORS_SNIPPET}</div>`;
-  } else if(code.startsWith('storage/')){
-    html += `<div style="margin-top:8px;">السبب المحتمل: قواعد أمان Firebase Storage تمنع الرفع، أو انقطاع في الاتصال أثناء الرفع.<br/>
-      اذهب إلى Firebase Console ← Storage ← تبويب Rules، والصق هذا (مؤقتاً للتجربة) ثم اضغط Publish، ثم أعد المحاولة:</div>
-      <div class="rules-box">${STORAGE_RULES_SNIPPET}</div>`;
   }
   document.getElementById('bannerContent').innerHTML = html;
   document.getElementById('topBanner').classList.add('show');
@@ -715,7 +663,6 @@ function grantAccess(){
   addDebugLog('✅ تسجيل دخول ناجح للمدير','success');
   showPage('home');
   runConnectivityCheck();
-  runStorageConnectivityCheck();
 }
 function logout(){ sessionStorage.removeItem('raed_admin_auth'); location.reload(); }
 if(sessionStorage.getItem('raed_admin_auth')==='1') grantAccess();
@@ -725,18 +672,6 @@ function runConnectivityCheck(){
   db.ref('academy/adminSettings/_connCheck').set({ts:Date.now()})
     .then(() => db.ref('academy/adminSettings/_connCheck').remove())
     .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
-}
-
-function runStorageConnectivityCheck(){
-  try{
-    const testRef = storage.ref('academy/_connCheck/' + Date.now() + '.txt');
-    testRef.putString('ok')
-      .then(() => testRef.delete())
-      .then(() => addDebugLog('📦 Storage bucket متصل ويعمل بشكل صحيح', 'success'))
-      .catch(err => showError(err, 'التحقق من إعدادات Firebase Storage bucket'));
-  }catch(err){
-    addDebugLog('⚠️ تعذّر بدء فحص Storage: '+(err&&err.message?err.message:err), 'error');
-  }
 }
 
 /* ============ LAZY LOAD ============ */
@@ -833,6 +768,28 @@ function renderHome(c){
 }
 
 /* ============ FIELD RENDERING ============ */
+// حقل موحّد لرفع الصور/الفيديوهات (Base64 محلياً بدون Firebase Storage)
+function uploadFieldHTML(f, val, kind){
+  const hasValue = val && val.length>0;
+  const accept = kind==='video' ? 'video/*' : 'image/*';
+  const icon = kind==='video' ? 'fa-video' : 'fa-image';
+  const hint = kind==='video' ? `<div class="video-size-hint"><i class="fas fa-circle-info"></i> يُفضّل أن يكون حجم الفيديو صغيراً (أقل من 8-10 ميجابايت)</div>` : '';
+  return `<div class="image-field-box">
+    <span class="image-status ${hasValue?'has-image':''}" id="status_${f.key}">
+      ${hasValue ? `<i class="fas fa-circle-check"></i> تم تجهيز ${kind==='video'?'الفيديو':'الصورة'}` : `<i class="fas ${icon}"></i> لم يتم رفع ${kind==='video'?'فيديو':'صورة'} بعد`}
+    </span>
+    <div class="upload-preview" id="uploadPreview_${f.key}">${hasValue ? (kind==='video'?`<video src="${val}" controls></video>`:`<img src="${val}" />`) : ''}</div>
+    <div class="image-field-actions">
+      <label class="image-upload-btn">
+        <i class="fas fa-upload"></i> ${hasValue ? 'استبدال' : 'رفع'} ${kind==='video'?'فيديو':'صورة'}
+        <input type="file" accept="${accept}" style="display:none" onchange="handleInlineFileUpload('${f.key}','${kind}', this)" />
+      </label>
+      ${hasValue ? `<button type="button" class="image-remove-btn" onclick="clearUploadField('${f.key}','${kind}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
+    </div>
+    ${hint}
+    <input type="hidden" id="f_${f.key}" value="${escapeHtml(val)}" />
+  </div>`;
+}
 function fieldInputHTML(f, val){
   val = val===undefined||val===null ? '' : val;
   if(f.type==='textarea') return `<textarea id="f_${f.key}" rows="3">${escapeHtml(val)}</textarea>`;
@@ -844,29 +801,8 @@ function fieldInputHTML(f, val){
       <span>${f.checkboxLabel || ''}</span>
     </div>`;
   }
-  if(f.type==='videoUpload' || f.type==='imageUpload'){
-    const kind = f.type==='videoUpload' ? 'video' : 'image';
-    const accept = kind==='video' ? 'video/*' : 'image/*';
-    const icon = kind==='video' ? 'fa-video' : 'fa-image';
-    const label = kind==='video' ? '+ إضافة فيديو' : '+ إضافة صورة';
-    return `<div class="upload-field-wrap">
-      <input type="file" id="f_${f.key}_file" accept="${accept}" style="display:none" onchange="handleStorageUpload('${f.key}','${kind}', this)" />
-      <button type="button" class="btn btn-secondary" onclick="document.getElementById('f_${f.key}_file').click()"><i class="fas ${icon}"></i> ${label}</button>
-      <div class="upload-progress" id="progress_${f.key}">
-        <div class="upload-progress-track"><div class="upload-progress-fill" id="progressFill_${f.key}"></div></div>
-        <span class="upload-progress-text" id="progressText_${f.key}">0%</span>
-      </div>
-      <div class="upload-preview" id="uploadPreview_${f.key}">${val ? (kind==='video' ? `<video src="${val}" controls></video>` : `<img src="${val}" />`) : ''}</div>
-      <input type="hidden" id="f_${f.key}" value="${escapeHtml(val)}" />
-    </div>`;
-  }
-  if(f.type==='image'){
-    return `<div class="image-upload-wrap">
-      <input type="file" id="f_${f.key}" accept="image/*" onchange="previewImageField('${f.key}', this)" />
-      <div class="image-preview" id="preview_${f.key}">${val ? `<img src="${val}" />` : `<span>لا صورة</span>`}</div>
-      <input type="hidden" id="f_${f.key}_existing" value="${escapeHtml(val)}" />
-    </div>`;
-  }
+  if(f.type==='image' || f.type==='imageUpload') return uploadFieldHTML(f, val, 'image');
+  if(f.type==='videoUpload') return uploadFieldHTML(f, val, 'video');
   return `<input type="${f.type}" id="f_${f.key}" value="${escapeHtml(val)}" />`;
 }
 function resetFieldEl(f){
@@ -874,17 +810,8 @@ function resetFieldEl(f){
     const el=document.getElementById('f_'+f.key); if(el) el.checked=false;
     return;
   }
-  if(f.type==='image'){
-    const fileEl = document.getElementById('f_'+f.key); if(fileEl) fileEl.value='';
-    const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value='';
-    const preview = document.getElementById('preview_'+f.key); if(preview) preview.innerHTML = '<span>لا صورة</span>';
-    return;
-  }
-  if(f.type==='videoUpload' || f.type==='imageUpload'){
-    const hidden = document.getElementById('f_'+f.key); if(hidden) hidden.value='';
-    const preview = document.getElementById('uploadPreview_'+f.key); if(preview) preview.innerHTML='';
-    const fileInput = document.getElementById('f_'+f.key+'_file'); if(fileInput) fileInput.value='';
-    const progressWrap = document.getElementById('progress_'+f.key); if(progressWrap) progressWrap.style.display='none';
+  if(f.type==='image' || f.type==='imageUpload' || f.type==='videoUpload'){
+    clearUploadField(f.key, f.type==='videoUpload' ? 'video' : 'image');
     return;
   }
   const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value='';
@@ -894,15 +821,16 @@ function setFieldEl(f, val){
     const el=document.getElementById('f_'+f.key); if(el) el.checked = !!val;
     return;
   }
-  if(f.type==='image'){
-    const existing = document.getElementById('f_'+f.key+'_existing'); if(existing) existing.value = val||'';
-    const preview = document.getElementById('preview_'+f.key); if(preview) preview.innerHTML = val ? `<img src="${val}" />` : '<span>لا صورة</span>';
-    return;
-  }
-  if(f.type==='videoUpload' || f.type==='imageUpload'){
+  if(f.type==='image' || f.type==='imageUpload' || f.type==='videoUpload'){
+    const kind = f.type==='videoUpload' ? 'video' : 'image';
     const hidden = document.getElementById('f_'+f.key); if(hidden) hidden.value = val||'';
     const preview = document.getElementById('uploadPreview_'+f.key);
-    if(preview) preview.innerHTML = val ? (f.type==='videoUpload' ? `<video src="${val}" controls></video>` : `<img src="${val}" />`) : '';
+    if(preview) preview.innerHTML = val ? (kind==='video'?`<video src="${val}" controls></video>`:`<img src="${val}" />`) : '';
+    const statusEl = document.getElementById('status_'+f.key);
+    if(statusEl){
+      if(val){ statusEl.classList.add('has-image'); statusEl.innerHTML = kind==='video' ? '<i class="fas fa-circle-check"></i> تم تجهيز الفيديو' : '<i class="fas fa-circle-check"></i> تم تجهيز الصورة'; }
+      else { statusEl.classList.remove('has-image'); statusEl.innerHTML = kind==='video' ? '<i class="fas fa-video"></i> لم يتم رفع فيديو بعد' : '<i class="fas fa-image"></i> لم يتم رفع صورة بعد'; }
+    }
     return;
   }
   const el=document.getElementById('f_'+f.key); if(el && f.type!=='file') el.value = val!==undefined?val:'';
@@ -910,12 +838,6 @@ function setFieldEl(f, val){
 async function collectFields(fields){
   const data = {};
   for(const f of fields){
-    if(f.type==='image'){
-      const fileEl = document.getElementById('f_'+f.key);
-      if(fileEl && fileEl.files[0]){ data[f.key] = await fileToBase64(fileEl.files[0], f.maxDim||1000, 0.72); }
-      else { const existing = document.getElementById('f_'+f.key+'_existing'); data[f.key] = existing ? existing.value : ''; }
-      continue;
-    }
     const el = document.getElementById('f_'+f.key);
     if(!el) continue;
     if(f.type==='file'){ if(el.files[0]) data[f.key] = await fileToBase64(el.files[0]); }
@@ -981,6 +903,7 @@ function filterArrayByCat(key, cat){
 }
 async function saveArrayItem(key){
   const cfg = arraySections[key];
+  if(pendingUploads>0){ showToast('الرجاء الانتظار حتى تنتهي معالجة الملف قبل الحفظ', 'warning'); return; }
   const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
@@ -1093,6 +1016,7 @@ function filterKeyedByCat(key, cat){
 }
 async function saveKeyedItem(key){
   const cfg = keyedSections[key];
+  if(pendingUploads>0){ showToast('الرجاء الانتظار حتى تنتهي معالجة الملف قبل الحفظ', 'warning'); return; }
   const btn = document.getElementById('saveBtn-'+key); const origHtml = btn.innerHTML;
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   try{
