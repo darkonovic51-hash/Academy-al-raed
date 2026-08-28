@@ -299,10 +299,8 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let storage;
 try{
-  // تهيئة صريحة بصيغة gs:// لتفادي أي التباس في استنتاج الـ bucket تلقائياً
   storage = firebase.app().storage('gs://' + firebaseConfig.storageBucket);
 }catch(err){
-  // في حال فشل هذا الأسلوب لأي سبب، نعود للطريقة الافتراضية حتى لا يتعطل تحميل الصفحة كاملاً
   console.warn('تعذّر تهيئة storage بصيغة gs:// صريحة، سيتم استخدام الإعداد الافتراضي', err);
   storage = firebase.storage();
 }
@@ -377,7 +375,7 @@ function handleStorageUpload(key, kind, input){
 
   let lastBytes = -1;
   let stallTimer = null;
-  const STALL_MS = 20000; // إذا لم يتحرك الرفع 20 ثانية نعتبره متوقفاً ونلغيه
+  const STALL_MS = 20000;
   const resetStallTimer = ()=>{
     if(stallTimer) clearTimeout(stallTimer);
     stallTimer = setTimeout(()=>{ try{ task.cancel(); }catch(e){} }, STALL_MS);
@@ -638,7 +636,7 @@ const arraySections = {
   ],display:i=>`${i.category} — ${i.type||'رسالة'}`}
 };
 
-/* ============ تصنيفات المقالات — مطابقة تماماً لما هو مستخدم في index.html ============ */
+/* ============ تصنيفات المقالات ============ */
 const ARTICLE_CAT_KEYS = ['academy','categories','matches','tournaments','training','talents','announcements','stories','tips'];
 const ARTICLE_CAT_LABELS = ['أخبار الأكاديمية','أخبار الفئات','مباريات','بطولات','تدريبات','مواهب','إعلانات','قصص ونجاحات','نصائح رياضية'];
 
@@ -664,7 +662,6 @@ const keyedSections = {
   extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
   badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
   },
-  /* ===== المقالات — الصورة/الفيديو يُرفعان إلى Firebase Storage ===== */
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
     {key:'title',label:'عنوان المقال',type:'text',required:true},
     {key:'category',label:'التصنيف',type:'select',options:ARTICLE_CAT_KEYS,optionLabels:ARTICLE_CAT_LABELS,required:true},
@@ -730,7 +727,6 @@ function runConnectivityCheck(){
     .catch(err => showError(err, 'التحقق من صلاحيات الحفظ في Firebase'));
 }
 
-/* ============ فحص اتصال Firebase Storage عند الدخول (لا يمنع فتح اللوحة إن فشل) ============ */
 function runStorageConnectivityCheck(){
   try{
     const testRef = storage.ref('academy/_connCheck/' + Date.now() + '.txt');
@@ -1229,7 +1225,7 @@ async function saveMedicalStatus(playerId){
   }catch(err){ showError(err, 'تحديث الحالة الصحية'); }
 }
 
-/* ============ متابعة الاشتراكات — ملف سنوي احترافي لكل لاعب ============ */
+/* ============ متابعة الاشتراكات ============ */
 function renderSubscriptions(c){
   const ym = STATE._currentSubMonth || currentYearMonth();
   STATE._currentSubMonth = ym;
@@ -1275,7 +1271,6 @@ async function toggleSubscription(playerId, ym, newVal){
   }catch(err){ showError(err, 'تحديث حالة الاشتراك'); }
 }
 
-/* ---- الملف السنوي الكامل (12 شهر) داخل نافذة منبثقة ---- */
 function openSubscriptionFileModal(playerId){
   renderSubscriptionFileModalContent(playerId, new Date().getFullYear());
 }
@@ -1389,7 +1384,7 @@ async function saveCategory(cat){
   finally { btn.disabled=false; btn.innerHTML=origHtml; }
 }
 
-/* ============ REGISTRATIONS (معاينة + تعديل + قبول مع اختيار الفئة والفوج معاً + حذف) ============ */
+/* ============ REGISTRATIONS ============ */
 const REG_LABELS = {
   firstName:'الاسم', lastName:'اللقب', category:'الفئة المطلوبة', guardianName:'اسم ولي الأمر',
   phone:'هاتف ولي الأمر', guardianPhone:'هاتف ولي الأمر', email:'البريد الإلكتروني', address:'العنوان',
@@ -1436,7 +1431,6 @@ function renderRegList(){
   }).join('') : `<div class="empty-msg">لا توجد طلبات بعد</div>`;
 }
 
-/* ---- معاينة طلب التسجيل ---- */
 function openPreviewModal(id){
   const r = STATE.registrations.find(x=>x.id===id);
   if(!r) return;
@@ -1470,7 +1464,6 @@ function openPreviewModal(id){
   `, {width:'560px'});
 }
 
-/* ---- تعديل طلب التسجيل ---- */
 function openEditRegModal(id){
   const r = STATE.registrations.find(x=>x.id===id);
   if(!r) return;
@@ -1509,7 +1502,6 @@ async function saveRegEdit(id){
   }catch(err){ showError(err, 'تعديل طلب التسجيل'); }
 }
 
-/* ---- قبول الطلب: اختيار الفئة والفوج معاً ثم النقل الفوري ---- */
 function openAcceptModal(id){
   const r = STATE.registrations.find(x=>x.id===id);
   if(!r) return;
@@ -1597,7 +1589,6 @@ function showAcceptSuccessModal(playerData, playerId, cat, fawj){
   `);
 }
 
-/* ---- حذف طلب التسجيل ---- */
 async function deleteRegistration(id){
   if(!confirm('حذف طلب التسجيل هذا نهائياً؟')) return;
   try{
@@ -1642,4 +1633,17 @@ async function saveLetterhead(){
   btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
   const data = {
     leagueName: document.getElementById('lh_leagueName').value.trim(),
-    approvalNumber: document.getElementById('lh_app
+    approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
+    directorPhone: document.getElementById('lh_directorPhone').value.trim()
+  };
+  try{
+    await db.ref('academy/adminSettings/letterhead').update(data);
+    STATE.letterhead = {...(STATE.letterhead||{}), ...data};
+    addLog('تعديل', 'تحديث بيانات الترويسة الرسمية');
+    toastOk('تم حفظ بيانات الترويسة');
+  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
+  finally { btn.disabled=false; btn.innerHTML=orig; }
+}
+</script>
+</body>
+</html>
