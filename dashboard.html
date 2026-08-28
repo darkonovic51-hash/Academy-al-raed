@@ -132,10 +132,10 @@ img{max-width:100%;}
 .btn-success{background:#D4EDDA;color:#155724;}
 .btn:hover{opacity:.9;}
 
-.list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;animation:cardEnterAnim .4s cubic-bezier(.16,1,.3,1) backwards;}
+.list-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;animation:cardEnterAnim .4s cubic-bezier(.16,1,.3,1) backwards;flex-wrap:wrap;}
 @keyframes cardEnterAnim{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .list-item img.thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;}
-.list-item .body{flex:1;min-width:0;}
+.list-item .body{flex:1;min-width:160px;}
 .list-item .t{font-weight:700;font-size:.86rem;}
 .list-item .actions{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
 .badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;}
@@ -167,7 +167,6 @@ img{max-width:100%;}
 .table-wrap td{padding:9px 8px;text-align:center;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
 .table-wrap tr:hover td{background:rgba(33,150,83,0.04);}
 
-/* ===== حقول رفع الصور/الفيديو (Base64 مباشرة، بدون Firebase Storage) ===== */
 .image-field-box{background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;padding:14px;}
 .image-status{display:flex;align-items:center;gap:8px;font-size:.85rem;color:#999;margin-bottom:10px;}
 .image-status.has-image{color:var(--green2);font-weight:700;}
@@ -261,7 +260,6 @@ img{max-width:100%;}
       <div class="menu-item" data-page="ticker"><i class="fas fa-bullhorn"></i> شريط الأخبار</div>
       <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> ألبوم الصور</div>
       <div class="menu-item" data-page="eduVideos"><i class="fas fa-graduation-cap"></i> الفيديوهات التعليمية</div>
-      <div class="menu-item" data-page="players"><i class="fas fa-user"></i> اللاعبون</div>
       <div class="menu-item" data-page="categoryFiles"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</div>
       <div class="menu-item" data-page="medical"><i class="fas fa-notes-medical"></i> السجلات الطبية</div>
       <div class="menu-item" data-page="subscriptions"><i class="fas fa-money-check-dollar"></i> متابعة الاشتراكات</div>
@@ -313,7 +311,6 @@ const RULES_SNIPPET = `{
 function escapeHtml(s){ s=(s===undefined||s===null)?'':String(s); return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ============ تحويل الملفات إلى Base64 (بديل كامل عن Firebase Storage) ============ */
-// للصور: يتم ضغطها وتصغيرها عبر Canvas قبل تحويلها لنص Base64
 function fileToBase64(file, maxDim=1000, quality=.72){
   return new Promise((resolve,reject)=>{
     if(file.type==='application/pdf'){ const r=new FileReader(); r.onload=e=>resolve(e.target.result); r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file); return; }
@@ -326,7 +323,6 @@ function fileToBase64(file, maxDim=1000, quality=.72){
     r.onerror=()=>reject(new Error('read fail')); r.readAsDataURL(file);
   });
 }
-// للفيديوهات والملفات التي لا يمكن ضغطها كصورة: قراءة مباشرة كـ Base64 بدون معالجة
 function fileToRawBase64(file){
   return new Promise((resolve,reject)=>{
     const r = new FileReader();
@@ -588,16 +584,19 @@ const arraySections = {
 const ARTICLE_CAT_KEYS = ['academy','categories','matches','tournaments','training','talents','announcements','stories','tips'];
 const ARTICLE_CAT_LABELS = ['أخبار الأكاديمية','أخبار الفئات','مباريات','بطولات','تدريبات','مواهب','إعلانات','قصص ونجاحات','نصائح رياضية'];
 
-const keyedSections = {
-  players:{path:'academy/players',title:'اللاعبون',icon:'fa-user',categoryFiltered:true,fields:[
+/* ============ تعريف حقول اللاعبين — يُستخدم من طرف "ملف اللاعب" داخل الفئات/الأفواج ============ */
+const playersConfig = {
+  path:'academy/players', title:'اللاعبون',
+  fields:[
     {key:'firstName',label:'الاسم',type:'text',required:true},{key:'lastName',label:'اللقب',type:'text',required:true},
-    {key:'category',label:'الفئة',type:'select',options:CATS},
-    {key:'fawj',label:'الفوج',type:'select',options:FAWJ_LIST},
+    {key:'category',label:'الفئة',type:'select',options:CATS,required:true},
+    {key:'fawj',label:'الفوج',type:'select',options:FAWJ_LIST,required:true},
     {key:'jersey',label:'رقم القميص',type:'number'},
     {key:'position',label:'المركز',type:'text'},{key:'birthDate',label:'تاريخ الميلاد',type:'date'},
     {key:'photo',label:'صورة اللاعب',type:'image',maxDim:800},
     {key:'guardianName',label:'اسم ولي الأمر',type:'text'},
     {key:'guardianPhone',label:'هاتف ولي الأمر',type:'text'},
+    {key:'address',label:'العنوان',type:'text'},
     {key:'status',label:'حالة الملف',type:'select',options:['approved','pending','rejected'],optionLabels:['معتمد','قيد الانتظار','مرفوض']},
     {key:'rating',label:'التقييم',type:'select',options:['','ممتاز','جيد جدا','جيد','متوسط'],optionLabels:['لم يقيّم','ممتاز','جيد جدا','جيد','متوسط']},
     {key:'injuryStatus',label:'الحالة الصحية',type:'select',options:['healthy','injured','recovering','ready'],optionLabels:['سليم','مصاب','في التعافي','جاهز']},
@@ -605,11 +604,10 @@ const keyedSections = {
     {key:'goals',label:'الأهداف',type:'number'},{key:'assists',label:'التمريرات الحاسمة',type:'number'},{key:'matches',label:'عدد المباريات',type:'number'}
   ],
   beforeSave:(data,isNew)=>{ if(isNew && !data.parentCode) data.parentCode = genParentCode(); return data; },
-  display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''} — ${i.category||''}${i.fawj?'/'+i.fawj:''}`,
-  thumb:i=>i.photo,
-  extraInfo:i=>`<div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">كود ولي الأمر: <b>${escapeHtml(i.parentCode||'-')}</b>${i.guardianPhone?(' — هاتف: '+escapeHtml(i.guardianPhone)):''}</div>`,
-  badge:i=>`<span class="badge ${i.status==='approved'?'accepted':i.status==='rejected'?'rejected':'pending'}">${i.status==='approved'?'معتمد':i.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>`
-  },
+  display:i=>`#${i.jersey||'-'} ${i.firstName||''} ${i.lastName||''} — ${i.category||''}${i.fawj?'/'+i.fawj:''}`
+};
+
+const keyedSections = {
   articles:{path:'academy/articles',title:'المقالات',icon:'fa-newspaper',fields:[
     {key:'title',label:'عنوان المقال',type:'text',required:true},
     {key:'category',label:'التصنيف',type:'select',options:ARTICLE_CAT_KEYS,optionLabels:ARTICLE_CAT_LABELS,required:true},
@@ -634,6 +632,7 @@ const keyedSections = {
 };
 
 let STATE = {};
+let currentOpenCategory = null;
 
 /* ============ LOGIN ============ */
 function tryLogin(){
@@ -691,6 +690,14 @@ async function ensureKeyedLoaded(key){
     STATE[key] = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
   }catch(err){ STATE[key] = []; showError(err, 'تحميل قسم «'+keyedSections[key].title+'»'); }
 }
+async function ensurePlayersLoaded(){
+  if(STATE.players !== undefined) return;
+  try{
+    const snap = await db.ref(playersConfig.path).once('value');
+    const val = snap.val();
+    STATE.players = val ? Object.entries(val).map(([id,v])=>({id,...v})) : [];
+  }catch(err){ STATE.players = []; showError(err, 'تحميل بيانات اللاعبين'); }
+}
 async function ensureCategoriesLoaded(){
   if(STATE.categories !== undefined) return;
   try{ const snap = await db.ref('academy/categories').once('value'); STATE.categories = snap.val() || {}; }
@@ -724,12 +731,12 @@ document.querySelectorAll('.menu-item').forEach(item => {
 async function showPage(page){
   const c = document.getElementById('content');
   await ensureLetterheadLoaded();
-  if(page==='home'){ renderHomeSkeleton(c); await ensureKeyedLoaded('players'); await ensureKeyedLoaded('articles'); await ensureArrayLoaded('gallery'); await ensureRegistrationsLoaded(); renderHome(c); }
+  if(page==='home'){ renderHomeSkeleton(c); await ensurePlayersLoaded(); await ensureKeyedLoaded('articles'); await ensureArrayLoaded('gallery'); await ensureRegistrationsLoaded(); renderHome(c); }
   else if(page==='categories'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureCategoriesLoaded(); renderCategories(c); }
   else if(page==='registrations'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureRegistrationsLoaded(); renderRegistrations(c); }
-  else if(page==='categoryFiles'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderCategoryFiles(c); }
-  else if(page==='medical'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderMedical(c); }
-  else if(page==='subscriptions'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureKeyedLoaded('players'); renderSubscriptions(c); }
+  else if(page==='categoryFiles'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensurePlayersLoaded(); renderCategoryFiles(c); }
+  else if(page==='medical'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensurePlayersLoaded(); renderMedical(c); }
+  else if(page==='subscriptions'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensurePlayersLoaded(); renderSubscriptions(c); }
   else if(page==='logs'){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureLogsLoaded(); renderLogs(c); }
   else if(page==='settings'){ renderSettings(c); }
   else if(arraySections[page]){ c.innerHTML='<div class="loading-msg"><i class="fas fa-spinner fa-spin"></i> جارٍ التحميل...</div>'; await ensureArrayLoaded(page); renderArraySectionPage(c, page); }
@@ -755,8 +762,7 @@ function renderHome(c){
     </div>
     <div class="panel"><h3><i class="fas fa-bolt"></i> اختصارات سريعة</h3>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=players]').click()"><i class="fas fa-user-plus"></i> إضافة لاعب</button>
-        <button class="btn btn-primary" onclick="document.querySelector('[data-page=categoryFiles]').click()"><i class="fas fa-folder-tree"></i> ملفات الفئات</button>
+        <button class="btn btn-primary" onclick="document.querySelector('[data-page=categoryFiles]').click()"><i class="fas fa-folder-tree"></i> ملفات اللاعبين والفئات</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=medical]').click()"><i class="fas fa-notes-medical"></i> السجلات الطبية</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=subscriptions]').click()"><i class="fas fa-money-check-dollar"></i> الاشتراكات</button>
         <button class="btn btn-primary" onclick="document.querySelector('[data-page=articles]').click()"><i class="fas fa-pen"></i> نشر مقال</button>
@@ -768,7 +774,6 @@ function renderHome(c){
 }
 
 /* ============ FIELD RENDERING ============ */
-// حقل موحّد لرفع الصور/الفيديوهات (Base64 محلياً بدون Firebase Storage)
 function uploadFieldHTML(f, val, kind){
   const hasValue = val && val.length>0;
   const accept = kind==='video' ? 'video/*' : 'image/*';
@@ -967,17 +972,10 @@ async function deleteArrayItem(key, idx){
   }catch(err){ STATE[key] = backup; showError(err, 'حذف عنصر من «'+cfg.title+'»'); }
 }
 
-/* ============ GENERIC KEYED SECTION (players/articles) ============ */
+/* ============ GENERIC KEYED SECTION (articles فقط الآن) ============ */
 function renderKeyedSectionPage(c, key){
   const cfg = keyedSections[key];
   const formHtml = cfg.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image'||f.type==='videoUpload'||f.type==='imageUpload'||f.type==='checkbox')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f)}</div>`).join('');
-  let catTabsHtml = '';
-  if(cfg.categoryFiltered){
-    catTabsHtml = `<div class="cat-tabs" id="catTabsK-${key}">
-      <div class="cat-tab active" data-cat="all" onclick="filterKeyedByCat('${key}','all')">الكل</div>
-      ${CATS.map(cat=>`<div class="cat-tab" data-cat="${cat}" onclick="filterKeyedByCat('${key}','${cat}')">${cat}</div>`).join('')}
-    </div>`;
-  }
   c.innerHTML = `
     ${cfg.letterhead ? renderOfficialLetterheadHtml() : ''}
     <h2 class="page-title"><i class="fas ${cfg.icon}"></i> ${cfg.title}</h2>
@@ -990,7 +988,7 @@ function renderKeyedSectionPage(c, key){
         <button class="btn btn-secondary" id="cancelEdit-${key}" style="display:none;" onclick="cancelKeyedEdit('${key}')">إلغاء التعديل</button>
       </div>
     </div>
-    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3>${catTabsHtml}<div id="list-${key}"></div></div>`;
+    <div class="panel"><h3><i class="fas fa-list"></i> العناصر الحالية (${(STATE[key]||[]).length})</h3><div id="list-${key}"></div></div>`;
   renderKeyedList(key, 'all');
 }
 function renderKeyedList(key, catFilter){
@@ -1003,16 +1001,11 @@ function renderKeyedList(key, catFilter){
       <div class="body"><div class="t">${escapeHtml(cfg.display(item))}</div>${cfg.extraInfo?cfg.extraInfo(item):''}</div>
       ${cfg.badge?cfg.badge(item):''}
       <div class="actions">
-        ${key==='players'?`<a class="btn btn-secondary" href="player.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
         ${key==='articles'?`<a class="btn btn-secondary" href="article.html?id=${item.id}" target="_blank"><i class="fas fa-eye"></i></a>`:''}
         <button class="btn btn-secondary" onclick="editKeyedItem('${key}','${item.id}')"><i class="fas fa-edit"></i></button>
         <button class="btn btn-danger" onclick="deleteKeyedItem('${key}','${item.id}')"><i class="fas fa-trash"></i></button>
       </div>
     </div>`).join('') : `<div class="empty-msg">لا توجد عناصر بعد</div>`;
-}
-function filterKeyedByCat(key, cat){
-  document.querySelectorAll(`#catTabsK-${key} .cat-tab`).forEach(t => t.classList.toggle('active', t.dataset.cat===cat));
-  renderKeyedList(key, cat);
 }
 async function saveKeyedItem(key){
   const cfg = keyedSections[key];
@@ -1071,11 +1064,12 @@ async function deleteKeyedItem(key, id){
   }catch(err){ showError(err, 'حذف من «'+keyedSections[key].title+'»'); }
 }
 
-/* ============ ملفات الفئات (الأفواج) ============ */
+/* ============ ملفات الفئات (الأفواج) — المكان الوحيد الآن لإدارة اللاعبين ============ */
 function renderCategoryFiles(c){
+  currentOpenCategory = null;
   c.innerHTML = `${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-folder-tree"></i> ملفات الفئات (الأفواج)</h2>
-    <p class="page-sub">اضغط على فئة لعرض توزيع اللاعبين على الأفواج A / B / C</p>
+    <p class="page-sub">اضغط على فئة لعرض توزيع اللاعبين على الأفواج A / B / C، وإضافة أو فتح ملف كل لاعب</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;">
       ${CATS.map(cat=>{
         const count = (STATE.players||[]).filter(p=>p.category===cat && p.status!=='rejected').length;
@@ -1088,28 +1082,111 @@ function renderCategoryFiles(c){
     </div>`;
 }
 function renderCategoryFawjDetail(cat){
+  currentOpenCategory = cat;
   const c = document.getElementById('content');
   const players = (STATE.players||[]).filter(p=>p.category===cat && p.status!=='rejected');
   let html = `<button class="btn btn-secondary" onclick="renderCategoryFiles(document.getElementById('content'))"><i class="fas fa-arrow-right"></i> رجوع لملفات الفئات</button>
     ${renderOfficialLetterheadHtml()}
     <h2 class="page-title"><i class="fas fa-folder-tree"></i> فئة ${cat}</h2>
-    <p class="page-sub">توزيع اللاعبين على الأفواج الثلاثة</p>`;
+    <p class="page-sub">اضغط "ملف اللاعب" لعرض وتعديل كل بيانات اللاعب، أو "إضافة لاعب" لإنشاء ملف جديد في الفوج مباشرة</p>`;
   FAWJ_LIST.forEach(fawj=>{
     const fawjPlayers = players.filter(p=>p.fawj===fawj);
     html += `<div class="panel">
-      <h3><i class="fas fa-people-group"></i> الفوج ${fawj} <span style="font-size:.75rem;color:var(--text-2);font-weight:600;">(${fawjPlayers.length} لاعب)</span></h3>
-      <div class="table-wrap"><table>
-        <thead><tr><th>#</th><th>الاسم</th><th>رقم القميص</th><th>ولي الأمر</th><th>هاتف الولي</th></tr></thead>
-        <tbody>
-          ${fawjPlayers.length? fawjPlayers.map((p,idx)=>`<tr>
-            <td>${idx+1}</td><td style="font-weight:700;">${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</td>
-            <td>${p.jersey||'-'}</td><td>${escapeHtml(p.guardianName||'-')}</td><td>${escapeHtml(p.guardianPhone||'-')}</td>
-          </tr>`).join('') : `<tr><td colspan="5" class="empty-msg">لا يوجد لاعبون في هذا الفوج</td></tr>`}
-        </tbody>
-      </table></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+        <h3 style="margin-bottom:0;"><i class="fas fa-people-group"></i> الفوج ${fawj} <span style="font-size:.75rem;color:var(--text-2);font-weight:600;">(${fawjPlayers.length} لاعب)</span></h3>
+        <button class="btn btn-primary" onclick='openPlayerFileModal(null, {category:"${cat}", fawj:"${fawj}"})'><i class="fas fa-user-plus"></i> إضافة لاعب</button>
+      </div>
+      ${fawjPlayers.length? fawjPlayers.map(p=>`
+        <div class="list-item">
+          ${p.photo ? `<img class="thumb" src="${p.photo}" />` : `<div class="image-preview" style="width:44px;height:44px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;border:1px solid var(--border);flex-shrink:0;"><i class="fas fa-user" style="color:#bbb;"></i></div>`}
+          <div class="body">
+            <div class="t">#${p.jersey||'-'} ${escapeHtml(p.firstName||'')} ${escapeHtml(p.lastName||'')}</div>
+            <div style="font-size:.72rem;color:var(--text-2);margin-top:2px;">
+              ${escapeHtml(p.position||'-')} — ولي الأمر: ${escapeHtml(p.guardianName||'-')} — هاتف: ${escapeHtml(p.guardianPhone||'-')}
+            </div>
+          </div>
+          <span class="badge ${p.status==='approved'?'accepted':p.status==='rejected'?'rejected':'pending'}">${p.status==='approved'?'معتمد':p.status==='rejected'?'مرفوض':'قيد الانتظار'}</span>
+          <div class="actions">
+            <button class="btn btn-secondary" onclick="openPlayerFileModal('${p.id}')"><i class="fas fa-id-card"></i> ملف اللاعب</button>
+            <button class="btn btn-danger" onclick="deletePlayerFromFawj('${p.id}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`).join('') : `<div class="empty-msg">لا يوجد لاعبون في هذا الفوج بعد</div>`}
     </div>`;
   });
   c.innerHTML = html;
+}
+async function deletePlayerFromFawj(id){
+  if(!confirm('حذف هذا اللاعب نهائياً؟')) return;
+  try{
+    const p = (STATE.players||[]).find(x=>x.id===id);
+    await db.ref(playersConfig.path+'/'+id).remove();
+    STATE.players = (STATE.players||[]).filter(x=>x.id!==id);
+    addLog('حذف', `اللاعبون: ${p?playersConfig.display(p):id}`);
+    if(currentOpenCategory) renderCategoryFawjDetail(currentOpenCategory); else renderCategoryFiles(document.getElementById('content'));
+    toastOk('تم حذف اللاعب');
+  }catch(err){ showError(err, 'حذف اللاعب'); }
+}
+
+/* ============ ملف اللاعب الكامل — يفتح كنافذة منبثقة، يعرض ويعدّل كل المعلومات ============ */
+function openPlayerFileModal(playerId, defaults){
+  const isNew = !playerId;
+  const item = isNew ? (defaults || {}) : ((STATE.players||[]).find(p=>p.id===playerId) || {});
+  const formHtml = playersConfig.fields.map(f => `<div class="fg ${(f.type==='textarea'||f.type==='image'||f.type==='videoUpload'||f.type==='imageUpload'||f.type==='checkbox')?'full':''}"><label>${f.label}</label>${fieldInputHTML(f, item[f.key])}</div>`).join('');
+  showModal(`
+    <h3><i class="fas fa-id-card"></i> ${isNew ? 'إضافة لاعب جديد' : 'ملف اللاعب'}</h3>
+    ${!isNew ? `<p style="font-size:.78rem;color:var(--text-2);margin-bottom:14px;">كود ولي الأمر: <b>${escapeHtml(item.parentCode||'-')}</b></p>` : ''}
+    <div class="form-grid">${formHtml}</div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+      <button class="btn btn-primary" id="savePlayerFileBtn"><i class="fas fa-check"></i> حفظ</button>
+      ${!isNew ? `<button class="btn btn-danger" id="deletePlayerFileBtn"><i class="fas fa-trash"></i> حذف اللاعب</button>` : ''}
+      <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+    </div>
+  `, {width:'680px'});
+
+  document.getElementById('savePlayerFileBtn').addEventListener('click', async () => {
+    if(pendingUploads>0){ showToast('الرجاء الانتظار حتى تنتهي معالجة الملف قبل الحفظ', 'warning'); return; }
+    const btn = document.getElementById('savePlayerFileBtn'); const orig = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+    try{
+      let data = await collectFields(playersConfig.fields);
+      const missing = playersConfig.fields.filter(f=>f.required && !data[f.key]);
+      if(missing.length){ alert('الرجاء تعبئة: '+missing.map(f=>f.label).join('، ')); btn.disabled=false; btn.innerHTML=orig; return; }
+      if(playersConfig.beforeSave) data = playersConfig.beforeSave(data, isNew);
+      const targetCat = data.category;
+      if(!isNew){
+        await db.ref(playersConfig.path+'/'+playerId).update(data);
+        const idx = STATE.players.findIndex(x=>x.id===playerId);
+        if(idx>=0) STATE.players[idx] = {...STATE.players[idx], ...data};
+        addLog('تعديل', `اللاعبون: ${playersConfig.display(STATE.players[idx])}`);
+      } else {
+        data.createdAt = new Date().toISOString();
+        const ref = await db.ref(playersConfig.path).push(data);
+        STATE.players.push({id:ref.key, ...data});
+        addLog('إضافة', `اللاعبون: ${playersConfig.display(data)}`);
+      }
+      closeModal();
+      toastOk('تم حفظ ملف اللاعب بنجاح');
+      if(currentOpenCategory){ renderCategoryFawjDetail(currentOpenCategory); }
+      else if(targetCat){ renderCategoryFawjDetail(targetCat); }
+      else { renderCategoryFiles(document.getElementById('content')); }
+    }catch(err){ showError(err, 'حفظ ملف اللاعب'); }
+    finally { btn.disabled=false; btn.innerHTML='<i class="fas fa-check"></i> حفظ'; }
+  });
+
+  const delBtn = document.getElementById('deletePlayerFileBtn');
+  if(delBtn){
+    delBtn.addEventListener('click', async () => {
+      if(!confirm('حذف هذا اللاعب نهائياً؟')) return;
+      try{
+        await db.ref(playersConfig.path+'/'+playerId).remove();
+        STATE.players = (STATE.players||[]).filter(x=>x.id!==playerId);
+        addLog('حذف', `اللاعبون: ${playersConfig.display(item)}`);
+        closeModal();
+        toastOk('تم حذف اللاعب');
+        if(currentOpenCategory) renderCategoryFawjDetail(currentOpenCategory); else renderCategoryFiles(document.getElementById('content'));
+      }catch(err){ showError(err, 'حذف اللاعب'); }
+    });
+  }
 }
 
 /* ============ السجلات الطبية ============ */
@@ -1470,7 +1547,7 @@ async function confirmAcceptRegistration(id){
   const btn = document.getElementById('confirmAcceptBtn');
   if(btn){ btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ التنفيذ...'; }
   try{
-    await ensureKeyedLoaded('players');
+    await ensurePlayersLoaded();
     const {id:_rid, status:_status, playerId:_pid, ...rest} = r;
     const existingIdx = (STATE.players||[]).findIndex(p=>p.id===r.playerId || p.fromRegistrationId===id);
     const playerData = {
@@ -1507,7 +1584,7 @@ function showAcceptSuccessModal(playerData, playerId, cat, fawj){
     <p style="font-size:.9rem;margin-bottom:18px;">تم قبول اللاعب <b>${escapeHtml(playerData.firstName||'')} ${escapeHtml(playerData.lastName||'')}</b> وإضافته مباشرة إلى فئة <b>${escapeHtml(cat)}</b> — الفوج <b>${escapeHtml(fawj)}</b>.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button class="btn btn-primary" onclick="closeModal(); document.querySelector('[data-page=categoryFiles]').click(); setTimeout(()=>renderCategoryFawjDetail('${cat}'),500);"><i class="fas fa-folder-open"></i> فتح الفئة</button>
-      <a class="btn btn-secondary" href="player.html?id=${playerId}" target="_blank"><i class="fas fa-eye"></i> فتح ملف اللاعب</a>
+      <button class="btn btn-secondary" onclick="closeModal(); document.querySelector('[data-page=categoryFiles]').click(); setTimeout(()=>{renderCategoryFawjDetail('${cat}'); setTimeout(()=>openPlayerFileModal('${playerId}'),300);},500);"><i class="fas fa-id-card"></i> فتح ملف اللاعب</button>
       <button class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
     </div>
   `);
@@ -1545,29 +1622,4 @@ function renderSettings(c){
 function changePassword(){
   const val = document.getElementById('newPassword').value.trim();
   if(val.length < 5) return alert('كود الدخول يجب أن يكون 5 أحرف على الأقل');
-  const btn = document.getElementById('savePassBtn'); const orig = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
-  db.ref('academy/adminSettings/password').set(val)
-    .then(() => { addLog('تعديل','تغيير كود الدخول'); toastOk('تم تحديث كود الدخول بنجاح'); })
-    .catch(err => showError(err, 'تحديث كود الدخول'))
-    .finally(() => { btn.disabled=false; btn.innerHTML=orig; });
-}
-async function saveLetterhead(){
-  const btn = document.getElementById('saveLhBtn'); const orig = btn.innerHTML;
-  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
-  const data = {
-    leagueName: document.getElementById('lh_leagueName').value.trim(),
-    approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
-    directorPhone: document.getElementById('lh_directorPhone').value.trim()
-  };
-  try{
-    await db.ref('academy/adminSettings/letterhead').update(data);
-    STATE.letterhead = {...(STATE.letterhead||{}), ...data};
-    addLog('تعديل', 'تحديث بيانات الترويسة الرسمية');
-    toastOk('تم حفظ بيانات الترويسة');
-  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
-  finally { btn.disabled=false; btn.innerHTML=orig; }
-}
-</script>
-</body>
-</html>
+  const btn = document.getElementById('savePassBtn'); const orig = btn.innerHT
