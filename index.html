@@ -180,20 +180,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
 .lightbox .close{position:absolute;top:26px;right:34px;font-size:2.6rem;color:#fff;cursor:pointer;transition:.3s;}
 .lightbox .close:hover{transform:rotate(90deg);color:var(--accent);}
 
-/* PLAYERS */
-.players{padding:80px 0;background:#fff;}
-.player-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;max-width:800px;margin:0 auto;}
-.player-card{border-radius:28px;overflow:hidden;background:#fff;box-shadow:var(--shadow-medium);border:2px solid transparent;transition:.4s cubic-bezier(.16,1,.3,1);display:block;}
-.player-card:hover{transform:translateY(-12px);border-color:var(--accent);box-shadow:var(--shadow-heavy);}
-.player-card .img-wrap{position:relative;width:100%;aspect-ratio:4/5;min-height:260px;overflow:hidden;background:var(--deep);display:flex;align-items:center;justify-content:center;}
-.player-card .img-wrap img{width:100%;height:100%;object-fit:cover;}
-.player-card .number{position:absolute;top:14px;left:14px;background:var(--accent);color:#fff;font-family:'Bebas Neue';font-size:1.5rem;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:var(--shadow-medium);}
-.player-card .desc{padding:20px 22px;border-top:3px solid var(--accent);}
-.player-card .name{font-size:1.5rem;color:var(--deep);}
-.player-card .meta{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-.player-card .meta span{background:rgba(33,150,83,.1);color:var(--dark);font-size:.76rem;font-weight:700;padding:5px 14px;border-radius:20px;}
-.player-card .view-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;color:var(--mid);font-weight:700;font-size:.85rem;}
-
 /* STAFF */
 .staff{padding:80px 0;background:#f2f8f4;}
 .staff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:30px;max-width:1000px;margin:0 auto;}
@@ -343,7 +329,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
       <a href="#articles">المقالات</a>
       <a href="#about">الأكاديمية</a>
       <a href="#gallery">المعرض</a>
-      <a href="#players">اللاعبون</a>
       <a href="#staff">الطاقم الفني</a>
       <a href="#kits">الأطقم</a>
       <a href="#education">تعليمية</a>
@@ -421,13 +406,6 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
   </div>
 </section>
 <div class="lightbox" id="lightbox"><span class="close" id="lightboxClose">&times;</span><img src="" id="lightboxImg" /></div>
-
-<section class="players" id="players">
-  <div class="container">
-    <h2 class="section-title center reveal">اللاعبون المميزون</h2>
-    <div class="player-grid" id="playerGrid"></div>
-  </div>
-</section>
 
 <section class="staff" id="staff">
   <div class="container">
@@ -524,7 +502,7 @@ h1,h2,h3,.headline,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1.5
           <a href="#" id="fTk"><i class="fab fa-tiktok"></i></a>
         </div>
       </div>
-      <div><h4>روابط سريعة</h4><a href="#home">الرئيسية</a><a href="#about">الأكاديمية</a><a href="#ageGroups">الفئات</a><a href="#players">اللاعبون</a></div>
+      <div><h4>روابط سريعة</h4><a href="#home">الرئيسية</a><a href="#about">الأكاديمية</a><a href="#ageGroups">الفئات</a></div>
       <div><h4>الفئات</h4><div id="footerCats"></div></div>
       <div>
         <h4>اتصل بنا</h4>
@@ -602,19 +580,6 @@ function openLightbox(src){ document.getElementById('lightboxImg').src = src; do
 document.getElementById('lightboxClose').addEventListener('click', () => document.getElementById('lightbox').classList.remove('active'));
 document.getElementById('lightbox').addEventListener('click', function(e){ if(e.target===this) this.classList.remove('active'); });
 
-function renderPlayers(players){
-  const grid = document.getElementById('playerGrid');
-  const featured = players.slice(0,2);
-  if(!featured.length){ grid.innerHTML = '<p style="text-align:center;color:#5c6660;grid-column:1/-1;">لم يتم إضافة لاعبين مميزين بعد</p>'; return; }
-  grid.innerHTML = featured.map(p => `
-    <a class="player-card" href="player.html?id=${p.id}">
-      <div class="img-wrap">${p.jersey?`<span class="number">${p.jersey}</span>`:''}<img src="${p.photo||''}" onerror="this.style.display='none'" /></div>
-      <div class="desc"><div class="name">${p.firstName||''} ${p.lastName||''}</div>
-        <div class="meta">${p.category?`<span>${p.category}</span>`:''}${p.position?`<span>${p.position}</span>`:''}</div>
-        <span class="view-link">عرض الملف الكامل ←</span>
-      </div>
-    </a>`).join('');
-}
 function renderStaff(staff){
   document.getElementById('staffGrid').innerHTML = staff.map(s => `
     <div class="staff-card"><div class="img-wrap"><img src="${s.photoUrl||''}" onerror="this.style.display='none'" /></div>
@@ -909,7 +874,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => anchor.addEventListe
 }));
 
 function initReveal(){
-  const targets = document.querySelectorAll('.player-card,.staff-card,.kit-card,.age-card,.masonry .item,.reveal');
+  const targets = document.querySelectorAll('.staff-card,.kit-card,.age-card,.masonry .item,.reveal');
   targets.forEach(el => el.classList.add('reveal'));
   const obs = new IntersectionObserver(entries => entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('visible'); obs.unobserve(en.target); } }), {threshold:.12});
   targets.forEach(el => obs.observe(el));
@@ -926,12 +891,11 @@ function initCounters(){
 }
 
 (async function init(){
-  const [ticker, gallery, staff, categories, players, articles, testi, docs, kits, eduVideos] = await Promise.all([
+  const [ticker, gallery, staff, categories, articles, testi, docs, kits, eduVideos] = await Promise.all([
     fetchOnce('academy/newsTicker', defaultNewsTicker),
     fetchOnce('academy/gallery', defaultGallery),
     fetchOnce('academy/staff', defaultStaff),
     fetchOnce('academy/categories', defaultCategories),
-    fetchOnce('academy/players', {}),
     fetchOnce('academy/articles', {}),
     fetchOnce('academy/testimonials', {}),
     fetchOnce('academy/documents', {}),
@@ -942,7 +906,6 @@ function initCounters(){
   renderGallery(Array.isArray(gallery)?gallery:defaultGallery);
   renderStaff(Array.isArray(staff)?staff:defaultStaff);
   renderAgeGroups(categories);
-  renderPlayers(toArr(players));
   renderArticles(toArr(articles));
   renderTesti(toArr(testi));
   renderDocs(toArr(docs));
