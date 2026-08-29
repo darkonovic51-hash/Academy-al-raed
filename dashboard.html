@@ -1595,4 +1595,70 @@ async function confirmAcceptRegistration(id){
 }
 function showAcceptSuccessModal(playerData, playerId, cat, fawj){
   showModal(`
-    <h3><i class="fas fa-circle-check" style="color:var(--green2);"></i> تم الق
+    <h3><i class="fas fa-circle-check" style="color:var(--green2);"></i> تم القبول والنقل بنجاح</h3>
+    <p style="font-size:.9rem;margin-bottom:18px;">تم قبول اللاعب <b>${escapeHtml(playerData.firstName||'')} ${escapeHtml(playerData.lastName||'')}</b> وإضافته مباشرة إلى فئة <b>${escapeHtml(cat)}</b> — الفوج <b>${escapeHtml(fawj)}</b>.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="closeModal(); document.querySelector('[data-page=categoryFiles]').click(); setTimeout(()=>renderCategoryFawjDetail('${cat}'),500);"><i class="fas fa-folder-open"></i> فتح الفئة</button>
+      <button class="btn btn-secondary" onclick="closeModal(); document.querySelector('[data-page=categoryFiles]').click(); setTimeout(()=>{renderCategoryFawjDetail('${cat}'); setTimeout(()=>openPlayerFileModal('${playerId}'),300);},500);"><i class="fas fa-id-card"></i> فتح ملف اللاعب</button>
+      <button class="btn btn-secondary" onclick="closeModal()">إغلاق</button>
+    </div>
+  `);
+}
+
+async function deleteRegistration(id){
+  if(!confirm('حذف طلب التسجيل هذا نهائياً؟')) return;
+  try{
+    const r = STATE.registrations.find(x=>x.id===id);
+    await db.ref('academy/registrations/'+id).remove();
+    STATE.registrations = STATE.registrations.filter(x=>x.id!==id);
+    addLog('حذف طلب', `${r?r.firstName+' '+r.lastName:id}`);
+    renderRegList();
+    toastOk('تم حذف الطلب');
+  }catch(err){ showError(err, 'حذف طلب التسجيل'); }
+}
+
+function renderSettings(c){
+  const lh = STATE.letterhead || {};
+  c.innerHTML = `<h2 class="page-title"><i class="fas fa-gear"></i> الإعدادات</h2>
+    <div class="panel"><h3><i class="fas fa-key"></i> تغيير كود الدخول</h3>
+      <div class="form-grid"><div class="fg full"><label>كود الدخول الجديد</label><input type="text" id="newPassword" /></div></div>
+      <button class="btn btn-primary" id="savePassBtn" onclick="changePassword()"><i class="fas fa-check"></i> حفظ</button>
+    </div>
+    <div class="panel"><h3><i class="fas fa-file-signature"></i> بيانات الترويسة الرسمية</h3>
+      <div class="form-grid">
+        <div class="fg full"><label>اسم الرابطة الولائية</label><input type="text" id="lh_leagueName" value="${escapeHtml(lh.leagueName||'')}" /></div>
+        <div class="fg"><label>رقم الاعتماد</label><input type="text" id="lh_approvalNumber" value="${escapeHtml(lh.approvalNumber||'')}" /></div>
+        <div class="fg"><label>هاتف المدير</label><input type="text" id="lh_directorPhone" value="${escapeHtml(lh.directorPhone||'')}" /></div>
+      </div>
+      <button class="btn btn-primary" id="saveLhBtn" onclick="saveLetterhead()"><i class="fas fa-check"></i> حفظ بيانات الترويسة</button>
+    </div>`;
+}
+function changePassword(){
+  const val = document.getElementById('newPassword').value.trim();
+  if(val.length < 5) return alert('كود الدخول يجب أن يكون 5 أحرف على الأقل');
+  const btn = document.getElementById('savePassBtn'); const orig = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+  db.ref('academy/adminSettings/password').set(val)
+    .then(() => { addLog('تعديل','تغيير كود الدخول'); toastOk('تم تحديث كود الدخول بنجاح'); })
+    .catch(err => showError(err, 'تحديث كود الدخول'))
+    .finally(() => { btn.disabled=false; btn.innerHTML=orig; });
+}
+async function saveLetterhead(){
+  const btn = document.getElementById('saveLhBtn'); const orig = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+  const data = {
+    leagueName: document.getElementById('lh_leagueName').value.trim(),
+    approvalNumber: document.getElementById('lh_approvalNumber').value.trim(),
+    directorPhone: document.getElementById('lh_directorPhone').value.trim()
+  };
+  try{
+    await db.ref('academy/adminSettings/letterhead').update(data);
+    STATE.letterhead = {...(STATE.letterhead||{}), ...data};
+    addLog('تعديل', 'تحديث بيانات الترويسة الرسمية');
+    toastOk('تم حفظ بيانات الترويسة');
+  }catch(err){ showError(err, 'حفظ بيانات الترويسة'); }
+  finally { btn.disabled=false; btn.innerHTML=orig; }
+}
+</script>
+</body>
+</html>
